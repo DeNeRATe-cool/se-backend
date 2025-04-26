@@ -13,7 +13,7 @@ public class Result {
     private Boolean success;
     private String errorMsg;
     private Object data;
-    private Long total;
+    private Integer total;
 
     public static Result ok(){
         return new Result(true, null, null, null);
@@ -21,7 +21,7 @@ public class Result {
     public static Result ok(Object data){
         return new Result(true, null, data, null);
     }
-    public static Result ok(List<?> data, Long total){
+    public static Result ok(List<?> data, Integer total){
         return new Result(true, null, data, total);
     }
     public static Result fail(String errorMsg){

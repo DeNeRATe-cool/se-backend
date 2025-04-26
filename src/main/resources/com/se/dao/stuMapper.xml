@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.se.dao.StuDao">
+
+<!--    <resultMap id="book" type="com.se.entity.User">-->
+<!--        &lt;!&ndash;    当列名和属性名不同时，数据库返回值的列与类的属性相对应    &ndash;&gt;-->
+<!--        <result column="id" property="id"/>-->
+<!--        <result column="type" property="type"/>-->
+<!--        <result column="name" property="name"/>-->
+<!--        <result column="description" property="description"/>-->
+<!--    </resultMap>-->
+
+</mapper>

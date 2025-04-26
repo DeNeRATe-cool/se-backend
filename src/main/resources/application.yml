@@ -1,11 +1,22 @@
 # oss控制台: https://oss.console.aliyun.com
 # oss云存储的EndPoint（地域节点）
-alibaba.cloud.oss.endpoint=oss-cn-hangzhou.aliyuncs.com
-# 应用服务 WEB 访问端口
-server.port=8080
-#下面这些内容是为了让MyBatis映射
-#指定Mybatis的Mapper文件
-mybatis.mapper-locations=classpath:mappers/*xml
-#指定Mybatis的实体目录
-mybatis.type-aliases-package=com.se.mybatis.entity
+alibaba.cloud.oss.endpoint: oss-cn-beijing.aliyuncs.com
+#alibaba.cloud.access-key: #
+#alibaba.cloud.secret-key: #
+
+spring.application.name: se-backend
+
+server:
+  port: 8080
+
+spring:
+  datasource:
+    username: SE_teamsix
+    password: ilovese666
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://47.94.184.148:3307/course_management
+
+mybatis:
+  mapper-locations: classpath:com/se/dao/stuMapper.xml
 
