@@ -1,12 +1,11 @@
 package com.se.controller;
 
 import com.se.dto.Result;
+import com.se.entity.Process;
+import com.se.service.ProcessService;
 import com.se.utils.OssService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -17,6 +16,15 @@ public class ProcessController {
 
     @Autowired
     private OssService ossService;
+
+    @Autowired
+    private ProcessService processService;
+
+    @PostMapping("/create")
+    public Result createProcess(@RequestBody Process process) {
+        processService.createProcess(process);
+        return Result.ok(process);
+    }
 
     @PostMapping("/resource/add")
     public Result upload(
