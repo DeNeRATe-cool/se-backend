@@ -4,6 +4,7 @@ import com.se.dto.Result;
 import com.se.entity.Course;
 import com.se.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,7 +18,7 @@ public class CourseController {
     private CourseService courseService;
 
     @PostMapping("/create")
-    public Result add(@RequestBody Course course)
+    public Result add(@RequestBody @Validated Course course)
     {
         courseService.add(course);
         return Result.ok();
