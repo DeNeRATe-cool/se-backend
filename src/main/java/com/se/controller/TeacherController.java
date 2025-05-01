@@ -1,8 +1,9 @@
 package com.se.controller;
 
+
 import com.se.dto.Result;
 import com.se.entity.User;
-import com.se.service.StuService;
+import com.se.service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,27 +14,24 @@ import java.util.List;
 import java.util.Map;
 
 @RestController
-@RequestMapping("/stu")
-public class StuController {
-    @Autowired
-    private StuService stuService;
+@RequestMapping("/teacher")
+public class TeacherController {
 
-    @GetMapping("/allStu")
-    public Result getAllStudent() {
-        return stuService.getAllStudent();
-    }
+    @Autowired
+    private TeacherService teacherService;
 
     @GetMapping("/all")
-    public Result listByCourseID(Integer course_id)
+    public Result listByCourse(int course_id)
     {
-        List<User> res = stuService.listByCourseID(course_id);
+        List<User> res =  teacherService.listByCourse(course_id);
         return Result.ok(res);
     }
 
-    @GetMapping("/exact")
+    @GetMapping("exact")
     public Result listByCondition(@RequestParam Map<String,String> params)
     {
-        List<User> res = stuService.listByCondition(params);
+        List<User> res = teacherService.listByCondition(params);
         return Result.ok(res);
     }
+
 }
