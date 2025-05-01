@@ -23,4 +23,6 @@ public class CourseController {
         courseService.add(course);
         return Result.ok();
     }
+
+
 }
