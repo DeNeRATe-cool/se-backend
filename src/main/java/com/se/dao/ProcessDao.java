@@ -26,4 +26,7 @@ public interface ProcessDao {
             @Param("url") String url,
             @Param("date") String now,
             @Param("tag") String tags);
+
+    @Select("select url from t_resource where res_id = #{arg0}")
+    String getResourceUrl(Integer id);
 }
