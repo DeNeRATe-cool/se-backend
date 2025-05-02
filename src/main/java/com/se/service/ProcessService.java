@@ -1,7 +1,9 @@
 package com.se.service;
 
+import com.se.entity.Class;
 import com.se.entity.Process;
 import com.se.entity.Resource;
+import com.se.entity.User;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -17,4 +19,8 @@ public interface ProcessService {
     String downloadResource(Integer id);
 
     List<Resource> getResourceByProcess(Integer processId, Integer courseId);
+
+    List<Resource> getResourceByTag(List<User> tutorList, List<Class> classList, Integer courseId, Integer userId, String tags);
+
+    List<Resource> getPublicResourceByCourse(Integer courseId);
 }

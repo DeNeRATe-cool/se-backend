@@ -33,4 +33,13 @@ public interface ProcessDao {
 
     @Select("select * from t_resource where process_id = #{processId} and course_id = #{courseId}")
     List<Resource> getResourceByProcess(@Param("processId") Integer processId, @Param("courseId") Integer courseId);
+
+    @Select("select * from t_resource where class_id = #{classId}")
+    List<Resource> getResourceByClass(Integer classId);
+
+    @Select("select * from t_resource where course_id = #{courseId}")
+    List<Resource> getResourceByCourse(Integer courseId);
+
+    @Select("select * from t_resource where course_id = #{courseId} and process_id = -1")
+    List<Resource> getPublicResourceByCourse(Integer courseId);
 }
