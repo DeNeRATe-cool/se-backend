@@ -37,4 +37,11 @@ public class ClassController {
         List<User> res = classService.listTeacherAndTutor(class_id);
         return Result.ok(res,res.size());
     }
+
+    @GetMapping("/all")
+    public Result list()
+    {
+        List<Class> res = classService.list();
+        return Result.ok(res,res.size());
+    }
 }

@@ -12,4 +12,6 @@ public interface ClassService {
     List<User> addAdmin(AddAdminInClassDTO addAdminInClassDTO);
 
     List<User> listTeacherAndTutor(Integer classId);
+
+    List<Class> list();
 }

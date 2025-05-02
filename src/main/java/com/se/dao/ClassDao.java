@@ -24,4 +24,6 @@ public interface ClassDao {
             " values(#{course_id},#{name},#{class_code})")
     void add(Class classEntity);
 
+    @Select("select * from t_class where class_id!=-1")
+    List<Class> list();
 }

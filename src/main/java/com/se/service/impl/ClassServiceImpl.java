@@ -122,4 +122,9 @@ public class ClassServiceImpl implements ClassService {
         }
         return userCourseClassService.getAdminListByClass(classId);
     }
+
+    @Override
+    public List<Class> list() {
+        return classDao.list();
+    }
 }
