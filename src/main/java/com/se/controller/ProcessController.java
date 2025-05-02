@@ -2,6 +2,7 @@ package com.se.controller;
 
 import com.se.dto.Result;
 import com.se.entity.Process;
+import com.se.entity.Resource;
 import com.se.service.ProcessService;
 import com.se.utils.OssService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,6 +49,13 @@ public class ProcessController {
         return Result.ok(url);
     }
 
+    @GetMapping("/resource/all")
+    public Result getResourceByProcess(
+            @RequestParam("process_id") Integer processId,
+            @RequestParam("course_id") Integer courseId) {
+        List<Resource> resList = processService.getResourceByProcess(processId, courseId);
+        return Result.ok(resList, resList.size());
+    }
 
     @GetMapping("/get")
     public Result queryByClass(

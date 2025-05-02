@@ -1,5 +1,6 @@
 package com.se.entity;
 
+import cn.hutool.core.date.DateTime;
 import lombok.Data;
 
 import java.util.Date;
@@ -16,11 +17,13 @@ public class Resource {
 
     private Integer course_id;
 
+    private Integer class_id;
+
     private String type;
 
     private String url;
 
     private Date date;
 
-    private String tags;
+    private String tag;
 }

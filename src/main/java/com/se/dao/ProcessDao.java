@@ -1,6 +1,7 @@
 package com.se.dao;
 
 import com.se.entity.Process;
+import com.se.entity.Resource;
 import org.apache.ibatis.annotations.*;
 
 import java.util.List;
@@ -29,4 +30,7 @@ public interface ProcessDao {
 
     @Select("select url from t_resource where res_id = #{arg0}")
     String getResourceUrl(Integer id);
+
+    @Select("select * from t_resource where process_id = #{processId} and course_id = #{courseId}")
+    List<Resource> getResourceByProcess(@Param("processId") Integer processId, @Param("courseId") Integer courseId);
 }

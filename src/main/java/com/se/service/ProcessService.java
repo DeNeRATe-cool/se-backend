@@ -1,6 +1,7 @@
 package com.se.service;
 
 import com.se.entity.Process;
+import com.se.entity.Resource;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
@@ -14,4 +15,6 @@ public interface ProcessService {
     void addResource(String fileName, Integer process_id, Integer course_id, Integer class_id, String url, Boolean is_public, String tags);
 
     String downloadResource(Integer id);
+
+    List<Resource> getResourceByProcess(Integer processId, Integer courseId);
 }
