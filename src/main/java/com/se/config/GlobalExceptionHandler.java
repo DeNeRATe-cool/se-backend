@@ -5,10 +5,7 @@ import com.se.exception.ParamIllegalException;
 import com.se.exception.ParamNotEnoughException;
 import com.se.exception.classException.ClassNotExistException;
 import com.se.exception.classException.DuplicateClassException;
-import com.se.exception.courseException.CourseClassNotMatchException;
-import com.se.exception.courseException.CourseNotFoundException;
-import com.se.exception.courseException.DuplicateCourseException;
-import com.se.exception.courseException.UserNotInCourseException;
+import com.se.exception.courseException.*;
 import com.se.exception.userException.UserNotFoundException;
 import com.se.exception.userException.UserPermissionException;
 import lombok.extern.slf4j.Slf4j;
@@ -189,6 +186,15 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ClassNotExistException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Result handleClassNotExist(ClassNotExistException ex) {
+        log.error(ex.getMessage(),ex);
+        return Result.fail(ex.getMessage());
+    }
+
+    // 学生重复加入课程
+    @ExceptionHandler(DuplicateJoinCourseException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Result handleDuplicateJoinCourse(DuplicateJoinCourseException ex)
+    {
         log.error(ex.getMessage(),ex);
         return Result.fail(ex.getMessage());
     }

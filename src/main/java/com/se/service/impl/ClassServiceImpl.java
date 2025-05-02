@@ -5,12 +5,14 @@ import com.se.dao.ClassDao;
 import com.se.dao.UserCourseClassDao;
 import com.se.dao.UserDao;
 import com.se.dto.AddAdminInClassDTO;
+import com.se.dto.ApplyJoinClassDTO;
 import com.se.dto.UserCourseClass;
 import com.se.entity.Class;
 import com.se.entity.User;
 import com.se.exception.classException.ClassNotExistException;
 import com.se.exception.classException.DuplicateClassException;
 import com.se.exception.courseException.CourseClassNotMatchException;
+import com.se.exception.courseException.DuplicateJoinCourseException;
 import com.se.exception.courseException.UserNotInCourseException;
 import com.se.exception.userException.UserNotFoundException;
 import com.se.exception.userException.UserPermissionException;
@@ -126,5 +128,45 @@ public class ClassServiceImpl implements ClassService {
     @Override
     public List<Class> list() {
         return classDao.list();
+    }
+
+    /**
+     *
+     * @param applyJoinClassDTO
+     * course_id class_code user_id`
+     * 1, 用户存在 + 验证学生身份
+     * 2. 班级存在
+     * 3. 避免重复加入
+     * 4. 验证课程-班级是否匹配
+     */
+    @Override
+    public void apply(ApplyJoinClassDTO applyJoinClassDTO) {
+        Integer apply_user_id = applyJoinClassDTO.getUser_id();
+        Integer apply_course_id = applyJoinClassDTO.getCourse_id();
+        String apply_class_code = applyJoinClassDTO.getClass_code();
+        if(!userCourseClassService.userExist(apply_user_id))
+        {
+            throw new UserNotFoundException(UserEntityConstant.USER_NOT_EXISTS);
+        }
+        if(!userCourseClassService.userIsStudent(apply_user_id))
+        {
+            throw new UserPermissionException(StudentEntityConstant.STUDENT_IDENTITY_ERROR);
+        }
+        if(!userCourseClassService.classExist(apply_class_code))
+        {
+            throw new ClassNotExistException(ClassEntityConstant.CLASS_NOT_EXISTS);
+        }
+        if(userCourseClassService.studentInCourse(apply_user_id,apply_course_id))
+        {
+            throw new DuplicateJoinCourseException(CourseEntityConstant.STUDENT_DUPLICATE_JOIN_COURSE);
+        }
+        Class class_entity = classDao.getClassEntityByClassCode(apply_class_code).get(0);
+        if(!userCourseClassService.isCourseAndClassMatch(apply_course_id,class_entity.getClass_id()))
+        {
+            throw new CourseClassNotMatchException(CourseEntityConstant.COURSE_CLASS_NOT_MATCH);
+        }
+
+        userCourseClassDao.add(apply_user_id,apply_course_id,
+                class_entity.getClass_id(),StudentEntityConstant.IDENTITY_CODE);
     }
 }

@@ -17,4 +17,7 @@ public class CourseEntityConstant {
     // 课程没有找到
     public static final String COURSE_NOT_FOUND = "该课程不存在";
 
+    // 学生重复加入课程
+    public static final String STUDENT_DUPLICATE_JOIN_COURSE = "学生重复加入课程";
+
 }
