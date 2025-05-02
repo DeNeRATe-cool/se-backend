@@ -21,4 +21,6 @@ public interface ProcessService {
     List<Resource> getResourceByProcess(Integer processId, Integer courseId);
 
     List<Resource> getResourceByTag(List<User> tutorList, List<Class> classList, Integer courseId, Integer userId, String tags);
+
+    List<Resource> getPublicResourceByCourse(Integer courseId);
 }

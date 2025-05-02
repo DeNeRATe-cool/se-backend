@@ -8,7 +8,10 @@ import com.se.entity.Class;
 import com.se.entity.Resource;
 import com.se.entity.User;
 import com.se.exception.ParamNotEnoughException;
+import com.se.exception.userException.UserNotFoundException;
 import com.se.service.ProcessService;
+import com.se.service.UserCourseClassService;
+import com.se.utils.ResTagFilterUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.se.entity.Process;
@@ -21,6 +24,9 @@ import java.util.List;
 public class ProcessServiceImpl implements ProcessService {
     @Autowired
     private ProcessDao processDao;
+
+    @Autowired
+    private UserCourseClassService userCourseClassService;
 
     @Override
         public void createProcess(Process process) {
@@ -63,6 +69,8 @@ public class ProcessServiceImpl implements ProcessService {
 
     @Override
     public List<Resource> getResourceByTag(List<User> tutorList, List<Class> classList, Integer courseId, Integer userId, String tags) {
+        if(courseId == null || userId == null)
+            throw new ParamNotEnoughException();
         boolean isTutor = false;
         for(User user : tutorList) {
             if(user.getUser_id().equals(userId)) {
@@ -72,10 +80,37 @@ public class ProcessServiceImpl implements ProcessService {
         }
         List<Resource> resList;
         if(isTutor) {
-
+            resList = processDao.getResourceByCourse(courseId);
         } else {
-//            resList = processDao.getResourceByClass();
+            Integer classId = null;
+            for(Class c : classList) {
+                List<User> students = userCourseClassService.listStuByClass(c.getClass_id());
+                boolean inClass = false;
+                for(User user : students) {
+                    if(user.getUser_id().equals(userId)) {
+                        inClass = true;
+                        break;
+                    }
+                }
+                if(inClass) {
+                    classId = c.getClass_id();
+                    break;
+                }
+            }
+            if(classId == null) {
+                throw new UserNotFoundException("用户不在课程内");
+            }
+            resList = processDao.getResourceByClass(classId);
+            resList.addAll(getPublicResourceByCourse(courseId));
         }
-        return List.of();
+        return ResTagFilterUtil.uniqueResource(
+                ResTagFilterUtil.filterByTag(resList, tags));
     }
+
+    @Override
+    public List<Resource> getPublicResourceByCourse(Integer courseId) {
+        return processDao.getPublicResourceByCourse(courseId);
+    }
+
+
 }
