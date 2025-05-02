@@ -42,4 +42,8 @@ public interface UserCourseClassDao {
             "identity=#{identity}")
     List<UserCourseClass> getListByUserIDAndCourseIDAndIdentity(@Param("user_id") Integer user_id,@Param("course_id") Integer course_id,
                                                                 @Param("identity") Integer identity);
+
+
+    @Select("select * from t_user_course_class where user_id=-1 and course_id=#{course_id}")
+    List<UserCourseClass> getClassListByCourse(Integer course_id);
 }

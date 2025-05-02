@@ -2,6 +2,7 @@ package com.se.controller;
 
 import com.se.dto.AddAdminInCourseDTO;
 import com.se.dto.Result;
+import com.se.entity.Class;
 import com.se.entity.Course;
 import com.se.entity.User;
 import com.se.service.CourseService;
@@ -44,6 +45,13 @@ public class CourseController {
     {
         Course course = courseService.courseInfo(course_id);
         return Result.ok(course);
+    }
+
+    @GetMapping("/classes")
+    public Result listByCourseId(Integer course_id, Integer user_id)
+    {
+        List<Class> res = courseService.listByCourseId(course_id,user_id);
+        return Result.ok(res,res.size());
     }
 
 }

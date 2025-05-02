@@ -1,6 +1,7 @@
 package com.se.service;
 
 import com.se.dto.AddAdminInCourseDTO;
+import com.se.entity.Class;
 import com.se.entity.Course;
 import com.se.entity.User;
 
@@ -16,4 +17,6 @@ public interface CourseService {
     List<User> listTeacherAndTutor(Integer courseId);
 
     Course courseInfo(Integer courseId);
+
+    List<Class> listByCourseId(Integer courseId, Integer userId);
 }
