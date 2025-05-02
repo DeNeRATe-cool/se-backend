@@ -28,8 +28,9 @@ public class ExerServiceImpl implements ExerService {
      * @param class_id
      * @return
      */
+
     @Override
-    public List<Integer> getStuFinishExerNum(int user_id, int course_id, int class_id) {
+    public List<Integer> getStuFinishExerNum(Integer user_id, Integer course_id, Integer class_id) {
         // 找到课程和班级对应 的 任务列表
         List<Integer> exerIDList = exerDao.getExerByStuIDAndExerID(class_id,course_id);
         List<StuProbExer> stuProbExerList = null;

@@ -30,7 +30,7 @@ public class TeacherServiceImpl implements TeacherService {
     @Override
     public List<User> listByCourse(int courseId) {
         Integer code = TeacherEntityConstant.IDENTITY_CODE;
-        List<UserCourseClass> userCourseClassList = userCourseClassDao.getUserListByCourseIDAndIdentityCode(courseId, code);
+        List<UserCourseClass> userCourseClassList = userCourseClassDao.getUserListByCourseIDAndIdentityCodeIgnoreClassID(courseId, code);
         List<User> ls = new ArrayList<>();
         for(UserCourseClass ucc: userCourseClassList)
         {
