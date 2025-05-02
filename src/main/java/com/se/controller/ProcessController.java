@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequestMapping("/process")
@@ -37,5 +38,13 @@ public class ProcessController {
         String fileName = file.getOriginalFilename();
         String url = ossService.uploadFile(fileName, file.getInputStream());
         return Result.ok(url);
+    }
+
+    @GetMapping("/get")
+    public Result queryByClass(
+            @RequestParam("course_id") Integer course_id,
+            @RequestParam("class_id") Integer class_id) {
+        List<Process> processList = processService.queryByClass(course_id, class_id);
+        return Result.ok(processList, processList.size());
     }
 }

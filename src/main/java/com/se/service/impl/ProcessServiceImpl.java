@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.se.entity.Process;
 
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class ProcessServiceImpl implements ProcessService {
@@ -23,5 +24,12 @@ public class ProcessServiceImpl implements ProcessService {
         || process.getClass_id() == null || process.getCourse_id() == null)
             throw new ParamNotEnoughException();
         processDao.insert(process);
+    }
+
+    @Override
+    public List<Process> queryByClass(Integer course_id, Integer class_id) {
+        if(course_id == null || class_id == null)
+            throw new ParamNotEnoughException();
+        return processDao.queryByClass(course_id, class_id);
     }
 }
