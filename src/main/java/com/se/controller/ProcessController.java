@@ -41,6 +41,14 @@ public class ProcessController {
         return Result.ok(url);
     }
 
+    @GetMapping("/resource/get")
+    public Result download(
+            @RequestParam("res_id") Integer id) {
+        String url = processService.downloadResource(id);
+        return Result.ok(url);
+    }
+
+
     @GetMapping("/get")
     public Result queryByClass(
             @RequestParam("course_id") Integer course_id,
