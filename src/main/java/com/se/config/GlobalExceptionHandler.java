@@ -8,6 +8,8 @@ import org.apache.coyote.http2.HpackDecoder;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DuplicateKeyException;
+import com.aliyun.oss.ClientException;
+import com.aliyun.oss.OSSException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -54,6 +56,26 @@ public class GlobalExceptionHandler {
     public Result handleDataAccess(DataAccessException ex) {
         log.error("Database access exception: {}", ex.getMessage(), ex);
         return Result.fail("数据库访问异常");
+    }
+
+    /**
+     * 处理阿里云sso服务网络连接问题
+     */
+    @ExceptionHandler(ClientException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public Result handleClientException(ClientException ex) {
+        log.error("Client exception: {}", ex.getMessage(), ex);
+        return Result.fail("文件存储连接异常");
+    }
+
+    /**
+     * 处理阿里云sso服务存储问题
+     */
+    @ExceptionHandler(OSSException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public Result handleOSSException(OSSException ex) {
+        log.error("OSS exception: {}", ex.getMessage(), ex);
+        return Result.fail("文件对象存储时错误");
     }
 
     /**
