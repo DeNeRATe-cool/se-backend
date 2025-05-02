@@ -1,7 +1,9 @@
 package com.se.service.impl;
 
+import com.se.constant.StudentEntityConstant;
 import com.se.constant.TeacherEntityConstant;
 import com.se.constant.TutorEntityConstant;
+import com.se.dao.ClassDao;
 import com.se.dao.CourseDao;
 import com.se.dao.UserCourseClassDao;
 import com.se.dao.UserDao;
@@ -23,12 +25,49 @@ public class UserCourseClassServiceImpl implements UserCourseClassService {
     private UserDao userDao;
 
     @Autowired
+    private ClassDao classDao;
+
+    @Autowired
     private UserCourseClassDao userCourseClassDao;
 
     public List<User> getAdminListByCourse(Integer courseId) {
         List<User> list = getTeacherListByCourse(courseId);
         list.addAll(getTutorListByCourse(courseId));
         return list;
+    }
+
+    @Override
+    public Boolean userExist(Integer user_id) {
+        return !userDao.getUserByID(user_id).isEmpty();
+    }
+
+    @Override
+    public Boolean userIsStudent(Integer user_id) {
+        if(!userExist(user_id)) {
+            return false;
+        }
+        User user = userDao.getUserByID(user_id).get(0);
+        return user.getIdentity().equals(StudentEntityConstant.IDENTITY_CODE);
+    }
+
+    @Override
+    public Boolean classExist(Integer class_id) {
+        return !classDao.getClassEntityByClassId(class_id).isEmpty();
+    }
+
+    @Override
+    public Boolean classExist(String class_code) {
+        return !classDao.getClassEntityByClassCode(class_code).isEmpty();
+    }
+
+    @Override
+    public Boolean studentInCourse(Integer user_id, Integer course_id) {
+        if(!userIsStudent(user_id)) {
+            return false;
+        }
+        List<UserCourseClass> userCourseClassList =
+                userCourseClassDao.getListByUserIDAndCourseIDAndIdentity(user_id,course_id,StudentEntityConstant.IDENTITY_CODE);
+        return !userCourseClassList.isEmpty();
     }
 
     public List<User> getTeacherListByCourse(Integer course_id)

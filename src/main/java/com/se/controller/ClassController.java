@@ -1,11 +1,13 @@
 package com.se.controller;
 
 import com.se.dto.AddAdminInClassDTO;
+import com.se.dto.ApplyJoinClassDTO;
 import com.se.dto.Result;
 import com.se.entity.Class;
 import com.se.entity.User;
 import com.se.service.ClassService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -43,5 +45,12 @@ public class ClassController {
     {
         List<Class> res = classService.list();
         return Result.ok(res,res.size());
+    }
+
+    @PostMapping("/apply")
+    public Result apply(@RequestBody @Validated ApplyJoinClassDTO applyJoinClassDTO)
+    {
+        classService.apply(applyJoinClassDTO);
+        return Result.ok();
     }
 }
