@@ -14,4 +14,7 @@ public class CourseEntityConstant {
     // 课程 班级 不匹配
     public static final String COURSE_CLASS_NOT_MATCH = "课程与班级不匹配";
 
+    // 课程没有找到
+    public static final String COURSE_NOT_FOUND = "该课程不存在";
+
 }

@@ -8,6 +8,7 @@ import com.se.dto.AddAdminInClassDTO;
 import com.se.dto.UserCourseClass;
 import com.se.entity.Class;
 import com.se.entity.User;
+import com.se.exception.classException.ClassNotExistException;
 import com.se.exception.classException.DuplicateClassException;
 import com.se.exception.courseException.CourseClassNotMatchException;
 import com.se.exception.courseException.UserNotInCourseException;
@@ -111,5 +112,14 @@ public class ClassServiceImpl implements ClassService {
 
         List<User>res = userCourseClassService.getAdminListByClass(addAdminInClassDTO.getClass_id());
         return res;
+    }
+
+    @Override
+    public List<User> listTeacherAndTutor(Integer classId) {
+        if(classDao.getClassEntityByClassId(classId).isEmpty())
+        {
+            throw new ClassNotExistException(ClassEntityConstant.CLASS_NOT_EXISTS);
+        }
+        return userCourseClassService.getAdminListByClass(classId);
     }
 }

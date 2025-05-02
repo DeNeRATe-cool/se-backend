@@ -18,6 +18,9 @@ public interface CourseDao {
     @Select("select * from t_course where name = #{name}")
     List<Course> getCourseByName(String name);
 
+    @Select("select * from t_course where course_id = #{course_id}")
+    List<Course> getByID(Integer course_id);
+
     @Insert("insert into t_course(name,creator_id,syllabus,assMethod,score,time)" +
             " values(#{name}, #{creator_id}, #{syllabus}, #{assMethod}, #{score}, #{time})")
     void add(Course course);

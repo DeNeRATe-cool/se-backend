@@ -3,8 +3,10 @@ package com.se.config;
 import com.se.dto.Result;
 import com.se.exception.ParamIllegalException;
 import com.se.exception.ParamNotEnoughException;
+import com.se.exception.classException.ClassNotExistException;
 import com.se.exception.classException.DuplicateClassException;
 import com.se.exception.courseException.CourseClassNotMatchException;
+import com.se.exception.courseException.CourseNotFoundException;
 import com.se.exception.courseException.DuplicateCourseException;
 import com.se.exception.courseException.UserNotInCourseException;
 import com.se.exception.userException.UserNotFoundException;
@@ -169,11 +171,25 @@ public class GlobalExceptionHandler {
         return Result.fail(ex.getMessage());
     }
 
+    @ExceptionHandler(CourseNotFoundException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Result handleCourseNotFound(CourseNotFoundException ex)
+    {
+        log.error(ex.getMessage(),ex);
+        return Result.fail(ex.getMessage());
+    }
 
     @ExceptionHandler(IOException.class)
     @ResponseStatus(HttpStatus.BAD_GATEWAY)
     public Result handleIOException(IOException ex) {
         log.error("IO exception: {}", ex.getMessage(), ex);
         return Result.fail("IO流错误");
+    }
+
+    @ExceptionHandler(ClassNotExistException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Result handleClassNotExist(ClassNotExistException ex) {
+        log.error(ex.getMessage(),ex);
+        return Result.fail(ex.getMessage());
     }
 }

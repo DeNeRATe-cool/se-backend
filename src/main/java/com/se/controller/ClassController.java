@@ -6,10 +6,7 @@ import com.se.entity.Class;
 import com.se.entity.User;
 import com.se.service.ClassService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -31,6 +28,13 @@ public class ClassController {
     public Result addAdmin(@RequestBody AddAdminInClassDTO addAdminInClassDTO)
     {
         List<User> res = classService.addAdmin(addAdminInClassDTO);
+        return Result.ok(res,res.size());
+    }
+
+    @GetMapping("/admins")
+    public Result listTeacherAndTutor(Integer class_id)
+    {
+        List<User> res = classService.listTeacherAndTutor(class_id);
         return Result.ok(res,res.size());
     }
 }

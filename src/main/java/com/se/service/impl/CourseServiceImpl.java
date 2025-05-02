@@ -8,10 +8,12 @@ import com.se.dto.AddAdminInCourseDTO;
 import com.se.dto.UserCourseClass;
 import com.se.entity.Course;
 import com.se.entity.User;
+import com.se.exception.courseException.CourseNotFoundException;
 import com.se.exception.courseException.DuplicateCourseException;
 import com.se.exception.courseException.DuplicateInvitationException;
 import com.se.exception.userException.UserNotFoundException;
 import com.se.service.CourseService;
+import com.se.service.UserCourseClassService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,6 +32,9 @@ public class CourseServiceImpl implements CourseService {
 
     @Autowired
     private UserCourseClassDao userCourseClassDao;
+
+    @Autowired
+    private UserCourseClassService userCourseClassService;
 
     public void add(Course course)
     {
@@ -111,6 +116,15 @@ public class CourseServiceImpl implements CourseService {
             res.add(u_i);
         }
         return res;
+    }
+
+    @Override
+    public List<User> listTeacherAndTutor(Integer courseId) {
+        if(courseDao.getByID(courseId).isEmpty())
+        {
+            throw new CourseNotFoundException(CourseEntityConstant.COURSE_NOT_FOUND);
+        }
+        return userCourseClassService.getAdminListByCourse(courseId);
     }
 
 }
