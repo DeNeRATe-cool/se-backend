@@ -4,8 +4,8 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
 import com.se.constant.ResourceConstant;
 import com.se.dao.ProcessDao;
-import com.se.dto.Result;
 import com.se.entity.Resource;
+import com.se.entity.User;
 import com.se.exception.ParamNotEnoughException;
 import com.se.service.ProcessService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,5 +57,10 @@ public class ProcessServiceImpl implements ProcessService {
         if(processId == null || courseId == null)
             throw new ParamNotEnoughException();
         return processDao.getResourceByProcess(processId, courseId);
+    }
+
+    @Override
+    public List<Resource> getResourceByTag(List<User> tutorList, Integer courseId, Integer userId, String tags) {
+        return List.of();
     }
 }
