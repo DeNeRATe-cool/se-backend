@@ -169,4 +169,45 @@ public class ClassServiceImpl implements ClassService {
         userCourseClassDao.add(apply_user_id,apply_course_id,
                 class_entity.getClass_id(),StudentEntityConstant.IDENTITY_CODE);
     }
+
+    /**
+     * 1. 验证身份 是否为课程的老师或者助教
+     * @param courseId
+     * @param classId
+     * @param userId
+     * @return
+     */
+    @Override
+    public List<User> listByClassID(Integer courseId, Integer classId, Integer userId) {
+        /*
+        * 检查用户存在
+        * */
+        List<User> userList = userDao.getUserByID(userId);
+        if(userList.isEmpty())
+        {
+            throw new UserNotFoundException(UserEntityConstant.USER_NOT_EXISTS);
+        }
+        User user = userList.get(0);
+
+        /**
+         * 用户是课程的老师或者助教
+         */
+        if(user.getIdentity().equals(TeacherEntityConstant.IDENTITY_CODE) &&
+                !userCourseClassService.teacherInCourse(userId,courseId))
+        {
+            throw new UserPermissionException(UserEntityConstant.USER_PERMISSION_DENIED);
+        }
+        if(user.getIdentity().equals(StudentEntityConstant.IDENTITY_CODE) &&
+                !userCourseClassService.tutorInCourse(userId,courseId))
+        {
+            throw new UserPermissionException(UserEntityConstant.USER_PERMISSION_DENIED);
+        }
+
+        if(!userCourseClassService.isCourseAndClassMatch(courseId,classId))
+        {
+            throw new CourseClassNotMatchException(CourseEntityConstant.COURSE_CLASS_NOT_MATCH);
+        }
+        return userCourseClassService.listStuByClass(classId);
+
+    }
 }

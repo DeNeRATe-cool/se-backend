@@ -17,4 +17,6 @@ public interface ClassService {
     List<Class> list();
 
     void apply(ApplyJoinClassDTO applyJoinClassDTO);
+
+    List<User> listByClassID(Integer courseId, Integer classId, Integer userId);
 }
