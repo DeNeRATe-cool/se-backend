@@ -13,4 +13,17 @@ public interface ProcessDao {
 
     @Select("select * from t_process where course_id = #{course_id} and class_id = #{class_id}")
     List<Process> queryByClass(@Param("course_id") Integer course_id, @Param("class_id") Integer class_id);
+
+    @Insert("insert into t_resource (res_code, name, process_id, course_id, type, url, date, tag, class_id) values" +
+            "(#{res_code}, #{name}, #{process_id}, #{course_id}, #{type}, #{url}, #{date}, #{tag}, #{class_id}) ")
+    void addResource(
+            @Param("res_code") String resCode,
+            @Param("name") String fileName,
+            @Param("process_id") Integer process_id,
+            @Param("course_id") Integer course_id,
+            @Param("class_id") Integer class_id,
+            @Param("type") String type,
+            @Param("url") String url,
+            @Param("date") String now,
+            @Param("tag") String tags);
 }

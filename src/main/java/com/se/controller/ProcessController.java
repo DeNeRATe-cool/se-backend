@@ -29,7 +29,7 @@ public class ProcessController {
 
     @PostMapping("/resource/add")
     public Result upload(
-            @RequestParam("file") MultipartFile file,
+            @RequestParam("data") MultipartFile file,
             @RequestParam("course_id") Integer course_id,
             @RequestParam("class_id") Integer class_id,
             @RequestParam("process_id") Integer process_id,
@@ -37,6 +37,7 @@ public class ProcessController {
             @RequestParam("is_public") Boolean is_public) throws IOException {
         String fileName = file.getOriginalFilename();
         String url = ossService.uploadFile(fileName, file.getInputStream());
+        processService.addResource(fileName, process_id, course_id, class_id, url, is_public, tags);
         return Result.ok(url);
     }
 
