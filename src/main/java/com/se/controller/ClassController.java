@@ -73,4 +73,10 @@ public class ClassController {
         return Result.ok(res,res.size());
     }
 
+    @GetMapping("/studentin")
+    public Result listClassByStu(@RequestParam Integer user_id)
+    {
+        List<Class> classList = classService.listClassByStu(user_id);
+        return Result.ok(classList,classList.size());
+    }
 }

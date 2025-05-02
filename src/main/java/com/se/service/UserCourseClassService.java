@@ -40,6 +40,8 @@ public interface UserCourseClassService {
     public List<Class> listClassesByCourse(Integer course_id);
     // 根据班级获取学生名单
     public List<User> listStuByClass(Integer class_id);
+    // 根据学生得到班级名单
+    public List<Class> listClassByStudent(Integer user_id);
     // 检查并得到user
     public User safeGetUser(Integer user_id);
     public User safeGetUser(String username);

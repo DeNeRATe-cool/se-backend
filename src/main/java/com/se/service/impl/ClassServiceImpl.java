@@ -229,4 +229,14 @@ public class ClassServiceImpl implements ClassService {
 
         return userCourseClassService.listStuByClass(classId);
     }
+
+    @Override
+    public List<Class> listClassByStu(Integer userId) {
+        User u = userCourseClassService.safeGetUser(userId);
+        if(!userCourseClassService.userIsStudent(userId))
+        {
+            throw new UserPermissionException(StudentEntityConstant.STUDENT_IDENTITY_ERROR);
+        }
+        return userCourseClassService.listClassByStudent(userId);
+    }
 }

@@ -98,6 +98,20 @@ public class UserCourseClassServiceImpl implements UserCourseClassService {
     }
 
     @Override
+    public List<Class> listClassByStudent(Integer user_id) {
+        List<UserCourseClass>userCourseClassList = userCourseClassDao.getByUserID(user_id);
+        List<Class>classList = new ArrayList<>();
+        for(UserCourseClass userCourseClass : userCourseClassList) {
+            Integer class_id = userCourseClass.getClass_id();
+            if(class_id != -1)
+            {
+                classList.add(classDao.getClassEntityByClassId(class_id).get(0));
+            }
+        }
+        return classList;
+    }
+
+    @Override
     public User safeGetUser(Integer user_id) {
         List<User> userList = userDao.getUserByID(user_id);
         if(userList.isEmpty())
