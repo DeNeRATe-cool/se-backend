@@ -19,4 +19,6 @@ public interface ClassService {
     void apply(ApplyJoinClassDTO applyJoinClassDTO);
 
     List<User> listByClassID(Integer courseId, Integer classId, Integer userId);
+
+    List<User> addStu(Integer courseId, Integer classId, Integer userId, String username);
 }

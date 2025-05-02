@@ -11,6 +11,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/class")
@@ -60,4 +61,16 @@ public class ClassController {
         List<User>stuList = classService.listByClassID(course_id,class_id,user_id);
         return Result.ok(stuList,stuList.size());
     }
+
+    @PostMapping("/addStu")
+    public Result addStu(@RequestBody Map<String,String> mapperer)
+    {
+        Integer course_id = Integer.parseInt(mapperer.get("course_id"));
+        Integer class_id = Integer.parseInt(mapperer.get("class_id"));
+        Integer user_id = Integer.parseInt(mapperer.get("user_id"));
+        String username = mapperer.get("username");
+        List<User>res = classService.addStu(course_id,class_id,user_id,username);
+        return Result.ok(res,res.size());
+    }
+
 }
