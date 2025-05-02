@@ -84,9 +84,10 @@ public class CourseServiceImpl implements CourseService {
                 }
             }
         }
-
+        // 添加成功
         userCourseClassDao.add(u.getUser_id(), addAdminDTO.getCourse_id(), -1,u.getIdentity());
 
+        // 返回全体老师助教列表
         // 课程 老师列表
         List<UserCourseClass> teacherRecList =
                 userCourseClassDao.getUserListByCourseIDAndIdentityCodeIgnoreClassID(
