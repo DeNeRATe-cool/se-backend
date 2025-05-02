@@ -4,6 +4,7 @@ import cn.hutool.core.date.DateUtil;
 import cn.hutool.core.util.StrUtil;
 import com.se.constant.ResourceConstant;
 import com.se.dao.ProcessDao;
+import com.se.entity.Class;
 import com.se.entity.Resource;
 import com.se.entity.User;
 import com.se.exception.ParamNotEnoughException;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import com.se.entity.Process;
 import com.se.utils.ResUtil;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -60,7 +62,20 @@ public class ProcessServiceImpl implements ProcessService {
     }
 
     @Override
-    public List<Resource> getResourceByTag(List<User> tutorList, Integer courseId, Integer userId, String tags) {
+    public List<Resource> getResourceByTag(List<User> tutorList, List<Class> classList, Integer courseId, Integer userId, String tags) {
+        boolean isTutor = false;
+        for(User user : tutorList) {
+            if(user.getUser_id().equals(userId)) {
+                isTutor = true;
+                break;
+            }
+        }
+        List<Resource> resList;
+        if(isTutor) {
+
+        } else {
+//            resList = processDao.getResourceByClass();
+        }
         return List.of();
     }
 }

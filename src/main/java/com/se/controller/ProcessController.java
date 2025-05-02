@@ -1,11 +1,13 @@
 package com.se.controller;
 
 import com.se.dto.Result;
+import com.se.entity.Class;
 import com.se.entity.Process;
 import com.se.entity.Resource;
 import com.se.entity.User;
 import com.se.service.CourseService;
 import com.se.service.ProcessService;
+import com.se.service.UserCourseClassService;
 import com.se.utils.OssService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +28,9 @@ public class ProcessController {
 
     @Autowired
     private CourseService courseService;
+
+    @Autowired
+    private UserCourseClassService userCourseClassService;
 
     @PostMapping("/create")
     public Result createProcess(@RequestBody Process process) {
@@ -68,7 +73,8 @@ public class ProcessController {
             @RequestParam("user_id") Integer userId,
             @RequestParam("tags") String tags) {
         List<User> tutorList = courseService.listTeacherAndTutor(courseId);
-        List<Resource> resList = processService.getResourceByTag(tutorList, courseId, userId, tags);
+        List<Class> classList = userCourseClassService.listClassesByCourse(courseId);
+        List<Resource> resList = processService.getResourceByTag(tutorList, classList, courseId, userId, tags);
         return Result.ok(resList, resList.size());
     }
 

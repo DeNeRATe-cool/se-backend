@@ -1,5 +1,6 @@
 package com.se.service;
 
+import com.se.entity.Class;
 import com.se.entity.Process;
 import com.se.entity.Resource;
 import com.se.entity.User;
@@ -19,5 +20,5 @@ public interface ProcessService {
 
     List<Resource> getResourceByProcess(Integer processId, Integer courseId);
 
-    List<Resource> getResourceByTag(List<User> tutorList, Integer courseId, Integer userId, String tags);
+    List<Resource> getResourceByTag(List<User> tutorList, List<Class> classList, Integer courseId, Integer userId, String tags);
 }
