@@ -30,8 +30,8 @@ public interface UserCourseClassDao {
             " values(#{user_id},#{course_id},#{class_id},#{identity})")
     void add(@Param("user_id") Integer user_id, @Param("course_id") Integer course_id, @Param("class_id")Integer class_id, @Param("identity")Integer identity);
 
-    @Select("select * from t_user_course_class where class_id=#{class_id}")
-    List<UserCourseClass> getUserListByClassID(Integer class_id);
+    @Select("select * from t_user_course_class where class_id=#{class_id} and user_id != -1")
+    List<UserCourseClass> getUserListByClassID(@Param("class_id")Integer class_id);
 
 
     @Select("select * from t_user_course_class where user_id=-1 and course_id=#{course_id} and " +
@@ -45,5 +45,5 @@ public interface UserCourseClassDao {
 
 
     @Select("select * from t_user_course_class where user_id=-1 and course_id=#{course_id}")
-    List<UserCourseClass> getClassListByCourse(Integer course_id);
+    List<UserCourseClass> getClassListByCourse(@Param("course_id")Integer course_id);
 }

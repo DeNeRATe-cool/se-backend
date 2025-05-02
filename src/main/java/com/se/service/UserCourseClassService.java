@@ -36,5 +36,7 @@ public interface UserCourseClassService {
     public Boolean studentInCourse(Integer user_id, Integer course_id);
     // 根据课程得到班级列表
     public List<Class> listClassesByCourse(Integer course_id);
+    // 根据班级获取学生名单
+    public List<User> listStuByClass(Integer class_id);
 
 }
