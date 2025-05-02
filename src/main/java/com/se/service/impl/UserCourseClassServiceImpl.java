@@ -25,6 +25,12 @@ public class UserCourseClassServiceImpl implements UserCourseClassService {
     @Autowired
     private UserCourseClassDao userCourseClassDao;
 
+    public List<User> getAdminListByCourse(Integer courseId) {
+        List<User> list = getTeacherListByCourse(courseId);
+        list.addAll(getTutorListByCourse(courseId));
+        return list;
+    }
+
     public List<User> getTeacherListByCourse(Integer course_id)
     {
         return getUserListByCourseAndIdentity(course_id, TeacherEntityConstant.IDENTITY_CODE);

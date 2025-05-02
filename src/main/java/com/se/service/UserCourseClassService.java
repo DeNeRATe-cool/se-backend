@@ -12,4 +12,5 @@ public interface UserCourseClassService {
     public Boolean tutorInCourse(User user, Integer course_id);
     public List<User> getAdminListByClass(Integer class_id);
     public Boolean isCourseAndClassMatch(Integer course_id, Integer class_id);
+    public List<User> getAdminListByCourse(Integer courseId);
 }

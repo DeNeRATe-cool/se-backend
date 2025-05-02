@@ -17,6 +17,9 @@ public interface ClassDao {
     @Select("select * from t_class where class_code=#{class_code}")
     List<Class> getClassEntityByClassCode(String class_code);
 
+    @Select("select * from t_class where class_id=#{class_id}")
+    List<Class> getClassEntityByClassId(Integer class_id);
+
     @Insert("insert into t_class(course_id,name,class_code)" +
             " values(#{course_id},#{name},#{class_code})")
     void add(Class classEntity);

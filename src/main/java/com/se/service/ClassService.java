@@ -10,4 +10,6 @@ public interface ClassService {
     void add(Class classEntity);
 
     List<User> addAdmin(AddAdminInClassDTO addAdminInClassDTO);
+
+    List<User> listTeacherAndTutor(Integer classId);
 }

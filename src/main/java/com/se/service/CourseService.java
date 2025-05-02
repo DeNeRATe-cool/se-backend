@@ -12,4 +12,6 @@ public interface CourseService {
     void add(Course course);
 
     List<User> addAdmin(AddAdminInCourseDTO addAdminDTO);
+
+    List<User> listTeacherAndTutor(Integer courseId);
 }

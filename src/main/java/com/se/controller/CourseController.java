@@ -7,10 +7,7 @@ import com.se.entity.User;
 import com.se.service.CourseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -32,6 +29,13 @@ public class CourseController {
     public Result addAdmin(@RequestBody @Validated AddAdminInCourseDTO addAdminDTO)
     {
         List<User>res = courseService.addAdmin(addAdminDTO);
+        return Result.ok(res,res.size());
+    }
+
+    @GetMapping("/admins")
+    public Result listTeacherAndTutor(Integer course_id)
+    {
+        List<User> res = courseService.listTeacherAndTutor(course_id);
         return Result.ok(res,res.size());
     }
 
