@@ -16,6 +16,8 @@ public interface UserCourseClassService {
     public List<User> getTutorListByCourse(Integer course_id);
     // 课程老师名单
     public List<User> getTeacherListByCourse(Integer course_id);
+    // 是否为目标课程学生
+    public Boolean studentInCourse(User user, Integer course_id);
     // 是否为目标课程助教
     public Boolean tutorInCourse(User user, Integer course_id);
     public Boolean tutorInCourse(Integer user_id, Integer course_id);
@@ -38,5 +40,12 @@ public interface UserCourseClassService {
     public List<Class> listClassesByCourse(Integer course_id);
     // 根据班级获取学生名单
     public List<User> listStuByClass(Integer class_id);
+    // 检查并得到user
+    public User safeGetUser(Integer user_id);
+    public User safeGetUser(String username);
+    // 检查user_id 是否匹配课程，课程是否匹配班级，用户是否为助教或者老师
+    public void checkCourseAndClassAndAdmin(Integer course_id, Integer class_id, Integer user_id);
+    // 添加记录
+    public void insert(Integer user_id, Integer course_id, Integer class_id, Integer identity);
 
 }

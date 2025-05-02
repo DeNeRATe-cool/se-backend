@@ -1,8 +1,6 @@
 package com.se.service.impl;
 
-import com.se.constant.StudentEntityConstant;
-import com.se.constant.TeacherEntityConstant;
-import com.se.constant.TutorEntityConstant;
+import com.se.constant.*;
 import com.se.dao.ClassDao;
 import com.se.dao.CourseDao;
 import com.se.dao.UserCourseClassDao;
@@ -10,6 +8,9 @@ import com.se.dao.UserDao;
 import com.se.dto.UserCourseClass;
 import com.se.entity.Class;
 import com.se.entity.User;
+import com.se.exception.courseException.CourseClassNotMatchException;
+import com.se.exception.userException.UserNotFoundException;
+import com.se.exception.userException.UserPermissionException;
 import com.se.service.UserCourseClassService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -96,9 +97,59 @@ public class UserCourseClassServiceImpl implements UserCourseClassService {
         return userList;
     }
 
+    @Override
+    public User safeGetUser(Integer user_id) {
+        List<User> userList = userDao.getUserByID(user_id);
+        if(userList.isEmpty())
+        {
+            throw new UserNotFoundException(UserEntityConstant.USER_NOT_EXISTS);
+        }
+        return userList.get(0);
+    }
+
+    @Override
+    public User safeGetUser(String username) {
+        List<User> userList = userDao.getUserByUsername(username);
+        if(userList.isEmpty())
+        {
+            throw new UserNotFoundException(UserEntityConstant.USER_NOT_EXISTS);
+        }
+        return userList.get(0);
+    }
+
+    @Override
+    public void checkCourseAndClassAndAdmin(Integer course_id, Integer class_id, Integer user_id) {
+        User user = safeGetUser(user_id);
+        if(user.getIdentity().equals(TeacherEntityConstant.IDENTITY_CODE) &&
+                !teacherInCourse(user_id,course_id))
+        {
+            throw new UserPermissionException(UserEntityConstant.USER_PERMISSION_DENIED);
+        }
+        if(user.getIdentity().equals(StudentEntityConstant.IDENTITY_CODE) &&
+                !tutorInCourse(user_id,course_id))
+        {
+            throw new UserPermissionException(UserEntityConstant.USER_PERMISSION_DENIED);
+        }
+
+        if(!isCourseAndClassMatch(course_id,class_id))
+        {
+            throw new CourseClassNotMatchException(CourseEntityConstant.COURSE_CLASS_NOT_MATCH);
+        }
+    }
+
+    @Override
+    public void insert(Integer user_id, Integer course_id, Integer class_id, Integer identity) {
+        userCourseClassDao.add(user_id,course_id,class_id,identity);
+    }
+
     public List<User> getTeacherListByCourse(Integer course_id)
     {
         return getUserListByCourseAndIdentity(course_id, TeacherEntityConstant.IDENTITY_CODE);
+    }
+
+    @Override
+    public Boolean studentInCourse(User user, Integer course_id) {
+        return studentInCourse(user.getUser_id(),course_id);
     }
 
     public List<User> getTutorListByCourse(Integer course_id)

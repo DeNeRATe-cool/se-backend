@@ -182,32 +182,51 @@ public class ClassServiceImpl implements ClassService {
         /*
         * 检查用户存在
         * */
-        List<User> userList = userDao.getUserByID(userId);
-        if(userList.isEmpty())
-        {
-            throw new UserNotFoundException(UserEntityConstant.USER_NOT_EXISTS);
-        }
-        User user = userList.get(0);
+        User user = userCourseClassService.safeGetUser(userId);
 
         /**
          * 用户是课程的老师或者助教
          */
-        if(user.getIdentity().equals(TeacherEntityConstant.IDENTITY_CODE) &&
-                !userCourseClassService.teacherInCourse(userId,courseId))
-        {
-            throw new UserPermissionException(UserEntityConstant.USER_PERMISSION_DENIED);
-        }
-        if(user.getIdentity().equals(StudentEntityConstant.IDENTITY_CODE) &&
-                !userCourseClassService.tutorInCourse(userId,courseId))
-        {
-            throw new UserPermissionException(UserEntityConstant.USER_PERMISSION_DENIED);
-        }
-
-        if(!userCourseClassService.isCourseAndClassMatch(courseId,classId))
-        {
-            throw new CourseClassNotMatchException(CourseEntityConstant.COURSE_CLASS_NOT_MATCH);
-        }
+        userCourseClassService.checkCourseAndClassAndAdmin(courseId,classId,userId);
         return userCourseClassService.listStuByClass(classId);
 
+    }
+
+    /**
+     * 课程 班级 用户匹配
+     * 用户不能已经在课程里了
+     * @param courseId
+     * @param classId
+     * @param userId
+     * @param username
+     * @return
+     */
+    @Override
+    public List<User> addStu(Integer courseId, Integer classId, Integer userId, String username) {
+        User inviter = userCourseClassService.safeGetUser(userId);
+        User invitee = userCourseClassService.safeGetUser(username);
+        userCourseClassService.checkCourseAndClassAndAdmin(courseId,classId,userId);
+        // 检查学生身份
+        if(!userCourseClassService.userIsStudent(invitee.getUser_id()))
+        {
+            throw new UserPermissionException(StudentEntityConstant.STUDENT_IDENTITY_ERROR);
+        }
+        // 检查该学生已经是助教
+        if(userCourseClassService.tutorInCourse(invitee.getUser_id(),courseId))
+        {
+            throw new UserPermissionException(TutorEntityConstant.IDENTITY_STUDENT_CONFLICT);
+        }
+        // 检查用户在课程里了
+        if(userCourseClassService.studentInCourse(invitee.getUser_id(),courseId))
+        {
+            throw new DuplicateJoinCourseException(CourseEntityConstant.STUDENT_DUPLICATE_JOIN_COURSE);
+        }
+
+        userCourseClassService.insert(invitee.getUser_id(),
+                courseId,
+                classId,
+                StudentEntityConstant.IDENTITY_CODE);
+
+        return userCourseClassService.listStuByClass(classId);
     }
 }
