@@ -9,6 +9,7 @@ import com.se.dto.ApplyJoinClassDTO;
 import com.se.dto.UserCourseClass;
 import com.se.entity.Class;
 import com.se.entity.User;
+import com.se.exception.EntityNotFoundException;
 import com.se.exception.classException.ClassNotExistException;
 import com.se.exception.classException.DuplicateClassException;
 import com.se.exception.courseException.CourseClassNotMatchException;
@@ -100,8 +101,7 @@ public class ClassServiceImpl implements ClassService {
 
         List<UserCourseClass>userCourseClassList = userCourseClassDao.select(addAdminInClassDTO.getUser_id(),
                 addAdminInClassDTO.getCourse_id(),
-                addAdminInClassDTO.getClass_id(),
-                code);
+                addAdminInClassDTO.getClass_id());
         if(!userCourseClassList.isEmpty())
         {
             throw new DuplicateClassException(UserEntityConstant.DUPLICATE_JOIN_CLASS);
@@ -238,5 +238,20 @@ public class ClassServiceImpl implements ClassService {
             throw new UserPermissionException(StudentEntityConstant.STUDENT_IDENTITY_ERROR);
         }
         return userCourseClassService.listClassByStudent(userId);
+    }
+
+    @Override
+    public List<User> delStu(Integer courseId, Integer classId, Integer userId) {
+        User u = userCourseClassService.safeGetUser(userId);
+        userCourseClassService.checkIsStudent(userId);
+        userCourseClassService.checkCourseAndClass(courseId,classId);
+        if(userCourseClassService.select(userId,courseId,classId) != null)
+        {
+            userCourseClassService.delete(courseId,classId,userId);
+        }
+        else {
+            throw new EntityNotFoundException(ClassEntityConstant.STUDENT_NOT_IN_CLASS_DELETE_DENIED);
+        }
+        return userCourseClassService.listStuByClass(classId);
     }
 }

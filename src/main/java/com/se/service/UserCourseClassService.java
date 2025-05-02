@@ -1,5 +1,6 @@
 package com.se.service;
 
+import com.se.dto.UserCourseClass;
 import com.se.entity.Class;
 import com.se.entity.Course;
 import com.se.entity.User;
@@ -49,5 +50,12 @@ public interface UserCourseClassService {
     public void checkCourseAndClassAndAdmin(Integer course_id, Integer class_id, Integer user_id);
     // 添加记录
     public void insert(Integer user_id, Integer course_id, Integer class_id, Integer identity);
-
+    // 检查是不是学生
+    public void checkIsStudent(Integer user_id);
+    // 检查课程和班级是否匹配 是否存在
+    public void checkCourseAndClass(Integer course_id, Integer class_id);
+    // 删除
+    public void delete(Integer course_id, Integer class_id, Integer user_id);
+    // 查询
+    public UserCourseClass select(Integer user_id, Integer course_id, Integer class_id);
 }

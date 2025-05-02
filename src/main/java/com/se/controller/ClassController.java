@@ -2,6 +2,7 @@ package com.se.controller;
 
 import com.se.dto.AddAdminInClassDTO;
 import com.se.dto.ApplyJoinClassDTO;
+import com.se.dto.DelStuInClassDTO;
 import com.se.dto.Result;
 import com.se.entity.Class;
 import com.se.entity.User;
@@ -78,5 +79,15 @@ public class ClassController {
     {
         List<Class> classList = classService.listClassByStu(user_id);
         return Result.ok(classList,classList.size());
+    }
+
+    @PostMapping("/delStu")
+    public Result delStu(@RequestBody @Validated DelStuInClassDTO delStuInClassDTO)
+    {
+        Integer course_id = delStuInClassDTO.getCourse_id();
+        Integer class_id = delStuInClassDTO.getClass_id();
+        Integer user_id = delStuInClassDTO.getUser_id();
+        List<User> res = classService.delStu(course_id,class_id,user_id);
+        return Result.ok(res,res.size());
     }
 }

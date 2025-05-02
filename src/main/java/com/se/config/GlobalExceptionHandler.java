@@ -1,6 +1,7 @@
 package com.se.config;
 
 import com.se.dto.Result;
+import com.se.exception.EntityNotFoundException;
 import com.se.exception.ParamIllegalException;
 import com.se.exception.ParamNotEnoughException;
 import com.se.exception.classException.ClassNotExistException;
@@ -243,4 +244,26 @@ public class GlobalExceptionHandler {
         log.error(ex.getMessage(),ex);
         return Result.fail(ex.getMessage());
     }
+
+    /**
+     * 数据库查询不到
+     * @param ex
+     * @return
+     */
+    @ExceptionHandler(EntityNotFoundException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Result handleEntityNotFound(EntityNotFoundException ex)
+    {
+        log.error(ex.getMessage(),ex);
+        return Result.fail(ex.getMessage());
+    }
+
+    @ExceptionHandler(DuplicateInvitationException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Result handleDuplicateInvitation(DuplicateInvitationException ex)
+    {
+        log.error(ex.getMessage(),ex);
+        return Result.fail(ex.getMessage());
+    }
+
 }
