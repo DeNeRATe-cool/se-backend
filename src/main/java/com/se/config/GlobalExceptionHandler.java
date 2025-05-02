@@ -18,9 +18,13 @@ import org.springframework.dao.DuplicateKeyException;
 import com.aliyun.oss.ClientException;
 import com.aliyun.oss.OSSException;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.web.HttpMediaTypeNotSupportedException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
 import java.io.IOException;
 import java.sql.SQLException;
@@ -28,6 +32,47 @@ import java.sql.SQLException;
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
+
+    /**
+     * 请求方式错误
+     */
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
+    public Result handleMethodNotSupported(HttpRequestMethodNotSupportedException ex) {
+        log.error(ex.getMessage(),ex);
+        return Result.fail("请求方法不支持：" + ex.getMethod());
+    }
+
+    /**
+     * content-type错误
+     */
+    @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
+    @ResponseStatus(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
+    public Result handleUnsupportedMediaType(HttpMediaTypeNotSupportedException ex) {
+        log.error(ex.getMessage(),ex);
+        return Result.fail("不支持的 Content-Type：" + ex.getContentType());
+    }
+
+    /**
+     * 请求格式错误
+     */
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Result handleNotReadable(HttpMessageNotReadableException ex) {
+        log.error(ex.getMessage(),ex);
+        return Result.fail("请求体格式错误：" + ex.getMessage());
+    }
+
+    /**
+     * 参数类型不匹配
+     */
+    @ExceptionHandler(MethodArgumentTypeMismatchException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Result handleTypeMismatch(MethodArgumentTypeMismatchException ex) {
+        log.error(ex.getMessage(), ex);
+        return Result.fail("参数类型不匹配：" + ex.getName());
+    }
+
     /**
      * 处理主键冲突异常
      */

@@ -42,4 +42,11 @@ public class ProcessServiceImpl implements ProcessService {
         if(is_public) processDao.addResource(resCode, fileName, -1, course_id, class_id, type, url, DateUtil.now(), tags);
         processDao.addResource(resCode, fileName, process_id, course_id, class_id, type, url, DateUtil.now(), tags);
     }
+
+    @Override
+    public String downloadResource(Integer id) {
+        if(id == null)
+            throw new ParamNotEnoughException();
+        return processDao.getResourceUrl(id);
+    }
 }
