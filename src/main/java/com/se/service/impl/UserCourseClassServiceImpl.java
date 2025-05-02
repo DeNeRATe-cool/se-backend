@@ -8,6 +8,7 @@ import com.se.dao.CourseDao;
 import com.se.dao.UserCourseClassDao;
 import com.se.dao.UserDao;
 import com.se.dto.UserCourseClass;
+import com.se.entity.Class;
 import com.se.entity.User;
 import com.se.service.UserCourseClassService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -70,6 +71,17 @@ public class UserCourseClassServiceImpl implements UserCourseClassService {
         return !userCourseClassList.isEmpty();
     }
 
+    @Override
+    public List<Class> listClassesByCourse(Integer course_id) {
+        List<UserCourseClass>userCourseClassList = userCourseClassDao.getClassListByCourse(course_id);
+        List<Class>classList = new ArrayList<>();
+        for(UserCourseClass userCourseClass : userCourseClassList) {
+            Integer class_id = userCourseClass.getClass_id();
+            classList.addAll(classDao.getClassEntityByClassId(class_id));
+        }
+        return classList;
+    }
+
     public List<User> getTeacherListByCourse(Integer course_id)
     {
         return getUserListByCourseAndIdentity(course_id, TeacherEntityConstant.IDENTITY_CODE);
@@ -95,22 +107,44 @@ public class UserCourseClassServiceImpl implements UserCourseClassService {
         return res;
     }
 
+    /**
+     * 判断老师属于该课程
+     * @param user
+     * @param course_id
+     * @return
+     */
     public Boolean teacherInCourse(User user,Integer course_id)
+    {
+        return teacherInCourse(user.getIdentity(), course_id);
+    }
+
+    public Boolean teacherInCourse(Integer user_id,Integer course_id)
     {
         List<User> teacherList = getTeacherListByCourse(course_id);
         for(User u : teacherList)
         {
-            if(u.getUser_id().equals(user.getUser_id()))return true;
+            if(u.getUser_id().equals(user_id))return true;
         }
         return false;
     }
 
+    /**
+     * 判断助教属于该课程
+     * @param user
+     * @param course_id
+     * @return
+     */
     public Boolean tutorInCourse(User user, Integer course_id)
+    {
+        return tutorInCourse(user.getUser_id(),course_id);
+    }
+
+    public Boolean tutorInCourse(Integer user_id,Integer course_id)
     {
         List<User> tutorList = getTutorListByCourse(course_id);
         for(User u : tutorList)
         {
-            if(u.getUser_id().equals(user.getUser_id()))return true;
+            if(u.getUser_id().equals(user_id))return true;
         }
         return false;
     }

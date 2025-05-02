@@ -1,11 +1,13 @@
 package com.se.service.impl;
 
 import com.se.constant.*;
+import com.se.dao.ClassDao;
 import com.se.dao.CourseDao;
 import com.se.dao.UserCourseClassDao;
 import com.se.dao.UserDao;
 import com.se.dto.AddAdminInCourseDTO;
 import com.se.dto.UserCourseClass;
+import com.se.entity.Class;
 import com.se.entity.Course;
 import com.se.entity.User;
 import com.se.exception.ParamIllegalException;
@@ -13,6 +15,7 @@ import com.se.exception.courseException.CourseNotFoundException;
 import com.se.exception.courseException.DuplicateCourseException;
 import com.se.exception.courseException.DuplicateInvitationException;
 import com.se.exception.userException.UserNotFoundException;
+import com.se.exception.userException.UserPermissionException;
 import com.se.service.CourseService;
 import com.se.service.UserCourseClassService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +39,8 @@ public class CourseServiceImpl implements CourseService {
 
     @Autowired
     private UserCourseClassService userCourseClassService;
+    @Autowired
+    private ClassDao classDao;
 
     public void add(Course course)
     {
@@ -140,6 +145,36 @@ public class CourseServiceImpl implements CourseService {
             throw new CourseNotFoundException(CourseEntityConstant.COURSE_NOT_FOUND);
         }
         return courseList.get(0);
+    }
+
+    /**
+     * 1. 检查用户合法 必须是课程的老师或者助教
+     * @param courseId
+     * @param userId
+     * @return
+     */
+    @Override
+    public List<Class> listByCourseId(Integer courseId, Integer userId) {
+        List<User> userList = userDao.getUserByID(userId);
+        if(userList.isEmpty())
+        {
+            throw new UserNotFoundException(UserEntityConstant.USER_NOT_EXISTS);
+        }
+        User user = userList.get(0);
+
+        if(user.getIdentity().equals(TeacherEntityConstant.IDENTITY_CODE) &&
+        !userCourseClassService.teacherInCourse(userId,courseId))
+        {
+            throw new UserPermissionException(UserEntityConstant.USER_PERMISSION_DENIED);
+        }
+
+        if(user.getIdentity().equals(StudentEntityConstant.IDENTITY_CODE) &&
+        !userCourseClassService.tutorInCourse(userId,courseId))
+        {
+            throw new UserPermissionException(UserEntityConstant.USER_PERMISSION_DENIED);
+        }
+
+        return userCourseClassService.listClassesByCourse(courseId);
     }
 
 }
