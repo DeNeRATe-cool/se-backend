@@ -10,10 +10,11 @@ import com.se.exception.courseException.UserNotInCourseException;
 import com.se.exception.userException.UserNotFoundException;
 import com.se.exception.userException.UserPermissionException;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.coyote.http2.HpackDecoder;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DuplicateKeyException;
+import com.aliyun.oss.ClientException;
+import com.aliyun.oss.OSSException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -63,6 +64,26 @@ public class GlobalExceptionHandler {
     }
 
     /**
+     * 处理阿里云sso服务网络连接问题
+     */
+    @ExceptionHandler(ClientException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public Result handleClientException(ClientException ex) {
+        log.error("Client exception: {}", ex.getMessage(), ex);
+        return Result.fail("文件存储连接异常");
+    }
+
+    /**
+     * 处理阿里云sso服务存储问题
+     */
+    @ExceptionHandler(OSSException.class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    public Result handleOSSException(OSSException ex) {
+        log.error("OSS exception: {}", ex.getMessage(), ex);
+        return Result.fail("文件对象存储时错误");
+    }
+
+    /**
      * 处理自定义异常 Parameters illegal
      */
     @ExceptionHandler(ParamIllegalException.class)
@@ -84,8 +105,6 @@ public class GlobalExceptionHandler {
 
     /**
      * 创建重复班级 名称重复
-     * @param ex
-     * @return
      */
     @ExceptionHandler(DuplicateClassException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
@@ -97,8 +116,6 @@ public class GlobalExceptionHandler {
 
     /**
      * 创建重复课程
-     * @param ex
-     * @return
      */
     @ExceptionHandler(DuplicateCourseException.class)
     @ResponseStatus(HttpStatus.CONFLICT)
@@ -110,8 +127,6 @@ public class GlobalExceptionHandler {
 
     /**
      * 班级和课程不匹配
-     * @param ex
-     * @return
      */
     @ExceptionHandler(CourseClassNotMatchException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -123,8 +138,6 @@ public class GlobalExceptionHandler {
 
     /**
      * 用户不在课程中
-     * @param ex
-     * @return
      */
     @ExceptionHandler(UserNotInCourseException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -136,8 +149,6 @@ public class GlobalExceptionHandler {
 
     /**
      * 找不到用户
-     * @param ex
-     * @return
      */
     @ExceptionHandler(UserNotFoundException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
@@ -149,8 +160,6 @@ public class GlobalExceptionHandler {
 
     /**
      * 用户权限错误
-     * @param ex
-     * @return
      */
     @ExceptionHandler(UserPermissionException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
