@@ -27,13 +27,13 @@ public class StuController {
     public Result listByCourseID(Integer course_id)
     {
         List<User> res = stuService.listByCourseID(course_id);
-        return Result.ok(res);
+        return Result.ok(res,res.size());
     }
 
     @GetMapping("/exact")
     public Result listByCondition(@RequestParam Map<String,String> params)
     {
         List<User> res = stuService.listByCondition(params);
-        return Result.ok(res);
+        return Result.ok(res,res.size());
     }
 }

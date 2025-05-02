@@ -34,7 +34,7 @@ public class ExerController {
     public Result getStuFinishExerNum(Integer user_id,Integer course_id,Integer class_id)
     {
         List<Integer> ls = exerService.getStuFinishExerNum(user_id,course_id,class_id);
-        return Result.ok(ls);
+        return Result.ok(ls,ls.size());
     }
 
 

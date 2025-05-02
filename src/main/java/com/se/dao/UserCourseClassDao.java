@@ -20,8 +20,20 @@ public interface UserCourseClassDao {
     @Select("select * from t_user_course_class where course_id = #{course_id} and identity = #{identity}")
     List<UserCourseClass> getStudentClassList(@Param("course_id")Integer course_id,@Param("identity")Integer identity);
 
+    @Select("select * from t_user_course_class where user_id=#{user_id} and course_id=#{course_id} and " +
+            "class_id=#{class_id} and identity=#{identity}")
+    List<UserCourseClass> select(@Param("user_id")Integer user_id,@Param("course_id")Integer course_id,
+                                 @Param("class_id")Integer class_id, @Param("identity")Integer identity);
+
+
     @Insert("insert into t_user_course_class(user_id, course_id, class_id, identity)" +
             " values(#{user_id},#{course_id},#{class_id},#{identity})")
     void add(@Param("user_id") Integer user_id, @Param("course_id") Integer course_id, @Param("class_id")Integer class_id, @Param("identity")Integer identity);
 
+    @Select("select * from t_user_course_class where class_id=#{class_id}")
+    List<UserCourseClass> getUserListByClassID(Integer classId);
+
+    @Select("select * from t_user_course_class where user_id=-1 and course_id=#{course_id} and " +
+            "class_id=#{class_id}")
+    List<UserCourseClass> getCourseClassList(@Param("course_id") Integer course_id,@Param("class_id") Integer class_id);
 }

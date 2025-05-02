@@ -1,6 +1,6 @@
 package com.se.controller;
 
-import com.se.dto.AddAdminDTO;
+import com.se.dto.AddAdminInCourseDTO;
 import com.se.dto.Result;
 import com.se.entity.Course;
 import com.se.entity.User;
@@ -29,10 +29,10 @@ public class CourseController {
     }
 
     @PostMapping("/addAdmin")
-    public Result addAdmin(@RequestBody @Validated AddAdminDTO addAdminDTO)
+    public Result addAdmin(@RequestBody @Validated AddAdminInCourseDTO addAdminDTO)
     {
         List<User>res = courseService.addAdmin(addAdminDTO);
-        return Result.ok(res);
+        return Result.ok(res,res.size());
     }
 
 

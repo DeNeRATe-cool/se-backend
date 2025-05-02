@@ -3,7 +3,14 @@ package com.se.config;
 import com.se.dto.Result;
 import com.se.exception.ParamIllegalException;
 import com.se.exception.ParamNotEnoughException;
+import com.se.exception.classException.DuplicateClassException;
+import com.se.exception.courseException.CourseClassNotMatchException;
+import com.se.exception.courseException.DuplicateCourseException;
+import com.se.exception.courseException.UserNotInCourseException;
+import com.se.exception.userException.UserNotFoundException;
+import com.se.exception.userException.UserPermissionException;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.coyote.http2.HpackDecoder;
 import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.DuplicateKeyException;
@@ -73,4 +80,83 @@ public class GlobalExceptionHandler {
         log.error("Param not enough exception: {}", ex.getMessage(), ex);
         return Result.fail(ex.getMessage());
     }
+
+    /**
+     * 创建重复班级 名称重复
+     * @param ex
+     * @return
+     */
+    @ExceptionHandler(DuplicateClassException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public Result handleDuplicateClass(DuplicateClassException ex)
+    {
+        log.error(ex.getMessage(),ex);
+        return Result.fail(ex.getMessage());
+    }
+
+    /**
+     * 创建重复课程
+     * @param ex
+     * @return
+     */
+    @ExceptionHandler(DuplicateCourseException.class)
+    @ResponseStatus(HttpStatus.CONFLICT)
+    public Result handleDuplicateCourse(DuplicateCourseException ex)
+    {
+        log.error(ex.getMessage(),ex);
+        return Result.fail(ex.getMessage());
+    }
+
+    /**
+     * 班级和课程不匹配
+     * @param ex
+     * @return
+     */
+    @ExceptionHandler(CourseClassNotMatchException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Result handleCourseClassNotMatch(CourseClassNotMatchException ex)
+    {
+        log.error(ex.getMessage(),ex);
+        return Result.fail(ex.getMessage());
+    }
+
+    /**
+     * 用户不在课程中
+     * @param ex
+     * @return
+     */
+    @ExceptionHandler(UserNotInCourseException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Result handleUserNotInCourse(UserNotInCourseException ex)
+    {
+        log.error(ex.getMessage(), ex);
+        return Result.fail(ex.getMessage());
+    }
+
+    /**
+     * 找不到用户
+     * @param ex
+     * @return
+     */
+    @ExceptionHandler(UserNotFoundException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Result handleUserNotFound(UserNotFoundException ex)
+    {
+        log.error(ex.getMessage(), ex);
+        return Result.fail(ex.getMessage());
+    }
+
+    /**
+     * 用户权限错误
+     * @param ex
+     * @return
+     */
+    @ExceptionHandler(UserPermissionException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Result handleUserPermissionDenied(UserPermissionException ex)
+    {
+        log.error(ex.getMessage(),ex);
+        return Result.fail(ex.getMessage());
+    }
+
 }
