@@ -24,14 +24,14 @@ public class TeacherController {
     public Result listByCourse(int course_id)
     {
         List<User> res =  teacherService.listByCourse(course_id);
-        return Result.ok(res);
+        return Result.ok(res,res.size());
     }
 
     @GetMapping("exact")
     public Result listByCondition(@RequestParam Map<String,String> params)
     {
         List<User> res = teacherService.listByCondition(params);
-        return Result.ok(res);
+        return Result.ok(res,res.size());
     }
 
 }

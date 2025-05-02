@@ -1,6 +1,6 @@
 package com.se.service;
 
-import com.se.dto.AddAdminDTO;
+import com.se.dto.AddAdminInCourseDTO;
 import com.se.entity.Course;
 import com.se.entity.User;
 
@@ -11,5 +11,5 @@ public interface CourseService {
 
     void add(Course course);
 
-    List<User> addAdmin(AddAdminDTO addAdminDTO);
+    List<User> addAdmin(AddAdminInCourseDTO addAdminDTO);
 }

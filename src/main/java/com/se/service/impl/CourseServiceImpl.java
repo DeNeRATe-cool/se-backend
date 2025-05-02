@@ -4,7 +4,7 @@ import com.se.constant.*;
 import com.se.dao.CourseDao;
 import com.se.dao.UserCourseClassDao;
 import com.se.dao.UserDao;
-import com.se.dto.AddAdminDTO;
+import com.se.dto.AddAdminInCourseDTO;
 import com.se.dto.UserCourseClass;
 import com.se.entity.Course;
 import com.se.entity.User;
@@ -49,7 +49,7 @@ public class CourseServiceImpl implements CourseService {
      * @return
      */
     @Override
-    public List<User> addAdmin(AddAdminDTO addAdminDTO) {
+    public List<User> addAdmin(AddAdminInCourseDTO addAdminDTO) {
         /*
         * 由 username 得到 user_id
         * */
@@ -84,8 +84,10 @@ public class CourseServiceImpl implements CourseService {
                 }
             }
         }
+        Integer identity_code = Objects.equals(TeacherEntityConstant.IDENTITY_CODE,u.getIdentity()) ?
+                TeacherEntityConstant.IDENTITY_CODE : TutorEntityConstant.IDENTITY_CODE;
         // 添加成功
-        userCourseClassDao.add(u.getUser_id(), addAdminDTO.getCourse_id(), -1,u.getIdentity());
+        userCourseClassDao.add(u.getUser_id(), addAdminDTO.getCourse_id(), -1,identity_code);
 
         // 返回全体老师助教列表
         // 课程 老师列表
