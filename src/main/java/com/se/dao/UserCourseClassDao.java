@@ -1,10 +1,7 @@
 package com.se.dao;
 
 import com.se.dto.UserCourseClass;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -21,9 +18,9 @@ public interface UserCourseClassDao {
     List<UserCourseClass> getStudentClassList(@Param("course_id")Integer course_id,@Param("identity")Integer identity);
 
     @Select("select * from t_user_course_class where user_id=#{user_id} and course_id=#{course_id} and " +
-            "class_id=#{class_id} and identity=#{identity}")
+            "class_id=#{class_id}")
     List<UserCourseClass> select(@Param("user_id")Integer user_id,@Param("course_id")Integer course_id,
-                                 @Param("class_id")Integer class_id, @Param("identity")Integer identity);
+                                 @Param("class_id")Integer class_id);
 
 
     @Insert("insert into t_user_course_class(user_id, course_id, class_id, identity)" +
@@ -48,6 +45,9 @@ public interface UserCourseClassDao {
     List<UserCourseClass> getClassListByCourse(@Param("course_id")Integer course_id);
 
     @Select("select * from t_user_course_class where user_id=#{user_id}")
-    List<UserCourseClass> getByUserID(Integer user_id);
+    List<UserCourseClass> getByUserID(@Param("user_id") Integer user_id);
 
+    @Delete("delete from t_user_course_class where course_id=#{course_id} and " +
+            " class_id=#{class_id} and user_id=#{user_id}")
+    void delete(@Param("course_id") Integer course_id, @Param("class_id") Integer class_id, @Param("user_id") Integer user_id);
 }

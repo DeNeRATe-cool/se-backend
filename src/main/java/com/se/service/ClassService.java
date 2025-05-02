@@ -23,4 +23,6 @@ public interface ClassService {
     List<User> addStu(Integer courseId, Integer classId, Integer userId, String username);
 
     List<Class> listClassByStu(Integer userId);
+
+    List<User> delStu(Integer courseId, Integer classId, Integer userId);
 }

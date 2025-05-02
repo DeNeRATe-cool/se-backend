@@ -156,6 +156,34 @@ public class UserCourseClassServiceImpl implements UserCourseClassService {
         userCourseClassDao.add(user_id,course_id,class_id,identity);
     }
 
+    @Override
+    public void checkIsStudent(Integer user_id) {
+        if(!userIsStudent(user_id))
+        {
+            throw new UserPermissionException(StudentEntityConstant.STUDENT_IDENTITY_ERROR);
+        }
+    }
+
+    @Override
+    public void checkCourseAndClass(Integer course_id, Integer class_id) {
+        if(!isCourseAndClassMatch(course_id,class_id))
+        {
+            throw new CourseClassNotMatchException(CourseEntityConstant.COURSE_CLASS_NOT_MATCH);
+        }
+    }
+
+    @Override
+    public void delete(Integer course_id, Integer class_id, Integer user_id) {
+        userCourseClassDao.delete(course_id,class_id,user_id);
+    }
+
+    @Override
+    public UserCourseClass select(Integer user_id, Integer course_id, Integer class_id) {
+        List<UserCourseClass>userCourseClassList = userCourseClassDao.select(user_id,course_id,class_id);
+        if(userCourseClassList.isEmpty())return null;
+        return userCourseClassList.get(0);
+    }
+
     public List<User> getTeacherListByCourse(Integer course_id)
     {
         return getUserListByCourseAndIdentity(course_id, TeacherEntityConstant.IDENTITY_CODE);
@@ -243,6 +271,8 @@ public class UserCourseClassServiceImpl implements UserCourseClassService {
         }
         return userList;
     }
+
+
 
     @Override
     public Boolean isCourseAndClassMatch(Integer course_id, Integer class_id) {
