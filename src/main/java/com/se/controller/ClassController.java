@@ -53,4 +53,11 @@ public class ClassController {
         classService.apply(applyJoinClassDTO);
         return Result.ok();
     }
+
+    @GetMapping("/stu")
+    public Result listByClassID(Integer course_id, Integer class_id, Integer user_id)
+    {
+        List<User>stuList = classService.listByClassID(course_id,class_id,user_id);
+        return Result.ok(stuList,stuList.size());
+    }
 }
