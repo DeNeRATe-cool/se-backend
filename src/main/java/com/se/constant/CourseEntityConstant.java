@@ -20,4 +20,7 @@ public class CourseEntityConstant {
     // 学生重复加入课程
     public static final String STUDENT_DUPLICATE_JOIN_COURSE = "学生重复加入课程";
 
+    // 课程id不合法
+    public static final String COURSE_ID_INVALID = "课程id应该为正数";
+
 }

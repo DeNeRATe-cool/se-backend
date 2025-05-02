@@ -39,5 +39,11 @@ public class CourseController {
         return Result.ok(res,res.size());
     }
 
+    @GetMapping("/info")
+    public Result courseInfo(Integer course_id)
+    {
+        Course course = courseService.courseInfo(course_id);
+        return Result.ok(course);
+    }
 
 }

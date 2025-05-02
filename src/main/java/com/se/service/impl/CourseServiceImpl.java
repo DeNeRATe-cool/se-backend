@@ -8,6 +8,7 @@ import com.se.dto.AddAdminInCourseDTO;
 import com.se.dto.UserCourseClass;
 import com.se.entity.Course;
 import com.se.entity.User;
+import com.se.exception.ParamIllegalException;
 import com.se.exception.courseException.CourseNotFoundException;
 import com.se.exception.courseException.DuplicateCourseException;
 import com.se.exception.courseException.DuplicateInvitationException;
@@ -125,6 +126,20 @@ public class CourseServiceImpl implements CourseService {
             throw new CourseNotFoundException(CourseEntityConstant.COURSE_NOT_FOUND);
         }
         return userCourseClassService.getAdminListByCourse(courseId);
+    }
+
+    @Override
+    public Course courseInfo(Integer courseId) {
+        if(courseId <= 0)
+        {
+            throw new ParamIllegalException();
+        }
+        List<Course> courseList = courseDao.getByID(courseId);
+        if(courseList.isEmpty())
+        {
+            throw new CourseNotFoundException(CourseEntityConstant.COURSE_NOT_FOUND);
+        }
+        return courseList.get(0);
     }
 
 }
