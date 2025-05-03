@@ -7,9 +7,11 @@ import com.se.dto.Result;
 import com.se.entity.Class;
 import com.se.entity.User;
 import com.se.service.ClassService;
+import com.se.utils.ExcelUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.Map;
@@ -89,5 +91,21 @@ public class ClassController {
         Integer user_id = delStuInClassDTO.getUser_id();
         List<User> res = classService.delStu(course_id,class_id,user_id);
         return Result.ok(res,res.size());
+    }
+
+    @PostMapping("/addFile")
+    public Result addFile(@RequestParam MultipartFile file,
+                          @RequestParam Integer user_id,
+                          @RequestParam Integer class_id)
+    {
+        List<List<String>>res;
+        try {
+            res = ExcelUtils.readFile(file);
+            res.remove(0);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        List<User> userList = classService.addFile(res,user_id, class_id);
+        return Result.ok(userList,userList.size());
     }
 }

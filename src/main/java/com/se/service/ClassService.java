@@ -25,4 +25,6 @@ public interface ClassService {
     List<Class> listClassByStu(Integer userId);
 
     List<User> delStu(Integer courseId, Integer classId, Integer userId);
+
+    List<User> addFile(List<List<String>> res, Integer user_id, Integer class_id);
 }
