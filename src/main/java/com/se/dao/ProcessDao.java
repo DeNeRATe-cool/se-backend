@@ -48,4 +48,7 @@ public interface ProcessDao {
 
     @Delete("delete from t_resource where res_code = #{resCode}")
     void deleteByCode(String resCode);
+
+    @Select("select * from t_resource where res_code = #{resCode} and process_id <> -1")
+    List<Resource> getResourceByCode(String resCode);
 }

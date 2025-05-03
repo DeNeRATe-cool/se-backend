@@ -100,6 +100,13 @@ public class ProcessController {
         return Result.ok(url);
     }
 
+    @GetMapping("/resource/history")
+    public Result getResourceHistory(
+            @RequestParam("res_id") Integer resId) {
+        List<Resource> resList = processService.getResourceHistory(resId);
+        return Result.ok(resList, resList.size());
+    }
+
     @GetMapping("/get")
     public Result queryByClass(
             @RequestParam("course_id") Integer course_id,

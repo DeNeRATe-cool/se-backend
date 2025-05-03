@@ -110,6 +110,16 @@ public class GlobalExceptionHandler {
     }
 
     /**
+     * 对象不存在
+     */
+    @ExceptionHandler(NullPointerException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Result handleNullPointer(NullPointerException ex) {
+        log.error("NullPointer exception: {}", ex.getMessage(), ex);
+        return Result.fail("访问对象不存在");
+    }
+
+    /**
      * 处理阿里云sso服务网络连接问题
      */
     @ExceptionHandler(ClientException.class)
@@ -267,6 +277,9 @@ public class GlobalExceptionHandler {
         return Result.fail(ex.getMessage());
     }
 
+    /**
+     * 资源更新前后类型不统一
+     */
     @ExceptionHandler(ResTypeArgumentException.class)
     @ResponseStatus(HttpStatus.EXPECTATION_FAILED)
     public Result handleResTypeArgument(ResTypeArgumentException ex) {
