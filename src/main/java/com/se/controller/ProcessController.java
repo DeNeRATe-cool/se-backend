@@ -5,10 +5,12 @@ import com.se.entity.Class;
 import com.se.entity.Process;
 import com.se.entity.Resource;
 import com.se.entity.User;
+import com.se.exception.ParamNotEnoughException;
 import com.se.service.CourseService;
 import com.se.service.ProcessService;
 import com.se.service.UserCourseClassService;
 import com.se.utils.OssService;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -46,6 +48,7 @@ public class ProcessController {
             @RequestParam("process_id") Integer process_id,
             @RequestParam("tags") String tags,
             @RequestParam("is_public") Boolean is_public) throws IOException {
+        if(file == null) throw new ParamNotEnoughException();
         String fileName = file.getOriginalFilename();
         String url = ossService.uploadFile(fileName, file.getInputStream());
         processService.addResource(fileName, process_id, course_id, class_id, url, is_public, tags);
@@ -76,6 +79,25 @@ public class ProcessController {
         List<Class> classList = userCourseClassService.listClassesByCourse(courseId);
         List<Resource> resList = processService.getResourceByTag(tutorList, classList, courseId, userId, tags);
         return Result.ok(resList, resList.size());
+    }
+
+    @DeleteMapping("/resource/delete")
+    public Result deleteResource(
+            @RequestParam("res_id") Integer resId) {
+        processService.deleteResource(resId);
+        return Result.ok();
+    }
+
+    @PostMapping("/resource/update")
+    public Result updateResource(
+            @RequestParam("res_id") Integer resId,
+            @RequestParam("data") MultipartFile file,
+            @RequestParam("is_public") Boolean isPublic) throws IOException {
+        if(file == null) throw new ParamNotEnoughException();
+        String fileName = file.getOriginalFilename();
+        String url = ossService.uploadFile(fileName, file.getInputStream());
+        processService.updateResource(fileName, url, resId, isPublic);
+        return Result.ok(url);
     }
 
     @GetMapping("/get")

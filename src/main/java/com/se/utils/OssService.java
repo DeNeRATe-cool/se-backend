@@ -22,7 +22,7 @@ public class OssService {
 
     public String uploadFile(String objectName, InputStream in) {
         objectName = UUID.randomUUID().toString() + objectName.substring(objectName.lastIndexOf("."));
-        System.out.println("filename = " + objectName);
+//        System.out.println("filename = " + objectName);
         PutObjectRequest putObjectRequest = new PutObjectRequest(BUCKETNAME, objectName, in);
         ossClient.putObject(putObjectRequest);
         ossClient.setObjectAcl(BUCKETNAME, objectName, CannedAccessControlList.PublicRead);

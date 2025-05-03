@@ -7,6 +7,7 @@ import com.se.exception.ParamNotEnoughException;
 import com.se.exception.classException.ClassNotExistException;
 import com.se.exception.classException.DuplicateClassException;
 import com.se.exception.courseException.*;
+import com.se.exception.resException.ResTypeArgumentException;
 import com.se.exception.userException.UserNotFoundException;
 import com.se.exception.userException.UserPermissionException;
 import lombok.extern.slf4j.Slf4j;
@@ -266,4 +267,10 @@ public class GlobalExceptionHandler {
         return Result.fail(ex.getMessage());
     }
 
+    @ExceptionHandler(ResTypeArgumentException.class)
+    @ResponseStatus(HttpStatus.EXPECTATION_FAILED)
+    public Result handleResTypeArgument(ResTypeArgumentException ex) {
+        log.error(ex.getMessage(),ex);
+        return Result.fail(ex.getMessage());
+    }
 }

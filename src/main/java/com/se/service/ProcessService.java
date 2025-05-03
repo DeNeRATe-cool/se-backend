@@ -23,4 +23,8 @@ public interface ProcessService {
     List<Resource> getResourceByTag(List<User> tutorList, List<Class> classList, Integer courseId, Integer userId, String tags);
 
     List<Resource> getPublicResourceByCourse(Integer courseId);
+
+    void deleteResource(Integer resId);
+
+    void updateResource(String fileName, String url, Integer resId, Boolean isPublic);
 }

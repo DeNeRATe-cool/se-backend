@@ -8,6 +8,7 @@ import com.se.entity.Class;
 import com.se.entity.Resource;
 import com.se.entity.User;
 import com.se.exception.ParamNotEnoughException;
+import com.se.exception.resException.ResTypeArgumentException;
 import com.se.exception.userException.UserNotFoundException;
 import com.se.service.ProcessService;
 import com.se.service.UserCourseClassService;
@@ -49,7 +50,7 @@ public class ProcessServiceImpl implements ProcessService {
         String type = fileName.contains(".")
                 ? fileName.substring(fileName.lastIndexOf(".") + 1)
                 : ResourceConstant.defaultType;
-        if(is_public) processDao.addResource(resCode, fileName, -1, course_id, class_id, type, url, DateUtil.now(), tags);
+        if(Boolean.TRUE.equals(is_public)) processDao.addResource(resCode, fileName, -1, course_id, class_id, type, url, DateUtil.now(), tags);
         processDao.addResource(resCode, fileName, process_id, course_id, class_id, type, url, DateUtil.now(), tags);
     }
 
@@ -112,5 +113,19 @@ public class ProcessServiceImpl implements ProcessService {
         return processDao.getPublicResourceByCourse(courseId);
     }
 
+    @Override
+    public void deleteResource(Integer resId) {
+        Resource res = processDao.getResourceById(resId);
+        String resCode = res.getRes_code();
+        processDao.deleteByCode(resCode);
+    }
 
+    @Override
+    public void updateResource(String fileName, String url, Integer resId, Boolean isPublic) {
+        Resource res = processDao.getResourceById(resId);
+        if(!res.getType().equals(ResUtil.getSuffix(fileName)))
+            throw new ResTypeArgumentException();
+        if(Boolean.TRUE.equals(isPublic)) processDao.addResource(res.getRes_code(), fileName, -1, res.getCourse_id(), res.getClass_id(), res.getType(), url, DateUtil.now(), res.getTag());
+        processDao.addResource(res.getRes_code(), fileName, res.getProcess_id(), res.getCourse_id(), res.getClass_id(), res.getType(), url, DateUtil.now(), res.getTag());
+    }
 }
