@@ -10,7 +10,6 @@ import com.se.service.CourseService;
 import com.se.service.ProcessService;
 import com.se.service.UserCourseClassService;
 import com.se.utils.OssService;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;

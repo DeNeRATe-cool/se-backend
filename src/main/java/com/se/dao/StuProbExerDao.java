@@ -30,4 +30,9 @@ public interface StuProbExerDao {
     @Select("select * from t_stu_prob_exer where stu_id=#{stu_id} and exer_id=#{exer_id} and prob_id=-1")
     List<StuProbExer> getStuExerByUserIDAndExerID(@Param("stu_id")Integer stu_id, @Param("exer_id")Integer exer_id);
 
+    /**
+     * 根据 exer_id 查询 prob_id = -1, 且 is_check = 0 的学生 ID
+      */
+    @Select("select stu_id from t_stu_prob_exer where exer_id = #{exer_id} and prob_id = -1 and is_check = 0")
+    List<Integer> getNotCheckStuByExerID(Integer exer_id);
 }
