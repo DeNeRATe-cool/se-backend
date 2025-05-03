@@ -42,4 +42,10 @@ public interface ProcessDao {
 
     @Select("select * from t_resource where course_id = #{courseId} and process_id = -1")
     List<Resource> getPublicResourceByCourse(Integer courseId);
+
+    @Select("select * from t_resource where res_id = #{resId}")
+    Resource getResourceById(Integer resId);
+
+    @Delete("delete from t_resource where res_code = #{resCode}")
+    void deleteByCode(String resCode);
 }
