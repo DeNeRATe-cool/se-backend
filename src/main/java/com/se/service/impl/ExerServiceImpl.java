@@ -6,11 +6,11 @@ import com.se.dao.StuProbExerDao;
 import com.se.dao.UserCourseClassDao;
 import com.se.dto.StuProbExer;
 import com.se.dto.UserCourseClass;
-import com.se.entity.Class;
 import com.se.entity.Exercise;
+import com.se.entity.Problem;
 import com.se.entity.User;
 import com.se.service.ExerService;
-import org.apache.ibatis.jdbc.Null;
+import com.se.utils.ProblemUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -97,5 +97,39 @@ public class ExerServiceImpl implements ExerService {
     public List<User> getNotCheckedStu(Integer exerId) {
         List<Integer> stuIdList = stuProbExerDao.getNotCheckStuByExerID(exerId);
         return stuIdList.stream().map(id -> stuDao.getStudentById(id)).collect(Collectors.toList());
+    }
+
+    @Override
+    public List<List<?>> getCheckInfo(List<StuProbExer> baseList, List<Problem> proList, List<StuProbExer> stuExerList, Integer userId) {
+        OptionProblemCheck(baseList, proList, stuExerList, userId);
+        List<List<?>> infoList = new ArrayList<>();
+        infoList.add(proList);
+        infoList.add(
+                stuExerList.stream().map(StuProbExer::getScore).collect(Collectors.toList())
+        );
+        infoList.add(
+                stuExerList.stream().map(StuProbExer::getComment).collect(Collectors.toList())
+        );
+        return infoList;
+    }
+
+    private void OptionProblemCheck(List<StuProbExer> baseList, List<Problem> proList, List<StuProbExer> stuExerList, Integer userId) {
+        for(int i = 0; i < proList.size(); i++) {
+            Problem problem = proList.get(i);
+            StuProbExer stuProbExer = stuExerList.get(i);
+            // 是否为可以自动批改的题目
+            if(ProblemUtil.canBeCheckedByAuto(problem.getType())) {
+                // 自动判断确定的答案是否正确
+                boolean correct = stuProbExer.getSubmit().equals(problem.getAnswer());
+                int newScore = correct ? baseList.get(i).getScore() : 0;
+                stuProbExerDao.updateScoreByUserIDAndProbIDAndExerID(
+                        userId,
+                        problem.getProb_id(),
+                        stuProbExer.getExer_id(),
+                        newScore
+                );
+                stuProbExer.setScore(newScore);
+            }
+        }
     }
 }

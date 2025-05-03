@@ -1,9 +1,11 @@
 package com.se.dao;
 
 import com.se.dto.StuProbExer;
+import com.se.entity.Problem;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 
 import java.util.List;
 
@@ -35,4 +37,23 @@ public interface StuProbExerDao {
       */
     @Select("select stu_id from t_stu_prob_exer where exer_id = #{exer_id} and prob_id = -1 and is_check = 0")
     List<Integer> getNotCheckStuByExerID(Integer exer_id);
+
+    /**
+     * 根据 exer_id 查询练习中包含的题目 ID 列表
+     */
+    @Select("select * from t_stu_prob_exer where exer_id = #{exerId} and stu_id = -1")
+    List<StuProbExer> getProblemListByExerID(Integer exerId);
+
+    /**
+     * 通过学习 + 题目 + 练习查询记录
+     */
+    @Select("select * from t_stu_prob_exer where stu_id = #{userId} and prob_id = #{probId} and exer_id = #{exerId}")
+    StuProbExer getInfoByUserIDAndProbIDAndExerID(@Param("userId") Integer userId, @Param("probId") Integer probId, @Param("exerId") Integer exerId);
+
+    /**
+     * 更新学生的练习中题目的分数
+     */
+    @Update("update t_stu_prob_exer set is_check = 1, score = #{score} where stu_id = #{userId} and prob_id = ${probId} and exer_id = #{exerId}")
+    void updateScoreByUserIDAndProbIDAndExerID(@Param("userId") Integer userId, @Param("probId") Integer probId, @Param("exerId") Integer exerId, @Param("score") Integer score);
+
 }
