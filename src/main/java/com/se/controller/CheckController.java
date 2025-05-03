@@ -2,6 +2,7 @@ package com.se.controller;
 
 import com.se.dto.Result;
 import com.se.entity.Exercise;
+import com.se.entity.User;
 import com.se.service.ExerService;
 import com.se.service.UserCourseClassService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,5 +25,12 @@ public class CheckController {
             @RequestParam("user_id") Integer userId) {
         List<Exercise> todoList = exerService.getNotCheckedExercise(courseId, userId);
         return Result.ok(todoList, todoList.size());
+    }
+
+    @GetMapping("stu")
+    public Result getNotCheckedStu(
+            @RequestParam("exer_id") Integer exerId) {
+        List<User> stuList = exerService.getNotCheckedStu(exerId);
+        return Result.ok(stuList, stuList.size());
     }
 }

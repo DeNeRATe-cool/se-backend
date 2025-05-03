@@ -1,12 +1,14 @@
 package com.se.service.impl;
 
 import com.se.dao.ExerDao;
+import com.se.dao.StuDao;
 import com.se.dao.StuProbExerDao;
 import com.se.dao.UserCourseClassDao;
 import com.se.dto.StuProbExer;
 import com.se.dto.UserCourseClass;
 import com.se.entity.Class;
 import com.se.entity.Exercise;
+import com.se.entity.User;
 import com.se.service.ExerService;
 import org.apache.ibatis.jdbc.Null;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +17,13 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class ExerServiceImpl implements ExerService {
+
+    @Autowired
+    private StuDao stuDao;
 
     @Autowired
     private ExerDao exerDao;
@@ -69,7 +75,8 @@ public class ExerServiceImpl implements ExerService {
         }
         for(UserCourseClass userCourseClass: originList)
             classList.add(userCourseClass.getClass_id());
-        classList = new ArrayList<>(new HashSet<>(classList)); // 去重以防同一个老师/助教多次出现在一个班级中
+        // 去重以防同一个老师/助教多次出现在一个班级中
+        classList = new ArrayList<>(new HashSet<>(classList));
 
         // 获取任务
         List<Exercise> exerListAll = new ArrayList<>();
@@ -84,5 +91,11 @@ public class ExerServiceImpl implements ExerService {
         }
 
         return toCheckList;
+    }
+
+    @Override
+    public List<User> getNotCheckedStu(Integer exerId) {
+        List<Integer> stuIdList = stuProbExerDao.getNotCheckStuByExerID(exerId);
+        return stuIdList.stream().map(id -> stuDao.getStudentById(id)).collect(Collectors.toList());
     }
 }
