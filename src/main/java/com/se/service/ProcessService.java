@@ -27,4 +27,6 @@ public interface ProcessService {
     void deleteResource(Integer resId);
 
     void updateResource(String fileName, String url, Integer resId, Boolean isPublic);
+
+    List<Resource> getResourceHistory(Integer resId);
 }

@@ -19,6 +19,7 @@ import com.se.entity.Process;
 import com.se.utils.ResUtil;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -127,5 +128,16 @@ public class ProcessServiceImpl implements ProcessService {
             throw new ResTypeArgumentException();
         if(Boolean.TRUE.equals(isPublic)) processDao.addResource(res.getRes_code(), fileName, -1, res.getCourse_id(), res.getClass_id(), res.getType(), url, DateUtil.now(), res.getTag());
         processDao.addResource(res.getRes_code(), fileName, res.getProcess_id(), res.getCourse_id(), res.getClass_id(), res.getType(), url, DateUtil.now(), res.getTag());
+    }
+
+    @Override
+    public List<Resource> getResourceHistory(Integer resId) {
+        Resource res = processDao.getResourceById(resId);
+        List<Resource> resList = processDao.getResourceByCode(res.getRes_code());
+        resList.sort(
+                Comparator.comparing(Resource::getDate)
+                        .reversed()
+        );
+        return resList;
     }
 }
