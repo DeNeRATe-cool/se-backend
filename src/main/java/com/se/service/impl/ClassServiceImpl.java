@@ -8,6 +8,7 @@ import com.se.dto.AddAdminInClassDTO;
 import com.se.dto.ApplyJoinClassDTO;
 import com.se.dto.UserCourseClass;
 import com.se.entity.Class;
+import com.se.entity.Course;
 import com.se.entity.User;
 import com.se.exception.EntityNotFoundException;
 import com.se.exception.classException.ClassNotExistException;
@@ -253,5 +254,76 @@ public class ClassServiceImpl implements ClassService {
             throw new EntityNotFoundException(ClassEntityConstant.STUDENT_NOT_IN_CLASS_DELETE_DENIED);
         }
         return userCourseClassService.listStuByClass(classId);
+    }
+
+    /**
+     * 对于每一个List<String> 格式为 [username, name]
+     * 检查username是否合法，是否存在
+     * 不存在 则跳过
+     * 存在 则
+     * @param res
+     * @return
+     */
+    @Override
+    public List<User> addFile(List<List<String>> res, Integer user_id, Integer class_id) {
+        if(classDao.getClassEntityByClassId(class_id).isEmpty())
+        {
+            throw new ClassNotExistException(ClassEntityConstant.CLASS_NOT_EXISTS);
+        }
+
+        Course course = userCourseClassService.getCourseListByClass(class_id).get(0);
+
+        if(!userCourseClassService.teacherInCourse(user_id,course.getCourse_id())
+        && !userCourseClassService.tutorInCourse(user_id,course.getCourse_id()))
+        {
+            throw new UserPermissionException(UserEntityConstant.USER_PERMISSION_DENIED);
+        }
+
+        for(List<String> row : res )
+        {
+            String username = row.get(0);
+            String name = row.get(1);
+//            System.out.println(username);
+            User u = userCourseClassService.tryGetUser(username);
+            if(u == null)
+            {
+//                System.out.println("null");
+                continue;
+            }
+            if(!u.getName().equals(name))
+            {
+//                System.out.println("name not match");
+                continue;
+            }
+
+
+            // 检查学生身份
+            if(!userCourseClassService.userIsStudent(u.getUser_id()))
+            {
+//                System.out.println("not student");
+                continue;
+            }
+            // 检查该学生已经是助教
+            if(userCourseClassService.tutorInCourse(u.getUser_id(),course.getCourse_id()))
+            {
+//                System.out.println("already tutor");
+                continue;
+            }
+            // 检查用户在课程里了
+            if(userCourseClassService.studentInCourse(u.getUser_id(),course.getCourse_id()))
+            {
+//                System.out.println(u.getUser_id() + "in course already");
+                continue;
+            }
+
+            userCourseClassService.insert(u.getUser_id(),
+                    course.getCourse_id(),
+                    class_id,
+                    StudentEntityConstant.IDENTITY_CODE);
+
+//            System.out.println(username);
+
+        }
+        return userCourseClassService.listStuByClass(class_id);
     }
 }

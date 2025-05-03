@@ -7,6 +7,7 @@ import com.se.dao.UserCourseClassDao;
 import com.se.dao.UserDao;
 import com.se.dto.UserCourseClass;
 import com.se.entity.Class;
+import com.se.entity.Course;
 import com.se.entity.User;
 import com.se.exception.courseException.CourseClassNotMatchException;
 import com.se.exception.userException.UserNotFoundException;
@@ -98,6 +99,15 @@ public class UserCourseClassServiceImpl implements UserCourseClassService {
     }
 
     @Override
+    public List<Course> getCourseListByClass(Integer class_id) {
+
+        List<UserCourseClass>userCourseClassList = userCourseClassDao.getCourseByClass(class_id);
+        if(userCourseClassList.isEmpty())return null;
+        List<Course> courseList = courseDao.getByID(userCourseClassList.get(0).getCourse_id());
+        return courseList;
+    }
+
+    @Override
     public List<Class> listClassByStudent(Integer user_id) {
         List<UserCourseClass>userCourseClassList = userCourseClassDao.getByUserID(user_id);
         List<Class>classList = new ArrayList<>();
@@ -130,6 +140,27 @@ public class UserCourseClassServiceImpl implements UserCourseClassService {
         }
         return userList.get(0);
     }
+
+    @Override
+    public User tryGetUser(Integer user_id) {
+        List<User> userList = userDao.getUserByID(user_id);
+        if(userList.isEmpty())
+        {
+            return null;
+        }
+        return userList.get(0);
+    }
+
+    @Override
+    public User tryGetUser(String username) {
+        List<User> userList = userDao.getUserByUsername(username);
+        if(userList.isEmpty())
+        {
+            return null;
+        }
+        return userList.get(0);
+    }
+
 
     @Override
     public void checkCourseAndClassAndAdmin(Integer course_id, Integer class_id, Integer user_id) {

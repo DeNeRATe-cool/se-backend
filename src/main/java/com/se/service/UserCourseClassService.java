@@ -41,11 +41,16 @@ public interface UserCourseClassService {
     public List<Class> listClassesByCourse(Integer course_id);
     // 根据班级获取学生名单
     public List<User> listStuByClass(Integer class_id);
+    // 根据班级得到课程
+    public List<Course> getCourseListByClass(Integer class_id);
     // 根据学生得到班级名单
     public List<Class> listClassByStudent(Integer user_id);
     // 检查并得到user
     public User safeGetUser(Integer user_id);
     public User safeGetUser(String username);
+    // 尝试得到 User 成功返回 User 失败返回 null
+    public User tryGetUser(Integer user_id);
+    public User tryGetUser(String username);
     // 检查user_id 是否匹配课程，课程是否匹配班级，用户是否为助教或者老师
     public void checkCourseAndClassAndAdmin(Integer course_id, Integer class_id, Integer user_id);
     // 添加记录
