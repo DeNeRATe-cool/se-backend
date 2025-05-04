@@ -4,4 +4,7 @@ public class ParamIllegalException extends RuntimeException {
     public ParamIllegalException() {
         super("参数不合规!");
     }
+    public ParamIllegalException(String message) {
+        super(message);
+    }
 }

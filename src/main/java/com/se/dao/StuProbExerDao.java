@@ -2,6 +2,7 @@ package com.se.dao;
 
 import com.se.dto.StuProbExer;
 import com.se.entity.Problem;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -37,6 +38,12 @@ public interface StuProbExerDao {
       */
     @Select("select stu_id from t_stu_prob_exer where exer_id = #{exer_id} and prob_id = -1 and is_check = 0")
     List<Integer> getNotCheckStuByExerID(Integer exer_id);
+
+    @Insert("insert into t_stu_prob_exer(stu_id,prob_id,exer_id,score,is_finish,is_check,idx) " +
+            "values(-1,#{prob_id},#{exer_id},#{score},0,0,#{idx})")
+    void createInsertStuProbExer(@Param("prob_id") Integer prob_id, @Param("exer_id") Integer exer_id, @Param("score") Integer score, @Param("idx") Integer idx);
+
+
 
     /**
      * 根据 exer_id 查询练习中包含的题目 ID 列表

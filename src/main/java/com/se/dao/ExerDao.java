@@ -1,9 +1,7 @@
 package com.se.dao;
 
 import com.se.entity.Exercise;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -22,4 +20,11 @@ public interface ExerDao {
 
     @Select("select * from t_exer where class_id = #{classId}")
     List<Exercise> getExerByClass(Integer classId);
+
+    @Insert("insert into t_exer(class_id,course_id,creator_id,begin_time,end_time,is_public,name,is_multi,score) " +
+            "values(#{class_id},#{course_id},#{creator_id},#{begin_time},#{end_time},#{is_public}," +
+            "#{name},#{is_multi},#{score})")
+    @Options(useGeneratedKeys = true, keyProperty = "exer_id") // 正确
+    void insert(Exercise exercise);
+
 }

@@ -10,6 +10,7 @@ public class CourseEntityConstant {
     // 老师 / 助教 不在课程中
     public static final String TEACHER_NOT_IN_COURSE = "老师不属于该课程";
     public static final String TUTOR_NOT_IN_COURSE  = "学生不是助教 OR 助教不属于该课程";
+    public static final String ADMIN_NOT_IN_COURSE = "用户不是该课程的老师或者助教";
 
     // 课程 班级 不匹配
     public static final String COURSE_CLASS_NOT_MATCH = "课程与班级不匹配";

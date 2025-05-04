@@ -1,6 +1,7 @@
 package com.se.service;
 
 
+import com.se.dto.CreateExerDTO;
 import com.se.dto.StuProbExer;
 import com.se.entity.Exercise;
 import com.se.entity.Problem;
@@ -14,6 +15,8 @@ public interface ExerService {
     List<Exercise> getNotCheckedExercise(Integer courseId, Integer userId);
 
     List<User> getNotCheckedStu(Integer exerId);
+
+    Exercise create(CreateExerDTO createExerDTO);
 
     List<List<?>> getCheckInfo(List<StuProbExer> baseList, List<Problem> proList, List<StuProbExer> stuExerList, Integer userId);
 }

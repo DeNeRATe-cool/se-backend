@@ -1,13 +1,14 @@
 package com.se.controller;
 
 
+import com.se.dao.ExerDao;
+import com.se.dto.CreateExerDTO;
 import com.se.dto.Result;
+import com.se.entity.Exercise;
 import com.se.service.ExerService;
 import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +25,9 @@ public class ExerController {
     @Autowired
     private ExerService exerService;
 
+    @Autowired
+    private ExerDao exerDao;
+
     /**
      * 功能： 学生查询对应班级 已完成任务
      *
@@ -37,5 +41,12 @@ public class ExerController {
         return Result.ok(ls,ls.size());
     }
 
+
+    @PostMapping("/create")
+    public Result create(@RequestBody CreateExerDTO createExerDTO)
+    {
+        Exercise exercise = exerService.create(createExerDTO);
+        return Result.ok(exercise);
+    }
 
 }

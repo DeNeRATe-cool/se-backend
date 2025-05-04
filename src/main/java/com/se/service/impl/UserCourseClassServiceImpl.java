@@ -188,6 +188,19 @@ public class UserCourseClassServiceImpl implements UserCourseClassService {
     }
 
     @Override
+    public void checkIsAdminForCourse(Integer user_id, Integer course_id) {
+        if(!teacherInCourse(user_id,course_id) && !tutorInCourse(user_id,course_id))
+        {
+            throw new UserPermissionException(CourseEntityConstant.ADMIN_NOT_IN_COURSE);
+        }
+    }
+
+    public Boolean isAdminForCourse(Integer user_id, Integer course_id) {
+        if(teacherInCourse(user_id,course_id) || tutorInCourse(user_id,course_id))return true;
+        return false;
+    }
+
+    @Override
     public void checkIsStudent(Integer user_id) {
         if(!userIsStudent(user_id))
         {

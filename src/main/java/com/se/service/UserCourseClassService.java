@@ -55,6 +55,10 @@ public interface UserCourseClassService {
     public void checkCourseAndClassAndAdmin(Integer course_id, Integer class_id, Integer user_id);
     // 添加记录
     public void insert(Integer user_id, Integer course_id, Integer class_id, Integer identity);
+    // 检查是不是课程的管理者
+    public void checkIsAdminForCourse(Integer user_id, Integer course_id);
+    // 判断是不是课程的管理者
+    public Boolean isAdminForCourse(Integer user_id, Integer course_id);
     // 检查是不是学生
     public void checkIsStudent(Integer user_id);
     // 检查课程和班级是否匹配 是否存在

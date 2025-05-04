@@ -1,16 +1,23 @@
 package com.se.service.impl;
 
+import cn.hutool.core.date.DateTime;
+import com.se.constant.ExerEntityConstant;
+import com.se.constant.ProblemEntityConstant;
 import com.se.dao.ExerDao;
 import com.se.dao.StuDao;
 import com.se.dao.StuProbExerDao;
 import com.se.dao.UserCourseClassDao;
+import com.se.dto.CreateExerDTO;
 import com.se.dto.StuProbExer;
 import com.se.dto.UserCourseClass;
 import com.se.entity.Exercise;
 import com.se.entity.Problem;
 import com.se.entity.User;
+import com.se.exception.ParamIllegalException;
 import com.se.service.ExerService;
 import com.se.utils.ProblemUtil;
+import com.se.service.StuProbExerService;
+import com.se.service.UserCourseClassService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +25,8 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
+
+
 
 @Service
 public class ExerServiceImpl implements ExerService {
@@ -33,6 +42,12 @@ public class ExerServiceImpl implements ExerService {
 
     @Autowired
     private UserCourseClassDao userCourseClassDao;
+
+    @Autowired
+    private UserCourseClassService userCourseClassService;
+
+    @Autowired
+    private StuProbExerService stuProbExerService;
 
     /**
      * 根据class_id course_id 在 t_exer 中 查找所有的任务id -> List<Exerid>
@@ -131,5 +146,69 @@ public class ExerServiceImpl implements ExerService {
                 stuProbExer.setScore(newScore);
             }
         }
+    }
+
+    /**
+     * 创建任务
+     * 验证参数
+     * 将题目列表 逐条 插入到 stu-prob-exer
+     * @param createExerDTO
+     * @return
+     */
+    @Override
+    public Exercise create(CreateExerDTO createExerDTO) {
+        Integer course_id = createExerDTO.getCourse_id();
+        Integer class_id = createExerDTO.getClass_id();
+        Integer creator_id = createExerDTO.getCreator_id();
+        DateTime beginTime = createExerDTO.getBegin_time();
+        DateTime endTime = createExerDTO.getEnd_time();
+        Boolean is_public = createExerDTO.getIs_public();
+        String name = createExerDTO.getName();
+        Boolean is_multi = createExerDTO.getIs_multi();
+        List<Integer> probs = createExerDTO.getProbs();
+        List<Integer> scores = createExerDTO.getScores();
+
+        userCourseClassService.checkCourseAndClass(course_id,class_id);
+        userCourseClassService.checkIsAdminForCourse(creator_id,course_id);
+
+        if(!endTime.isAfter(beginTime))
+        {
+            throw new ParamIllegalException(ExerEntityConstant.EndTimeEarlierThenBeginTime);
+        }
+
+        if(probs.size() != scores.size())
+        {
+            throw new ParamIllegalException(ExerEntityConstant.PROBS_SCORES_LENGTH_NOT_MATCH);
+        }
+
+        int probs_size = probs.size();
+        stuProbExerService.checkProbListExist(probs);
+        int sum = 0;
+        for(int i = 0;i < probs_size;i++){
+            sum += scores.get(i);
+        }
+
+        Exercise exercise = new Exercise();
+        exercise.setClass_id(class_id);
+        exercise.setCreator_id(creator_id);
+        exercise.setBegin_time(beginTime);
+        exercise.setEnd_time(endTime);
+        exercise.setIs_public(is_public);
+        exercise.setName(name);
+        exercise.setCourse_id(course_id);
+        exercise.setIs_multi(is_multi);
+        exercise.setScore(sum);
+
+        exerDao.insert(exercise);
+        Integer exer_id = exercise.getExer_id();
+
+        for(int i = 0;i < probs_size; ++i)
+        {
+            Integer prob_id = probs.get(i);
+            Integer score = scores.get(i);
+//            stuProbExerDao.createInsertStuProbExer(prob_id,);
+            stuProbExerDao.createInsertStuProbExer(prob_id, exer_id, score, i+1);
+        }
+        return exercise;
     }
 }
