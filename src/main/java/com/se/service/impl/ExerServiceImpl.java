@@ -233,44 +233,43 @@ public class ExerServiceImpl implements ExerService {
         }
 
         List<Exercise> exerciseList = exerDao.getExerByExerId(exer_id);
-//        if(exerciseList.isEmpty())
-//        {
-//            throw new ParamIllegalException(ExerEntityConstant.EXER_NOT_EXISTS);
-//        }
-//
-//        Exercise exercise = exerciseList.get(0);
+        if(exerciseList.isEmpty())
+        {
+            throw new ParamIllegalException(ExerEntityConstant.EXER_NOT_EXISTS);
+        }
 
-//        exercise.setExer_id(null);
-//        exercise.setIs_multi(is_multi);
-//        exercise.setBegin_time(begin_time);
-//        exercise.setEnd_time(end_time);
-//        exercise.setName(name);
-//        exercise.setCreator_id(creator_id);
-//        exercise.setClass_id(class_id);
-//        exercise.setIs_public(null);
-//        System.out.println("iii");
-//        exerDao.insert(exercise);
-//
-//        Integer new_exer_id = exercise.getExer_id();
-//
-//        for(Integer i_class_id: class_id_list)
-//        {
-//            List<User>stuList = userCourseClassService.listStuByClass(i_class_id);
-//            List<StuProbExer> spe_list = stuProbExerDao.getProblemListByExerID(exer_id);
-//            // 班级里的每一个用户
-//            for(User user: stuList)
-//            {
-//                // 练习的每一道题添加记录
-//                for(StuProbExer spr: spe_list)
-//                {
-//                    StuProbExer new_spr = spr;
-//                    new_spr.setStu_id(user.getUser_id());
-//                    new_spr.setScore(0);
-//                    new_spr.setExer_id(new_exer_id);
-//                    stuProbExerDao.insert(new_spr);
-//                }
-//            }
-//        }
+        Exercise exercise = exerciseList.get(0);
+
+        exercise.setExer_id(null);
+        exercise.setIs_multi(is_multi);
+        exercise.setBegin_time(begin_time);
+        exercise.setEnd_time(end_time);
+        exercise.setName(name);
+        exercise.setCreator_id(creator_id);
+        exercise.setClass_id(class_id);
+        exercise.setIs_public(null);
+        exerDao.insert(exercise);
+
+        Integer new_exer_id = exercise.getExer_id();
+
+        for(Integer i_class_id: class_id_list)
+        {
+            List<User>stuList = userCourseClassService.listStuByClass(i_class_id);
+            List<StuProbExer> spe_list = stuProbExerDao.getProblemListByExerID(exer_id);
+            // 班级里的每一个用户
+            for(User user: stuList)
+            {
+                // 练习的每一道题添加记录
+                for(StuProbExer spr: spe_list)
+                {
+                    StuProbExer new_spr = spr;
+                    new_spr.setStu_id(user.getUser_id());
+                    new_spr.setScore(0);
+                    new_spr.setExer_id(new_exer_id);
+                    stuProbExerDao.insert(new_spr);
+                }
+            }
+        }
 
     }
 
