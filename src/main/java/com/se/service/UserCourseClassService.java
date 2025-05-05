@@ -61,6 +61,7 @@ public interface UserCourseClassService {
     public Boolean isAdminForCourse(Integer user_id, Integer course_id);
     // 检查是不是学生
     public void checkIsStudent(Integer user_id);
+
     // 检查课程和班级是否匹配 是否存在
     public void checkCourseAndClass(Integer course_id, Integer class_id);
     // 删除

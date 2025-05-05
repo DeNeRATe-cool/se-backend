@@ -30,4 +30,7 @@ public interface ExerDao {
 
     @Select("select end_time from t_exer where exer_id = #{exerId};")
     Date getEndTime(Integer exerId);
+
+    @Select("select * from t_exer where exer_id=#{exer_id}")
+    List<Exercise> getExerByExerId(Integer exerId);
 }

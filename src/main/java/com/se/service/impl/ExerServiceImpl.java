@@ -5,8 +5,10 @@ import com.se.constant.ExerEntityConstant;
 import cn.hutool.core.date.DateUtil;
 import com.se.dao.*;
 import com.se.dto.CreateExerDTO;
+import com.se.dto.PushExerDTO;
 import com.se.dto.StuProbExer;
 import com.se.dto.UserCourseClass;
+import com.se.entity.Class;
 import com.se.entity.Exercise;
 import com.se.entity.Problem;
 import com.se.entity.User;
@@ -201,6 +203,77 @@ public class ExerServiceImpl implements ExerService {
         return infoList;
     }
 
+    @Override
+    public void push(PushExerDTO pushExerDTO) {
+        Integer exer_id = pushExerDTO.getExer_id();
+        Integer course_id = pushExerDTO.getCourse_id();
+        Integer class_id = pushExerDTO.getClass_id();
+        Integer creator_id = pushExerDTO.getCreator_id();
+        DateTime begin_time = pushExerDTO.getBegin_time();
+        DateTime end_time = pushExerDTO.getEnd_time();
+        Boolean is_multi = pushExerDTO.getIs_multi();
+        String name = pushExerDTO.getName();
+        Boolean is_every_class = pushExerDTO.getIs_every_class();
+
+        userCourseClassService.checkIsAdminForCourse(creator_id,course_id);
+
+        List<Integer> class_id_list = new ArrayList<>();
+        if(is_every_class)
+        {
+            List<Class> class_list = userCourseClassService.listClassesByCourse(course_id);
+            for(Class c: class_list)
+            {
+                class_id_list.add(c.getClass_id());
+            }
+        }
+        else
+        {
+            userCourseClassService.checkCourseAndClass(course_id,class_id);
+            class_id_list.add(class_id);
+        }
+
+        List<Exercise> exerciseList = exerDao.getExerByExerId(exer_id);
+//        if(exerciseList.isEmpty())
+//        {
+//            throw new ParamIllegalException(ExerEntityConstant.EXER_NOT_EXISTS);
+//        }
+//
+//        Exercise exercise = exerciseList.get(0);
+
+//        exercise.setExer_id(null);
+//        exercise.setIs_multi(is_multi);
+//        exercise.setBegin_time(begin_time);
+//        exercise.setEnd_time(end_time);
+//        exercise.setName(name);
+//        exercise.setCreator_id(creator_id);
+//        exercise.setClass_id(class_id);
+//        exercise.setIs_public(null);
+//        System.out.println("iii");
+//        exerDao.insert(exercise);
+//
+//        Integer new_exer_id = exercise.getExer_id();
+//
+//        for(Integer i_class_id: class_id_list)
+//        {
+//            List<User>stuList = userCourseClassService.listStuByClass(i_class_id);
+//            List<StuProbExer> spe_list = stuProbExerDao.getProblemListByExerID(exer_id);
+//            // 班级里的每一个用户
+//            for(User user: stuList)
+//            {
+//                // 练习的每一道题添加记录
+//                for(StuProbExer spr: spe_list)
+//                {
+//                    StuProbExer new_spr = spr;
+//                    new_spr.setStu_id(user.getUser_id());
+//                    new_spr.setScore(0);
+//                    new_spr.setExer_id(new_exer_id);
+//                    stuProbExerDao.insert(new_spr);
+//                }
+//            }
+//        }
+
+    }
+
     private void OptionProblemCheck(List<StuProbExer> baseList, List<Problem> proList, List<StuProbExer> stuExerList, Integer userId) {
         for(int i = 0; i < proList.size(); i++) {
             Problem problem = proList.get(i);
@@ -226,13 +299,14 @@ public class ExerServiceImpl implements ExerService {
      * 创建任务
      * 验证参数
      * 将题目列表 逐条 插入到 stu-prob-exer
+     * stu_id = -1
+     * 创建 任务 - 题目的对应
      * @param createExerDTO
      * @return
      */
     @Override
     public Exercise create(CreateExerDTO createExerDTO) {
         Integer course_id = createExerDTO.getCourse_id();
-        Integer class_id = createExerDTO.getClass_id();
         Integer creator_id = createExerDTO.getCreator_id();
         DateTime beginTime = createExerDTO.getBegin_time();
         DateTime endTime = createExerDTO.getEnd_time();
@@ -242,8 +316,9 @@ public class ExerServiceImpl implements ExerService {
         List<Integer> probs = createExerDTO.getProbs();
         List<Integer> scores = createExerDTO.getScores();
 
-        userCourseClassService.checkCourseAndClass(course_id,class_id);
+
         userCourseClassService.checkIsAdminForCourse(creator_id,course_id);
+
 
         if(!endTime.isAfter(beginTime))
         {
@@ -263,7 +338,7 @@ public class ExerServiceImpl implements ExerService {
         }
 
         Exercise exercise = new Exercise();
-        exercise.setClass_id(class_id);
+        exercise.setClass_id(-1);
         exercise.setCreator_id(creator_id);
         exercise.setBegin_time(beginTime);
         exercise.setEnd_time(endTime);

@@ -208,6 +208,7 @@ public class UserCourseClassServiceImpl implements UserCourseClassService {
         }
     }
 
+
     @Override
     public void checkCourseAndClass(Integer course_id, Integer class_id) {
         if(!isCourseAndClassMatch(course_id,class_id))

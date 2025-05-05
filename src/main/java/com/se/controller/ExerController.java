@@ -3,11 +3,14 @@ package com.se.controller;
 
 import com.se.dao.ExerDao;
 import com.se.dto.CreateExerDTO;
+import com.se.dto.PushExerDTO;
 import com.se.dto.Result;
 import com.se.entity.Exercise;
 import com.se.service.ExerService;
+import org.apache.commons.collections.ResettableListIterator;
 import org.apache.ibatis.annotations.Delete;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -43,10 +46,18 @@ public class ExerController {
 
 
     @PostMapping("/create")
-    public Result create(@RequestBody CreateExerDTO createExerDTO)
+    public Result create(@RequestBody @Validated CreateExerDTO createExerDTO)
     {
         Exercise exercise = exerService.create(createExerDTO);
         return Result.ok(exercise);
+    }
+
+    @PostMapping("/push")
+    public Result push(@RequestBody @Validated PushExerDTO pushExerDTO)
+    {
+        System.out.println(pushExerDTO.getBegin_time());
+        exerService.push(pushExerDTO);
+        return Result.ok();
     }
 
 }
