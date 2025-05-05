@@ -1,5 +1,6 @@
 package com.se.service.impl;
 
+import cn.hutool.core.date.DateUtil;
 import com.se.dao.ExerDao;
 import com.se.dao.StuDao;
 import com.se.dao.StuProbExerDao;
@@ -9,12 +10,14 @@ import com.se.dto.UserCourseClass;
 import com.se.entity.Exercise;
 import com.se.entity.Problem;
 import com.se.entity.User;
+import com.se.exception.checkException.ScoreOutOfRangeException;
 import com.se.service.ExerService;
 import com.se.utils.ProblemUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -86,7 +89,10 @@ public class ExerServiceImpl implements ExerService {
         // 获取存在为批改的任务
         List<Exercise> toCheckList = new ArrayList<>();
         for(Exercise exercise : exerListAll) {
-            if(!stuProbExerDao.getNotCheckStuByExerID(exercise.getExer_id()).isEmpty())
+            if(
+                    !stuProbExerDao.getNotCheckStuByExerID(exercise.getExer_id()).isEmpty() &&
+                    DateUtil.compare(exerDao.getEndTime(exercise.getExer_id()), new Date()) <= 0
+            )
                 toCheckList.add(exercise);
         }
 
@@ -110,7 +116,23 @@ public class ExerServiceImpl implements ExerService {
         infoList.add(
                 stuExerList.stream().map(StuProbExer::getComment).collect(Collectors.toList())
         );
+        infoList.add(
+                stuExerList.stream().map(StuProbExer::getIs_check).collect(Collectors.toList())
+        );
         return infoList;
+    }
+
+    @Override
+    public void submitCheckInfo(Integer userId, Integer exerId, List<Integer> scores, List<String> infos, List<StuProbExer> baseList, List<StuProbExer> stuExerList) {
+        Integer totalScore = 0;
+        for(int i = 0; i < baseList.size(); i++) {
+            if(scores.get(i) < 0 || scores.get(i) > baseList.get(i).getScore())
+                throw new ScoreOutOfRangeException("第 " + (i + 1) + " 题分数不在题目合规范围内");
+            totalScore += scores.get(i);
+            stuProbExerDao.updateScoreByUserIDAndProbIDAndExerID(userId, baseList.get(i).getProb_id(), exerId, scores.get(i));
+            stuProbExerDao.updateCheckInfoByUserIDAndProbIDAndExerID(userId, baseList.get(i).getProb_id(), exerId, infos.get(i));
+        }
+        stuProbExerDao.updateTotalScoreByUserIDAndExerID(userId, exerId, totalScore);
     }
 
     private void OptionProblemCheck(List<StuProbExer> baseList, List<Problem> proList, List<StuProbExer> stuExerList, Integer userId) {
@@ -129,6 +151,7 @@ public class ExerServiceImpl implements ExerService {
                         newScore
                 );
                 stuProbExer.setScore(newScore);
+                stuProbExer.setIs_check(true);
             }
         }
     }

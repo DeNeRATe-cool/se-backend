@@ -4,6 +4,9 @@ import com.se.dto.Result;
 import com.se.exception.EntityNotFoundException;
 import com.se.exception.ParamIllegalException;
 import com.se.exception.ParamNotEnoughException;
+import com.se.exception.checkException.LengthNotMatchException;
+import com.se.exception.checkException.NotCheckFinishException;
+import com.se.exception.checkException.ScoreOutOfRangeException;
 import com.se.exception.classException.ClassNotExistException;
 import com.se.exception.classException.DuplicateClassException;
 import com.se.exception.courseException.*;
@@ -283,6 +286,36 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ResTypeArgumentException.class)
     @ResponseStatus(HttpStatus.EXPECTATION_FAILED)
     public Result handleResTypeArgument(ResTypeArgumentException ex) {
+        log.error(ex.getMessage(),ex);
+        return Result.fail(ex.getMessage());
+    }
+
+    /**
+     * 列表参数长度不匹配
+     */
+    @ExceptionHandler(LengthNotMatchException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Result handleLengthNotMatch(LengthNotMatchException ex) {
+        log.error(ex.getMessage(),ex);
+        return Result.fail(ex.getMessage());
+    }
+
+    /**
+     * 题目没有批改完成，无法提交
+     */
+    @ExceptionHandler(NotCheckFinishException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Result handleNotCheckFinish(NotCheckFinishException ex) {
+        log.error(ex.getMessage(),ex);
+        return Result.fail(ex.getMessage());
+    }
+
+    /**
+     * 批改分数超过题目范围
+     */
+    @ExceptionHandler(ScoreOutOfRangeException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Result handleScoreOutOfRange(ScoreOutOfRangeException ex) {
         log.error(ex.getMessage(),ex);
         return Result.fail(ex.getMessage());
     }

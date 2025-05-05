@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
 
+import java.util.Date;
 import java.util.List;
 
 @Mapper
@@ -22,4 +23,7 @@ public interface ExerDao {
 
     @Select("select * from t_exer where class_id = #{classId}")
     List<Exercise> getExerByClass(Integer classId);
+
+    @Select("select end_time from t_exer where exer_id = #{exerId};")
+    Date getEndTime(Integer exerId);
 }

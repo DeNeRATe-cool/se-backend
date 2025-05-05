@@ -16,4 +16,6 @@ public interface ExerService {
     List<User> getNotCheckedStu(Integer exerId);
 
     List<List<?>> getCheckInfo(List<StuProbExer> baseList, List<Problem> proList, List<StuProbExer> stuExerList, Integer userId);
+
+    void submitCheckInfo(Integer userId, Integer exerId, List<Integer> scores, List<String> infos, List<StuProbExer> baseList, List<StuProbExer> stuExerList);
 }
