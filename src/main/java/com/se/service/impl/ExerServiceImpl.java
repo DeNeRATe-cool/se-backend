@@ -2,12 +2,8 @@ package com.se.service.impl;
 
 import cn.hutool.core.date.DateTime;
 import com.se.constant.ExerEntityConstant;
-import com.se.constant.ProblemEntityConstant;
 import cn.hutool.core.date.DateUtil;
-import com.se.dao.ExerDao;
-import com.se.dao.StuDao;
-import com.se.dao.StuProbExerDao;
-import com.se.dao.UserCourseClassDao;
+import com.se.dao.*;
 import com.se.dto.CreateExerDTO;
 import com.se.dto.StuProbExer;
 import com.se.dto.UserCourseClass;
@@ -23,16 +19,16 @@ import com.se.service.UserCourseClassService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 
 
 @Service
 public class ExerServiceImpl implements ExerService {
+
+    @Autowired
+    private UserDao userDao;
 
     @Autowired
     private StuDao stuDao;
@@ -51,6 +47,8 @@ public class ExerServiceImpl implements ExerService {
 
     @Autowired
     private StuProbExerService stuProbExerService;
+    @Autowired
+    private ProbDao probDao;
 
     /**
      * 根据class_id course_id 在 t_exer 中 查找所有的任务id -> List<Exerid>
@@ -150,6 +148,59 @@ public class ExerServiceImpl implements ExerService {
         stuProbExerDao.updateTotalScoreByUserIDAndExerID(userId, exerId, totalScore);
     }
 
+    @Override
+    public List<List<?>> getGradeAndRank(Integer exerId) {
+        List<StuProbExer> exerResultList = stuProbExerDao.getStuResultByExerID(exerId);
+        exerResultList.sort(
+                Comparator.comparing(StuProbExer::getIs_finish).reversed()
+                        .thenComparing(StuProbExer::getScore, Comparator.reverseOrder())
+        );
+        List<Integer> scoreList = new ArrayList<>();
+        for(StuProbExer spr: exerResultList) {
+            if(Boolean.TRUE.equals(spr.getIs_finish())) scoreList.add(spr.getScore());
+            else scoreList.add(-1);
+        }
+        List<User> stuList = exerResultList
+                .stream()
+                .map((user) -> userDao.getSingleUserByID(user.getStu_id()))
+                .collect(Collectors.toList());
+
+        List<List<?>> infoList = new ArrayList<>();
+        infoList.add(stuList);
+        infoList.add(scoreList);
+        return infoList;
+    }
+
+    @Override
+    public List<List<?>> getAccessRatio(Integer exerId) {
+        List<StuProbExer> exerProbList = stuProbExerDao.getProblemListByExerID(exerId);
+        // 按题号排序
+        exerProbList.sort(Comparator.comparing(StuProbExer::getIdx));
+
+        // 获取通过比例: 得分 != 标准分
+        List<Float> ratioList = new ArrayList<>();
+        for(StuProbExer probId: exerProbList) {
+            List<StuProbExer> scoreList = stuProbExerDao.getStuProbResultByExerIDAndProbID(exerId, probId.getProb_id());
+            int cnt = 0;
+            for(StuProbExer spr: scoreList) {
+                if(spr.getScore().equals(probId.getScore()))
+                    cnt++;
+            }
+            ratioList.add(scoreList.isEmpty() ? (float) -1 : (float)cnt / scoreList.size());
+        }
+
+        // 获取题目
+        List<Problem> problems = exerProbList
+                .stream()
+                .map((prob) -> probDao.getProblemById(prob.getProb_id()))
+                .collect(Collectors.toList());
+
+        List<List<?>> infoList = new ArrayList<>();
+        infoList.add(problems);
+        infoList.add(ratioList);
+        return infoList;
+    }
+
     private void OptionProblemCheck(List<StuProbExer> baseList, List<Problem> proList, List<StuProbExer> stuExerList, Integer userId) {
         for(int i = 0; i < proList.size(); i++) {
             Problem problem = proList.get(i);
@@ -229,7 +280,6 @@ public class ExerServiceImpl implements ExerService {
         {
             Integer prob_id = probs.get(i);
             Integer score = scores.get(i);
-//            stuProbExerDao.createInsertStuProbExer(prob_id,);
             stuProbExerDao.createInsertStuProbExer(prob_id, exer_id, score, i+1);
         }
         return exercise;

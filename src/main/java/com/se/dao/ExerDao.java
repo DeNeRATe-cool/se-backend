@@ -28,7 +28,6 @@ public interface ExerDao {
     @Options(useGeneratedKeys = true, keyProperty = "exer_id") // 正确
     void insert(Exercise exercise);
 
-
     @Select("select end_time from t_exer where exer_id = #{exerId};")
     Date getEndTime(Integer exerId);
 }

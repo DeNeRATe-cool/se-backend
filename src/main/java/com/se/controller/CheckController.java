@@ -91,4 +91,18 @@ public class CheckController {
         exerService.submitCheckInfo(userId, exerId, scores, infos, baseList, stuExerList);
         return Result.ok();
     }
+
+    @GetMapping("/result")
+    public Result getGradeAndRank(
+            @RequestParam("exer_id") Integer exerId) {
+        List<List<?>> resList = exerService.getGradeAndRank(exerId);
+        return Result.ok(resList, resList.size());
+    }
+
+    @GetMapping("/access")
+    public Result getAccessRatio(
+            @RequestParam("exer_id") Integer exerId) {
+        List<List<?>> resList = exerService.getAccessRatio(exerId);
+        return Result.ok(resList, resList.size());
+    }
 }

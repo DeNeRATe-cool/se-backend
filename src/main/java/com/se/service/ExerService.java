@@ -21,4 +21,8 @@ public interface ExerService {
     List<List<?>> getCheckInfo(List<StuProbExer> baseList, List<Problem> proList, List<StuProbExer> stuExerList, Integer userId);
 
     void submitCheckInfo(Integer userId, Integer exerId, List<Integer> scores, List<String> infos, List<StuProbExer> baseList, List<StuProbExer> stuExerList);
+
+    List<List<?>> getGradeAndRank(Integer exerId);
+
+    List<List<?>> getAccessRatio(Integer exerId);
 }
