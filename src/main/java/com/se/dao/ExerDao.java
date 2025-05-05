@@ -9,6 +9,8 @@ import java.util.List;
 @Mapper
 public interface ExerDao {
 
+    @Select("select * from t_exer where exer_id = #{id}")
+    Exercise getExerById(Integer id);
 
     /**
      * //根据class_id course_id 在 t_exer 中 查找所有的任务id -> List<Exerid>

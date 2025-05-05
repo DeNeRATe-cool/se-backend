@@ -4,9 +4,11 @@ import com.se.dto.AddAdminInClassDTO;
 import com.se.dto.ApplyJoinClassDTO;
 import com.se.entity.Class;
 import com.se.entity.User;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Transactional
 public interface ClassService {
     void add(Class classEntity);
 

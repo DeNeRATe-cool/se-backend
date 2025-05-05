@@ -1,6 +1,5 @@
 package com.se.entity;
 
-import cn.hutool.core.date.DateTime;
 import lombok.Data;
 
 import java.util.Date;
@@ -16,9 +15,9 @@ public class Exercise {
 
     private Integer creator_id;
 
-    private DateTime begin_time;
+    private Date begin_time;
 
-    private DateTime end_time;
+    private Date end_time;
 
     private Boolean is_public;
 

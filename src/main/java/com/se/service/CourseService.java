@@ -4,11 +4,12 @@ import com.se.dto.AddAdminInCourseDTO;
 import com.se.entity.Class;
 import com.se.entity.Course;
 import com.se.entity.User;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Transactional
 public interface CourseService {
-
 
     void add(Course course);
 
