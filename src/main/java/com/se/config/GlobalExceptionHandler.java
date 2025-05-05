@@ -9,6 +9,8 @@ import com.se.exception.checkException.NotCheckFinishException;
 import com.se.exception.checkException.ScoreOutOfRangeException;
 import com.se.exception.classException.ClassNotExistException;
 import com.se.exception.classException.DuplicateClassException;
+import com.se.exception.collectException.CollectAlreadyExistException;
+import com.se.exception.collectException.CollectNotExistException;
 import com.se.exception.courseException.*;
 import com.se.exception.resException.ResTypeArgumentException;
 import com.se.exception.userException.UserNotFoundException;
@@ -23,6 +25,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -316,6 +319,36 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ScoreOutOfRangeException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Result handleScoreOutOfRange(ScoreOutOfRangeException ex) {
+        log.error(ex.getMessage(),ex);
+        return Result.fail(ex.getMessage());
+    }
+
+    /**
+     * 收藏的题目已经存在
+     */
+    @ExceptionHandler(CollectAlreadyExistException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Result handleCollectAlreadyExist(CollectAlreadyExistException ex) {
+        log.error(ex.getMessage(),ex);
+        return Result.fail(ex.getMessage());
+    }
+
+    /**
+     * 要取消收藏的题目不存在
+     */
+    @ExceptionHandler(CollectNotExistException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Result handleCollectNotExist(CollectNotExistException ex) {
+        log.error(ex.getMessage(),ex);
+        return Result.fail(ex.getMessage());
+    }
+
+    /**
+     * 请求参数有误
+     */
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Result handleMissingServletRequestParameterException(MissingServletRequestParameterException ex) {
         log.error(ex.getMessage(),ex);
         return Result.fail(ex.getMessage());
     }

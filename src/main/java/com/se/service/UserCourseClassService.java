@@ -4,9 +4,11 @@ import com.se.dto.UserCourseClass;
 import com.se.entity.Class;
 import com.se.entity.Course;
 import com.se.entity.User;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Transactional
 public interface UserCourseClassService {
     // 老师是否在课程中
     public Boolean teacherInCourse(User user, Integer course_id);

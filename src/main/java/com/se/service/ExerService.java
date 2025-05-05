@@ -6,9 +6,11 @@ import com.se.dto.StuProbExer;
 import com.se.entity.Exercise;
 import com.se.entity.Problem;
 import com.se.entity.User;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
+@Transactional
 public interface ExerService {
     List<Integer> getStuFinishExerNum(Integer user_id, Integer course_id, Integer class_id);
 
