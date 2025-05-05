@@ -43,8 +43,6 @@ public interface StuProbExerDao {
             "values(-1,#{prob_id},#{exer_id},#{score},0,0,#{idx})")
     void createInsertStuProbExer(@Param("prob_id") Integer prob_id, @Param("exer_id") Integer exer_id, @Param("score") Integer score, @Param("idx") Integer idx);
 
-
-
     /**
      * 根据 exer_id 查询练习中包含的题目 ID 列表
      */
@@ -75,4 +73,15 @@ public interface StuProbExerDao {
     @Update("update t_stu_prob_exer set is_check = 1, score = #{score} where stu_id = #{userId} and exer_id = #{exerId} and prob_id = -1")
     void updateTotalScoreByUserIDAndExerID(@Param("userId") Integer userId, @Param("exerId") Integer exerId, @Param("score") Integer score);
 
+    /**
+     * 获取任务的所有学生练习结果
+     */
+    @Select("select * from t_stu_prob_exer where exer_id = #{exerId} and prob_id = -1")
+    List<StuProbExer> getStuResultByExerID(Integer exerId);
+
+    /**
+     * 通过任务 + 题目获取所有批改过的学生某道题的结果
+     */
+    @Select("select * from t_stu_prob_exer where exer_id = #{exerId} and prob_id = #{probId} and stu_id <> -1 and is_check = 1")
+    List<StuProbExer> getStuProbResultByExerIDAndProbID(@Param("exerId") Integer exerId, @Param("probId") Integer probId);
 }
