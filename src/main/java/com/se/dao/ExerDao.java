@@ -3,6 +3,7 @@ package com.se.dao;
 import com.se.entity.Exercise;
 import org.apache.ibatis.annotations.*;
 
+import java.util.Date;
 import java.util.List;
 
 @Mapper
@@ -27,4 +28,7 @@ public interface ExerDao {
     @Options(useGeneratedKeys = true, keyProperty = "exer_id") // 正确
     void insert(Exercise exercise);
 
+
+    @Select("select end_time from t_exer where exer_id = #{exerId};")
+    Date getEndTime(Integer exerId);
 }

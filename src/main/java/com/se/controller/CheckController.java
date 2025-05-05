@@ -7,12 +7,11 @@ import com.se.dto.StuProbExer;
 import com.se.entity.Exercise;
 import com.se.entity.Problem;
 import com.se.entity.User;
+import com.se.exception.checkException.LengthNotMatchException;
+import com.se.exception.checkException.NotCheckFinishException;
 import com.se.service.ExerService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -39,14 +38,14 @@ public class CheckController {
         return Result.ok(todoList, todoList.size());
     }
 
-    @GetMapping("stu")
+    @GetMapping("/stu")
     public Result getNotCheckedStu(
             @RequestParam("exer_id") Integer exerId) {
         List<User> stuList = exerService.getNotCheckedStu(exerId);
         return Result.ok(stuList, stuList.size());
     }
 
-    @GetMapping("get")
+    @GetMapping("/get")
     public Result getCheckInfo(
             @RequestParam("exer_id") Integer exerId,
             @RequestParam("user_id") Integer userId) {
@@ -68,5 +67,28 @@ public class CheckController {
         /* 已按照题目序号处理好 */
         List<List<?>> infoList = exerService.getCheckInfo(baseList, proList, stuExerList, userId);
         return Result.ok(infoList, infoList.size());
+    }
+
+    @PostMapping("/push")
+    public Result pushCheck(
+            @RequestParam("user_id") Integer userId,
+            @RequestParam("exer_id") Integer exerId,
+            @RequestParam("scores") List<Integer> scores,
+            @RequestParam("infos") List<String> infos) {
+        if(infos.size() != scores.size())
+            throw new LengthNotMatchException();
+        // 练习中的题目
+        List<StuProbExer> baseList = stuProbExerDao.getProblemListByExerID(exerId);
+        if(scores.size() != baseList.size())
+            throw new NotCheckFinishException();
+        baseList.sort(Comparator.comparing(StuProbExer::getIdx));
+        // 用户数据
+        List<StuProbExer> stuExerList = new ArrayList<>();
+        for(StuProbExer stuProbExer : baseList)
+            stuExerList.add(stuProbExerDao
+                    .getInfoByUserIDAndProbIDAndExerID(userId, stuProbExer.getProb_id(), exerId));
+
+        exerService.submitCheckInfo(userId, exerId, scores, infos, baseList, stuExerList);
+        return Result.ok();
     }
 }

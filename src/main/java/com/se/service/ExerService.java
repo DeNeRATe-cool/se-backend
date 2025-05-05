@@ -19,4 +19,6 @@ public interface ExerService {
     Exercise create(CreateExerDTO createExerDTO);
 
     List<List<?>> getCheckInfo(List<StuProbExer> baseList, List<Problem> proList, List<StuProbExer> stuExerList, Integer userId);
+
+    void submitCheckInfo(Integer userId, Integer exerId, List<Integer> scores, List<String> infos, List<StuProbExer> baseList, List<StuProbExer> stuExerList);
 }

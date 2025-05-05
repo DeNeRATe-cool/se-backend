@@ -60,7 +60,19 @@ public interface StuProbExerDao {
     /**
      * 更新学生的练习中题目的分数
      */
-    @Update("update t_stu_prob_exer set is_check = 1, score = #{score} where stu_id = #{userId} and prob_id = ${probId} and exer_id = #{exerId}")
+    @Update("update t_stu_prob_exer set is_check = 1, score = #{score} where stu_id = #{userId} and prob_id = #{probId} and exer_id = #{exerId}")
     void updateScoreByUserIDAndProbIDAndExerID(@Param("userId") Integer userId, @Param("probId") Integer probId, @Param("exerId") Integer exerId, @Param("score") Integer score);
+
+    /**
+     * 更新学生的练习中题目的反馈信息
+     */
+    @Update("update t_stu_prob_exer set is_check = 1, comment = #{info} where stu_id = #{userId} and prob_id = #{probId} and exer_id = #{exerId}")
+    void updateCheckInfoByUserIDAndProbIDAndExerID(@Param("userId") Integer userId, @Param("probId") Integer probId, @Param("exerId") Integer exerId, @Param("info") String info);
+
+    /**
+     * 更新学生的练习总分
+     */
+    @Update("update t_stu_prob_exer set is_check = 1, score = #{score} where stu_id = #{userId} and exer_id = #{exerId} and prob_id = -1")
+    void updateTotalScoreByUserIDAndExerID(@Param("userId") Integer userId, @Param("exerId") Integer exerId, @Param("score") Integer score);
 
 }
