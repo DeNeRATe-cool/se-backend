@@ -1,19 +1,24 @@
 package com.se.dto;
 
+
 import cn.hutool.core.date.DateTime;
 import lombok.Data;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
-import java.util.Date;
-import java.util.List;
 
 @Data
-public class CreateExerDTO {
+public class PushExerDTO {
+
+    @NotNull
+    private Integer exer_id;
+
     @NotNull
     private Integer course_id;
+
+    @NotNull
+    private Integer class_id;
 
     @NotNull
     private Integer creator_id;
@@ -27,17 +32,12 @@ public class CreateExerDTO {
     private DateTime end_time;
 
     @NotNull
-    private Boolean is_public;
+    private Boolean is_multi;
 
     @NotBlank
     private String name;
 
     @NotNull
-    private Boolean is_multi;
+    private Boolean is_every_class;
 
-    @NotEmpty
-    private List<Integer> probs;
-
-    @NotNull
-    private List<Integer> scores;
 }

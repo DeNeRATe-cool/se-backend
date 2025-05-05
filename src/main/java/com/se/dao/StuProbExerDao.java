@@ -84,4 +84,9 @@ public interface StuProbExerDao {
      */
     @Select("select * from t_stu_prob_exer where exer_id = #{exerId} and prob_id = #{probId} and stu_id <> -1 and is_check = 1")
     List<StuProbExer> getStuProbResultByExerIDAndProbID(@Param("exerId") Integer exerId, @Param("probId") Integer probId);
+
+    @Insert("insert into t_stu_prob_exer(stu_id,prob_id,exer_id,score,comment,submit,is_check,is_finish,idx) " +
+            "values(#{stu_id},#{prob_id},#{exer_id},#{score},#{comment},#{submit},#{is_check},#{is_finish},#{idx})")
+    void insert(StuProbExer stuProbExer);
+
 }

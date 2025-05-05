@@ -13,5 +13,6 @@ public interface StuProbExerService {
     Boolean isProbExist(Integer prob_id);
     // 判断题目列表是否都存在
     void checkProbListExist(List<Integer> prob_ids);
-
+    // 通过 exer 得到 prob id list
+    List<Integer> getProbIDListByExerId(Integer exer_id);
 }

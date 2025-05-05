@@ -2,6 +2,7 @@ package com.se.service;
 
 
 import com.se.dto.CreateExerDTO;
+import com.se.dto.PushExerDTO;
 import com.se.dto.StuProbExer;
 import com.se.entity.Exercise;
 import com.se.entity.Problem;
@@ -27,4 +28,6 @@ public interface ExerService {
     List<List<?>> getGradeAndRank(Integer exerId);
 
     List<List<?>> getAccessRatio(Integer exerId);
+
+    void push(PushExerDTO pushExerDTO);
 }
