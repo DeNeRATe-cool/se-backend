@@ -55,9 +55,14 @@ public class ExerController {
     @PostMapping("/push")
     public Result push(@RequestBody @Validated PushExerDTO pushExerDTO)
     {
-        System.out.println(pushExerDTO.getBegin_time());
         exerService.push(pushExerDTO);
         return Result.ok();
     }
 
+    @PostMapping("/info")
+    public Result info(@RequestParam Integer exer_id)
+    {
+        Exercise exercise = exerService.info(exer_id);
+        return Result.ok(exercise);
+    }
 }
