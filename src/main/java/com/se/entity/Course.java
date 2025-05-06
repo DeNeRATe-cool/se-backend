@@ -6,7 +6,6 @@ import javax.validation.constraints.NotEmpty;
 
 @Data
 public class Course {
-
     private Integer course_id;
     @NotEmpty
     private String name;
