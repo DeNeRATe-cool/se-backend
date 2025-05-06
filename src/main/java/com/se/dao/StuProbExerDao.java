@@ -97,4 +97,6 @@ public interface StuProbExerDao {
             "values(#{stu_id},#{prob_id},#{exer_id},#{score},#{comment},#{submit},#{is_check},#{is_finish},#{idx})")
     void insert(StuProbExer stuProbExer);
 
+    @Select("select * from t_stu_prob_exer where stu_id=#{userId} and prob_id=-1")
+    List<StuProbExer> getByStuIdWithProbInval(Integer userId);
 }
