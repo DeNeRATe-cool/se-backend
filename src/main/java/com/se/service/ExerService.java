@@ -30,4 +30,6 @@ public interface ExerService {
     List<List<?>> getAccessRatio(Integer exerId);
 
     void push(PushExerDTO pushExerDTO);
+
+    Exercise info(Integer exerId);
 }

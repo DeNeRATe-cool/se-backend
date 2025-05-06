@@ -273,6 +273,16 @@ public class ExerServiceImpl implements ExerService {
 
     }
 
+    @Override
+    public Exercise info(Integer exerId) {
+        Exercise exercise = exerDao.getExerById(exerId);
+        if(exercise == null)
+        {
+            throw new ParamIllegalException(ExerEntityConstant.EXER_NOT_EXISTS);
+        }
+        return exercise;
+    }
+
     private void OptionProblemCheck(List<StuProbExer> baseList, List<Problem> proList, List<StuProbExer> stuExerList, Integer userId) {
         for(int i = 0; i < proList.size(); i++) {
             Problem problem = proList.get(i);
