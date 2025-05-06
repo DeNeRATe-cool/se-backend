@@ -203,6 +203,17 @@ public class ExerServiceImpl implements ExerService {
         return infoList;
     }
 
+    /**
+     * 发布任务
+     * 创建一个 新的 Exercise
+     *
+     * 查询 prob-exer 记录
+     *
+     * stu prob exer
+     * 添加 stu-exer记录
+     * 添加 stu-exer_prob记录
+     * @param pushExerDTO
+     */
     @Override
     public void push(PushExerDTO pushExerDTO) {
         Integer exer_id = pushExerDTO.getExer_id();
@@ -268,6 +279,12 @@ public class ExerServiceImpl implements ExerService {
                     new_spr.setExer_id(new_exer_id);
                     stuProbExerDao.insert(new_spr);
                 }
+                // 添加 stu - exer 记录
+                StuProbExer spr = spe_list.get(0);
+                spr.setProb_id(-1);
+                spr.setStu_id(user.getUser_id());
+                spr.setScore(0);
+                stuProbExerDao.insert(spr);
             }
         }
 
@@ -294,6 +311,23 @@ public class ExerServiceImpl implements ExerService {
 
         userCourseClassService.checkCourseAndClass(courseId,classId);
         List<Exercise> exerciseList = exerDao.getExerByClass(classId);
+        return exerciseList;
+    }
+
+    @Override
+    public List<Exercise> listExerByStuId(Integer user_id) {
+        userCourseClassService.checkIsStudent(user_id);
+
+        List<StuProbExer> stuProbExerList = stuProbExerDao.getByStuIdWithProbInval(user_id);
+
+        List<Exercise> exerciseList = new ArrayList<>();
+
+        for(StuProbExer spe: stuProbExerList)
+        {
+            Integer exer_id = spe.getExer_id();
+            Exercise exercise = exerDao.getExerById(exer_id);
+            exerciseList.add(exercise);
+        }
         return exerciseList;
     }
 

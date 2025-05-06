@@ -82,4 +82,11 @@ public class ExerController {
         return Result.ok(res,res.size());
     }
 
+    @GetMapping("/allSelf")
+    public Result listExerByStuId(@RequestParam Integer user_id)
+    {
+        List<Exercise> exerciseList = exerService.listExerByStuId(user_id);
+        return Result.ok(exerciseList,exerciseList.size());
+    }
+
 }
