@@ -59,7 +59,7 @@ public class ExerController {
         return Result.ok();
     }
 
-    @PostMapping("/info")
+    @GetMapping("/info")
     public Result info(@RequestParam Integer exer_id)
     {
         Exercise exercise = exerService.info(exer_id);
