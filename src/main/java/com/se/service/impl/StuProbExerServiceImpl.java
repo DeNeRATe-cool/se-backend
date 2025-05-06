@@ -45,6 +45,11 @@ public class StuProbExerServiceImpl implements StuProbExerService {
         }
     }
 
+    /**
+     * 要求任务必须是模板任务
+     * @param exer_id
+     * @return
+     */
     @Override
     public List<Integer> getProbIDListByExerId(Integer exer_id) {
         List<StuProbExer> spe_list = stuProbExerDao.getProblemListByExerID(exer_id);
@@ -53,5 +58,27 @@ public class StuProbExerServiceImpl implements StuProbExerService {
             prob_id_list.add(spe.getProb_id());
         }
         return prob_id_list;
+    }
+
+    /**
+     * 任务可以不是模板任务
+     * @param exerId
+     * @return
+     */
+    @Override
+    public List<Problem> getProbModelListByExerId(Integer exerId) {
+        List<StuProbExer> spe_list = stuProbExerDao.getProblemListByExerIDBroaden(exerId);
+        List<Integer>prob_id_list = new ArrayList<>();
+        for(StuProbExer spe: spe_list) {
+            if(!prob_id_list.contains(spe.getProb_id())) {
+                prob_id_list.add(spe.getProb_id());
+            }
+        }
+        List<Problem> problemList = new ArrayList<>();
+        for(Integer prob_id : prob_id_list) {
+            Problem problem = probDao.getProblemById(prob_id);
+            problemList.add(problem);
+        }
+        return problemList;
     }
 }

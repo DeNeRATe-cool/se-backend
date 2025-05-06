@@ -6,6 +6,7 @@ import com.se.dto.CreateExerDTO;
 import com.se.dto.PushExerDTO;
 import com.se.dto.Result;
 import com.se.entity.Exercise;
+import com.se.entity.Problem;
 import com.se.service.ExerService;
 import org.apache.commons.collections.ResettableListIterator;
 import org.apache.ibatis.annotations.Delete;
@@ -64,5 +65,12 @@ public class ExerController {
     {
         Exercise exercise = exerService.info(exer_id);
         return Result.ok(exercise);
+    }
+
+    @GetMapping("/get")
+    public Result listProblemByExerId(@RequestParam Integer exer_id)
+    {
+        List<Problem> res = exerService.listProblemByExerId(exer_id);
+        return Result.ok(res,res.size());
     }
 }

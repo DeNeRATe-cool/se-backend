@@ -2,6 +2,7 @@ package com.se.service;
 
 import com.se.dao.StuProbExerDao;
 import com.se.dto.StuProbExer;
+import com.se.entity.Problem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -15,4 +16,6 @@ public interface StuProbExerService {
     void checkProbListExist(List<Integer> prob_ids);
     // 通过 exer 得到 prob id list
     List<Integer> getProbIDListByExerId(Integer exer_id);
+    // 根据exerId得到题目列表
+    List<Problem> getProbModelListByExerId(Integer exerId);
 }

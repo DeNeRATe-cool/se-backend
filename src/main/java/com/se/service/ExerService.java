@@ -32,4 +32,6 @@ public interface ExerService {
     void push(PushExerDTO pushExerDTO);
 
     Exercise info(Integer exerId);
+
+    List<Problem> listProblemByExerId(Integer exerId);
 }

@@ -50,6 +50,14 @@ public interface StuProbExerDao {
     List<StuProbExer> getProblemListByExerID(Integer exerId);
 
     /**
+     * 任务可以不是模板任务
+     * @param exer_id
+     * @return
+     */
+    @Select("select * from t_stu_prob_exer where exer_id = #{exerId}")
+    List<StuProbExer> getProblemListByExerIDBroaden(Integer exer_id);
+
+    /**
      * 通过学习 + 题目 + 练习查询记录
      */
     @Select("select * from t_stu_prob_exer where stu_id = #{userId} and prob_id = #{probId} and exer_id = #{exerId}")
