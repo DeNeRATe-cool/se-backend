@@ -73,4 +73,13 @@ public class ExerController {
         List<Problem> res = exerService.listProblemByExerId(exer_id);
         return Result.ok(res,res.size());
     }
+
+    @GetMapping("/class/get")
+    public Result listExerByCourseAndClass(@RequestParam Integer course_id,
+                                  @RequestParam Integer class_id)
+    {
+        List<Exercise> res = exerService.listExerByCourseAndClass(course_id,class_id);
+        return Result.ok(res,res.size());
+    }
+
 }

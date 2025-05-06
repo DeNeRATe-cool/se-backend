@@ -2,6 +2,7 @@ package com.se.service;
 
 import com.se.dao.StuProbExerDao;
 import com.se.dto.StuProbExer;
+import com.se.entity.Exercise;
 import com.se.entity.Problem;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;

@@ -34,4 +34,6 @@ public interface ExerService {
     Exercise info(Integer exerId);
 
     List<Problem> listProblemByExerId(Integer exerId);
+
+    List<Exercise> listExerByCourseAndClass(Integer courseId, Integer classId);
 }

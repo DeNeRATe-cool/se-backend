@@ -289,6 +289,14 @@ public class ExerServiceImpl implements ExerService {
         return problemList;
     }
 
+    @Override
+    public List<Exercise> listExerByCourseAndClass(Integer courseId, Integer classId) {
+
+        userCourseClassService.checkCourseAndClass(courseId,classId);
+        List<Exercise> exerciseList = exerDao.getExerByClass(classId);
+        return exerciseList;
+    }
+
     private void OptionProblemCheck(List<StuProbExer> baseList, List<Problem> proList, List<StuProbExer> stuExerList, Integer userId) {
         for(int i = 0; i < proList.size(); i++) {
             Problem problem = proList.get(i);
