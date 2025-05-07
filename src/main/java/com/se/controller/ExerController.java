@@ -110,4 +110,11 @@ public class ExerController {
         return Result.ok(exerciseList,exerciseList.size());
     }
 
+    @GetMapping("/self")
+    public Result listSelfCreateExer(@RequestParam Integer user_id)
+    {
+        List<Exercise> exerciseList = exerService.listSelfCreateExer(user_id);
+        return Result.ok(exerciseList,exerciseList.size());
+    }
+
 }
