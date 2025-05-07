@@ -4,6 +4,7 @@ import cn.hutool.core.date.DateTime;
 import com.se.constant.CourseEntityConstant;
 import com.se.constant.ExerEntityConstant;
 import cn.hutool.core.date.DateUtil;
+import com.se.constant.StudentEntityConstant;
 import com.se.dao.*;
 import com.se.dto.CreateExerDTO;
 import com.se.dto.PushExerDTO;
@@ -65,6 +66,11 @@ public class ExerServiceImpl implements ExerService {
 
     @Override
     public List<Integer> getStuFinishExerNum(Integer user_id, Integer course_id, Integer class_id) {
+        if(!userCourseClassService.studentInCourse(user_id, course_id))
+        {
+            throw new ParamIllegalException(CourseEntityConstant.STUDENT_NOT_IN_COURSE);
+        }
+        userCourseClassService.checkCourseAndClass(course_id,class_id);
         // 找到课程和班级对应 的 任务列表
         List<Integer> exerIDList = exerDao.getExerByStuIDAndExerID(class_id,course_id);
         List<StuProbExer> stuProbExerList = null;
