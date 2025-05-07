@@ -1,6 +1,7 @@
 package com.se.service.impl;
 
 import cn.hutool.core.date.DateTime;
+import com.se.constant.CourseEntityConstant;
 import com.se.constant.ExerEntityConstant;
 import cn.hutool.core.date.DateUtil;
 import com.se.dao.*;
@@ -14,6 +15,7 @@ import com.se.entity.Problem;
 import com.se.entity.User;
 import com.se.exception.checkException.ScoreOutOfRangeException;
 import com.se.exception.ParamIllegalException;
+import com.se.exception.exerciseException.ExerciseNotFinishException;
 import com.se.service.ExerService;
 import com.se.utils.ProblemUtil;
 import com.se.service.StuProbExerService;
@@ -373,6 +375,24 @@ public class ExerServiceImpl implements ExerService {
     public List<Exercise> listSelfCreateExer(Integer userId) {
         List<Exercise> exerciseList = exerDao.getExerByCreatorIdWithClassIdInval(userId);
         return exerciseList;
+    }
+
+    @Override
+    public void submit(Integer exerId, Integer userId) {
+        userCourseClassService.checkIsStudent(userId);
+        Exercise exercise = exerDao.getExerById(exerId);
+        Integer course_id = exercise.getCourse_id();
+        if(!userCourseClassService.studentInCourse(userId, course_id))
+        {
+            throw new ParamIllegalException(CourseEntityConstant.STUDENT_NOT_IN_COURSE);
+        }
+        if(!stuProbExerService.checkStudentFinishExercise(exerId,userId))
+        {
+            throw new ExerciseNotFinishException(ExerEntityConstant.EXER_NOT_FINISHED);
+        }
+
+        stuProbExerService.setFinishedByExerIdAndUserId(exerId,userId);
+
     }
 
     private void OptionProblemCheck(List<StuProbExer> baseList, List<Problem> proList, List<StuProbExer> stuExerList, Integer userId) {

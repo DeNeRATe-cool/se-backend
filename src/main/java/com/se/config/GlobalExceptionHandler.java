@@ -12,6 +12,7 @@ import com.se.exception.classException.DuplicateClassException;
 import com.se.exception.collectException.CollectAlreadyExistException;
 import com.se.exception.collectException.CollectNotExistException;
 import com.se.exception.courseException.*;
+import com.se.exception.exerciseException.ExerciseNotFinishException;
 import com.se.exception.resException.ResTypeArgumentException;
 import com.se.exception.userException.UserNotFoundException;
 import com.se.exception.userException.UserPermissionException;
@@ -349,6 +350,15 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(MissingServletRequestParameterException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Result handleMissingServletRequestParameterException(MissingServletRequestParameterException ex) {
+        log.error(ex.getMessage(),ex);
+        return Result.fail(ex.getMessage());
+    }
+    /**
+     * 任务尚未完成
+     */
+    @ExceptionHandler(ExerciseNotFinishException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Result handleExerciseNotFinish(ExerciseNotFinishException ex) {
         log.error(ex.getMessage(),ex);
         return Result.fail(ex.getMessage());
     }

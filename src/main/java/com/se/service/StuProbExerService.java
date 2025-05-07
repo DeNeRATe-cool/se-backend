@@ -19,4 +19,17 @@ public interface StuProbExerService {
     List<Integer> getProbIDListByExerId(Integer exer_id);
     // 根据exerId得到题目列表
     List<Problem> getProbModelListByExerId(Integer exerId);
+    // 根据用户id + 任务id得到学生的 stuProbExer列表
+    List<StuProbExer> getStuProbExerByExerIdAndUserId(Integer exerId, Integer userId);
+    // 判断学生是否完成任务
+
+    /**
+     * 前提：任务和学生对应
+     * @param exerId
+     * @param userId
+     * @return
+     */
+    Boolean checkStudentFinishExercise(Integer exerId, Integer userId);
+
+    void setFinishedByExerIdAndUserId(Integer exerId, Integer userId);
 }

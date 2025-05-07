@@ -46,4 +46,6 @@ public interface ExerService {
     List<Exercise> listPublicExerByCourse(Integer courseId);
 
     List<Exercise> listSelfCreateExer(Integer userId);
+
+    void submit(Integer exerId, Integer userId);
 }

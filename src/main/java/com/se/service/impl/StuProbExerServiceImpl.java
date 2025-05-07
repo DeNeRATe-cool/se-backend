@@ -83,4 +83,27 @@ public class StuProbExerServiceImpl implements StuProbExerService {
         return problemList;
     }
 
+    @Override
+    public List<StuProbExer> getStuProbExerByExerIdAndUserId(Integer exerId, Integer userId) {
+        List<StuProbExer> stuProbExerList = stuProbExerDao.listProbByExerIdAndUserId(exerId,userId);
+        return stuProbExerList;
+    }
+
+    public Boolean checkStudentFinishExercise(Integer exerId, Integer userId) {
+        List<StuProbExer> stuProbExerList = getStuProbExerByExerIdAndUserId(exerId, userId);
+        for(StuProbExer spe: stuProbExerList) {
+            if(!spe.getIs_finish())
+            {
+                System.out.println(spe.getProb_id());
+                return false;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public void setFinishedByExerIdAndUserId(Integer exerId, Integer userId) {
+        stuProbExerDao.setFinishedByExerIdAndUserId(exerId,userId);
+    }
+
 }

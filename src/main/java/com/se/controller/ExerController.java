@@ -5,6 +5,7 @@ import com.se.dao.ExerDao;
 import com.se.dto.CreateExerDTO;
 import com.se.dto.PushExerDTO;
 import com.se.dto.Result;
+import com.se.dto.SubmitExerciseDTO;
 import com.se.entity.Exercise;
 import com.se.entity.Problem;
 import com.se.service.ExerService;
@@ -115,6 +116,15 @@ public class ExerController {
     {
         List<Exercise> exerciseList = exerService.listSelfCreateExer(user_id);
         return Result.ok(exerciseList,exerciseList.size());
+    }
+
+    @PostMapping("/submit")
+    public Result submit(@RequestBody SubmitExerciseDTO submitExerciseDTO)
+    {
+        Integer exer_id = submitExerciseDTO.getExer_id();
+        Integer user_id = submitExerciseDTO.getUser_id();
+        exerService.submit(exer_id,user_id);
+        return Result.ok();
     }
 
 }

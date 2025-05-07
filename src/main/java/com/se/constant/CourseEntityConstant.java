@@ -24,4 +24,7 @@ public class CourseEntityConstant {
     // 课程id不合法
     public static final String COURSE_ID_INVALID = "课程id应该为正数";
 
+    // 学生不在课程中
+    public static final String STUDENT_NOT_IN_COURSE = "学生不在课程中";
+
 }
