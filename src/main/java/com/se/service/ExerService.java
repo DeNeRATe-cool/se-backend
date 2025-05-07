@@ -50,4 +50,6 @@ public interface ExerService {
     void submit(Integer exerId, Integer userId);
 
     Integer countFinish(Integer exerId);
+
+    List<List<?>> getHistory(Integer userId);
 }
