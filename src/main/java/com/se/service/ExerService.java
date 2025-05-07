@@ -42,4 +42,6 @@ public interface ExerService {
     List<Exercise> listDoneExerByStuId(Integer userId);
 
     List<Exercise> listToDoExerByStuId(Integer userId);
+
+    List<Exercise> listPublicExerByCourse(Integer courseId);
 }

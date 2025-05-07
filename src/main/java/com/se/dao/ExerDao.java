@@ -36,4 +36,6 @@ public interface ExerDao {
     @Select("select * from t_exer where exer_id=#{exer_id}")
     List<Exercise> getExerByExerId(Integer exerId);
 
+    @Select("select * from t_exer where course_id=#{courseId} and class_id=-1")
+    List<Exercise> getExerByCourseIdWithClassIdInval(Integer courseId);
 }

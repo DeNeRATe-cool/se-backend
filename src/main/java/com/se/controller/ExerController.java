@@ -103,4 +103,11 @@ public class ExerController {
         return Result.ok(exerciseList,exerciseList.size());
     }
 
+    @GetMapping("/public")
+    public Result listPublicExerByCourse(@RequestParam Integer course_id)
+    {
+        List<Exercise>exerciseList = exerService.listPublicExerByCourse(course_id);
+        return Result.ok(exerciseList,exerciseList.size());
+    }
+
 }
