@@ -38,4 +38,8 @@ public interface ExerService {
     List<Exercise> listExerByCourseAndClass(Integer courseId, Integer classId);
 
     List<Exercise> listExerByStuId(Integer user_id);
+
+    List<Exercise> listDoneExerByStuId(Integer userId);
+
+    List<Exercise> listToDoExerByStuId(Integer userId);
 }

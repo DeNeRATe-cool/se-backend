@@ -331,6 +331,37 @@ public class ExerServiceImpl implements ExerService {
         return exerciseList;
     }
 
+    @Override
+    public List<Exercise> listDoneExerByStuId(Integer userId) {
+        userCourseClassService.checkIsStudent(userId);
+        List<StuProbExer> stuProbExerList = stuProbExerDao.getByStuIdWithProbInval(userId);
+        List<Exercise> exerciseList = new ArrayList<>();
+
+        for(StuProbExer spe: stuProbExerList)
+        {
+            if(!spe.getIs_finish()) continue;
+            Integer exer_id = spe.getExer_id();
+            Exercise exercise = exerDao.getExerById(exer_id);
+            exerciseList.add(exercise);
+        }
+        return exerciseList;
+    }
+
+    @Override
+    public List<Exercise> listToDoExerByStuId(Integer userId) {
+        userCourseClassService.checkIsStudent(userId);
+        List<StuProbExer> stuProbExerList = stuProbExerDao.getByStuIdWithProbInval(userId);
+        List<Exercise> exerciseList = new ArrayList<>();
+        for(StuProbExer spe: stuProbExerList)
+        {
+            if(spe.getIs_finish()) continue;
+            Integer exer_id = spe.getExer_id();
+            Exercise exercise = exerDao.getExerById(exer_id);
+            exerciseList.add(exercise);
+        }
+        return exerciseList;
+    }
+
     private void OptionProblemCheck(List<StuProbExer> baseList, List<Problem> proList, List<StuProbExer> stuExerList, Integer userId) {
         for(int i = 0; i < proList.size(); i++) {
             Problem problem = proList.get(i);

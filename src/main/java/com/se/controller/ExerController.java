@@ -89,4 +89,18 @@ public class ExerController {
         return Result.ok(exerciseList,exerciseList.size());
     }
 
+    @GetMapping("/alldone")
+    public Result listDoneExerByStuId(@RequestParam Integer user_id)
+    {
+        List<Exercise> exerciseList = exerService.listDoneExerByStuId(user_id);
+        return Result.ok(exerciseList,exerciseList.size());
+    }
+
+    @GetMapping("/allTodo")
+    public Result listToDoExerByStuId(@RequestParam Integer user_id)
+    {
+        List<Exercise>exerciseList = exerService.listToDoExerByStuId(user_id);
+        return Result.ok(exerciseList,exerciseList.size());
+    }
+
 }
