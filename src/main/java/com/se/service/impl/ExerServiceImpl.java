@@ -395,6 +395,11 @@ public class ExerServiceImpl implements ExerService {
 
     }
 
+    @Override
+    public Integer countFinish(Integer exerId) {
+        return stuProbExerService.countFinish(exerId);
+    }
+
     private void OptionProblemCheck(List<StuProbExer> baseList, List<Problem> proList, List<StuProbExer> stuExerList, Integer userId) {
         for(int i = 0; i < proList.size(); i++) {
             Problem problem = proList.get(i);

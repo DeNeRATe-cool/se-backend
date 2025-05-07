@@ -32,6 +32,19 @@ public class StuProbExerServiceImpl implements StuProbExerService {
     private ProbDao probDao;
 
     @Override
+    public Integer countFinish(Integer exerId) {
+        List<StuProbExer> stuProbExerList = stuProbExerDao.listByExerIdWithProbIdInvalAndStuIdValid(exerId);
+        Integer count = 0;
+        for(StuProbExer stuProbExer : stuProbExerList){
+            if(stuProbExer.getIs_finish())
+            {
+                count+=1;
+            }
+        }
+        return count;
+    }
+
+    @Override
     public Boolean isProbExist(Integer prob_id) {
         List<Problem> problemList = probDao.selectByProbId(prob_id);
         return !problemList.isEmpty();

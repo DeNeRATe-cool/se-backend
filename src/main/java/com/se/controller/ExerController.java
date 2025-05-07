@@ -127,4 +127,11 @@ public class ExerController {
         return Result.ok();
     }
 
+    @GetMapping("/all/finish")
+    public Result countFinsh(@RequestParam Integer exer_id)
+    {
+        Integer finishCount = exerService.countFinish(exer_id);
+        return Result.ok(finishCount);
+    }
+
 }

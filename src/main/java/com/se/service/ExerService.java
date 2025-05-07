@@ -48,4 +48,6 @@ public interface ExerService {
     List<Exercise> listSelfCreateExer(Integer userId);
 
     void submit(Integer exerId, Integer userId);
+
+    Integer countFinish(Integer exerId);
 }

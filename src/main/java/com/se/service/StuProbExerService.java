@@ -11,6 +11,9 @@ import java.util.List;
 
 @Transactional
 public interface StuProbExerService {
+    // 得到任务完成数量
+    Integer countFinish(Integer exerId);
+
     // 判断题目是否存在
     Boolean isProbExist(Integer prob_id);
     // 判断题目列表是否都存在

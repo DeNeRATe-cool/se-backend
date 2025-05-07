@@ -108,4 +108,7 @@ public interface StuProbExerDao {
 
     @Update("update t_stu_prob_exer set is_finish=1 where exer_id=#{exer_id} and stu_id=#{stu_id}")
     void setFinishedByExerIdAndUserId(@Param("exer_id") Integer exer_id, @Param("stu_id") Integer stu_id);
+
+    @Select("select * from t_stu_prob_exer where exer_id=#{exerId} and prob_id=-1 and stu_id != -1")
+    List<StuProbExer> listByExerIdWithProbIdInvalAndStuIdValid(Integer exerId);
 }
