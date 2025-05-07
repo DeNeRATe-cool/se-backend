@@ -52,6 +52,7 @@ public class ExerServiceImpl implements ExerService {
 
     @Autowired
     private StuProbExerService stuProbExerService;
+
     @Autowired
     private ProbDao probDao;
 
@@ -372,7 +373,6 @@ public class ExerServiceImpl implements ExerService {
 
     @Override
     public List<Exercise> listPublicExerByCourse(Integer courseId) {
-
         List<Exercise>exerciseList = exerDao.getExerByCourseIdWithClassIdInval(courseId);
         return exerciseList;
     }
@@ -404,6 +404,36 @@ public class ExerServiceImpl implements ExerService {
     @Override
     public Integer countFinish(Integer exerId) {
         return stuProbExerService.countFinish(exerId);
+    }
+
+    @Override
+    public List<List<?>> getHistory(Integer userId) {
+        List<Exercise> exerciseList =listExerByStuId(userId);
+        List<List<?>> historyList = new ArrayList<>();
+        List<Exercise> exerList = new ArrayList<>();
+        List<Integer> rankList = new ArrayList<>();
+        List<Integer> gradeList = new ArrayList<>();
+
+        for(Exercise exercise: exerciseList) {
+            List<List<?>> resList = getGradeAndRank(exercise.getExer_id());
+            List<User> users = (List<User>) resList.get(0);
+            List<Integer> grades = (List<Integer>) resList.get(1);
+            for(int i = 0; i < resList.get(0).size(); i++) {
+                if(users.get(i).getUser_id().equals(userId)) {
+                    if(!grades.get(i).equals(-1)) {
+                        exerList.add(exerDao.getExerById(exercise.getExer_id()));
+                        rankList.add(i + 1);
+                        gradeList.add(grades.get(i));
+                    }
+                    break;
+                }
+            }
+        }
+
+        historyList.add(exerList);
+        historyList.add(rankList);
+        historyList.add(gradeList);
+        return historyList;
     }
 
     private void OptionProblemCheck(List<StuProbExer> baseList, List<Problem> proList, List<StuProbExer> stuExerList, Integer userId) {

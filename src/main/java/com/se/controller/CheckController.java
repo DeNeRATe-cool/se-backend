@@ -105,4 +105,11 @@ public class CheckController {
         List<List<?>> resList = exerService.getAccessRatio(exerId);
         return Result.ok(resList, resList.size());
     }
+
+    @GetMapping("/history")
+    public Result getHistory(
+            @RequestParam("user_id") Integer userId) {
+        List<List<?>> resList = exerService.getHistory(userId);
+        return Result.ok(resList, resList.size());
+    }
 }
