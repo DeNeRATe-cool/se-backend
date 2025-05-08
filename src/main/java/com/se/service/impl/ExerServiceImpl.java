@@ -18,12 +18,20 @@ import com.se.exception.checkException.ScoreOutOfRangeException;
 import com.se.exception.ParamIllegalException;
 import com.se.exception.exerciseException.ExerciseNotFinishException;
 import com.se.service.ExerService;
+import com.se.utils.OssService;
 import com.se.utils.ProblemUtil;
 import com.se.service.StuProbExerService;
 import com.se.service.UserCourseClassService;
+import com.se.utils.ReportGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -52,6 +60,9 @@ public class ExerServiceImpl implements ExerService {
 
     @Autowired
     private StuProbExerService stuProbExerService;
+
+    @Autowired
+    private OssService ossService;
 
     @Autowired
     private ProbDao probDao;
@@ -434,6 +445,20 @@ public class ExerServiceImpl implements ExerService {
         historyList.add(rankList);
         historyList.add(gradeList);
         return historyList;
+    }
+
+    @Override
+    public String generateExerciseReport(Integer userId) throws IOException {
+        List<List<?>> resList = getHistory(userId);
+        String filePath = ReportGenerator.generateExerciseReport(
+                userDao.getSingleUserByID(userId),
+                (List<Exercise>) resList.get(0),
+                (List<Integer>) resList.get(1),
+                (List<Integer>) resList.get(2)
+        );
+        System.out.println(filePath);
+        InputStream is = new FileInputStream(filePath);
+        return ossService.uploadFile(filePath, is);
     }
 
     private void OptionProblemCheck(List<StuProbExer> baseList, List<Problem> proList, List<StuProbExer> stuExerList, Integer userId) {
