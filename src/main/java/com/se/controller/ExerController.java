@@ -15,6 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -134,6 +136,11 @@ public class ExerController {
         return Result.ok(finishCount);
     }
 
-
+    @GetMapping("/stuReport")
+    public Result generateExerciseReport(
+            @RequestParam("user_id") Integer userId) throws IOException {
+        String url = exerService.generateExerciseReport(userId);
+        return Result.ok(url);
+    }
 
 }

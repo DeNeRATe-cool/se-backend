@@ -32,6 +32,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -359,6 +360,16 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(ExerciseNotFinishException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Result handleExerciseNotFinish(ExerciseNotFinishException ex) {
+        log.error(ex.getMessage(),ex);
+        return Result.fail(ex.getMessage());
+    }
+
+    /**
+     * 为找到文件
+     */
+    @ExceptionHandler(FileNotFoundException.class)
+    @ResponseStatus(HttpStatus.NOT_FOUND)
+    public Result handleFileNotFound(FileNotFoundException ex) {
         log.error(ex.getMessage(),ex);
         return Result.fail(ex.getMessage());
     }
