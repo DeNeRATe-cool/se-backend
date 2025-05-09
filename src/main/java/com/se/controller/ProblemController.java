@@ -4,6 +4,7 @@ import com.se.dto.CreateProbDTO;
 import com.se.dto.Result;
 import com.se.entity.Problem;
 import com.se.service.ProblemService;
+import org.apache.ibatis.ognl.ListPropertyAccessor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,5 +27,11 @@ public class ProblemController {
     public Result CreateProb(@RequestBody Problem problem){
         Problem prob=problemService.createProb(problem);
         return Result.ok(prob);
+    }
+
+    @GetMapping("/self")
+    public Result GetselfProb(@RequestParam("user_id") Integer userid,@RequestParam("types") Integer types){
+        List<Problem> selfProb=problemService.SelfProb(userid,types);
+        return Result.ok(selfProb,selfProb.size());
     }
 }

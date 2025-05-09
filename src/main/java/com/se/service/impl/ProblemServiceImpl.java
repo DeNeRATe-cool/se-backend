@@ -33,4 +33,11 @@ public class ProblemServiceImpl implements ProblemService {
         int r=probDAO.createProb(problem);
         return problem;
     }
+
+    @Override
+    public List<Problem> SelfProb(Integer userid, Integer types) {
+        return probDAO.getSelfProb(userid,types);
+    }
+
+
 }

@@ -9,4 +9,6 @@ public interface ProblemService {
     List<Problem> PublicProb(Integer type);
 
     Problem createProb(Problem problem);
+
+    List<Problem> SelfProb(Integer userid, Integer types);
 }

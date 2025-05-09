@@ -2,10 +2,7 @@ package com.se.dao;
 
 import com.se.dto.CreateProbDTO;
 import com.se.entity.Problem;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -25,4 +22,7 @@ public interface ProbDao {
     "values (#{is_public},#{type},#{creator_id},#{description},#{str_content},#{answer},#{analysis},now())")
 //    @Options(useGeneratedKeys = true, keyProperty = "prob_id")
     int createProb(Problem problem);
+
+    @Select("select * from t_prob where type = #{types} and creator_id = #{userid}")
+    List<Problem> getSelfProb(@Param("userid") Integer userid,@Param("types") Integer types);
 }
