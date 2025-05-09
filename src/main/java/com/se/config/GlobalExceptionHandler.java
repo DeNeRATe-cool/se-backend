@@ -24,8 +24,10 @@ import com.aliyun.oss.ClientException;
 import com.aliyun.oss.OSSException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.validation.FieldError;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -40,6 +42,12 @@ import java.sql.SQLException;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Result handleValidationException(MethodArgumentNotValidException ex) {
+        log.error(ex.getMessage(), ex);
+        return Result.fail("参数校验异常："+ex.getMessage());
+    }
     /**
      * 请求方式错误
      */

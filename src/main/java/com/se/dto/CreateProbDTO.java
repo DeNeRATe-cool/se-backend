@@ -1,30 +1,27 @@
-package com.se.entity;
+package com.se.dto;
 
-import cn.hutool.core.date.DateTime;
 import lombok.Data;
+import lombok.NonNull;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 
 @Data
-public class Problem {
-
+public class CreateProbDTO {
     private Integer prob_id;
-
-    private Boolean is_public;
-
+    @NotNull
     private Integer type;
-
+    @NotNull
+    private Boolean is_public;
+    @NotNull
     private Integer creator_id;
-
-    private DateTime creation_time;
-
+    @NotNull
     private String description;
 
     private List<String> content;
-
-    private String str_content;
-
+    @NotNull
     private String answer;
 
     private String analysis;
+    private String str_content;
 }

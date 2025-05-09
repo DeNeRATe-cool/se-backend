@@ -1,9 +1,12 @@
 package com.se.service;
 
+import com.se.dto.CreateProbDTO;
 import com.se.entity.Problem;
 
 import java.util.List;
 
 public interface ProblemService {
-    public List<Problem> PublicProb(Integer type);
+    List<Problem> PublicProb(Integer type);
+
+    Problem createProb(Problem problem);
 }

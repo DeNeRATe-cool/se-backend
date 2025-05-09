@@ -1,7 +1,10 @@
 package com.se.dao;
 
+import com.se.dto.CreateProbDTO;
 import com.se.entity.Problem;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
@@ -17,4 +20,9 @@ public interface ProbDao {
 
     @Select("select * from t_prob where type = #{type} and is_public = True")
     List<Problem> getProbByType(Integer type);
+
+    @Insert("insert into t_prob(is_public,type,creator_id,description,content,answer,analysis,create_time)"+
+    "values (#{is_public},#{type},#{creator_id},#{description},#{str_content},#{answer},#{analysis},now())")
+//    @Options(useGeneratedKeys = true, keyProperty = "prob_id")
+    int createProb(Problem problem);
 }
