@@ -143,4 +143,11 @@ public class ExerController {
         return Result.ok(url);
     }
 
+    @GetMapping("/adminReport")
+    public Result generateFeedbackReport(
+            @RequestParam("exer_id") Integer exerid) throws IOException {
+        String url = exerService.generateFeedbackReport(exerid);
+        return Result.ok(url);
+    }
+
 }

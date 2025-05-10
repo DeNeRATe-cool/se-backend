@@ -4,7 +4,6 @@ import cn.hutool.core.date.DateTime;
 import com.se.constant.CourseEntityConstant;
 import com.se.constant.ExerEntityConstant;
 import cn.hutool.core.date.DateUtil;
-import com.se.constant.StudentEntityConstant;
 import com.se.dao.*;
 import com.se.dto.CreateExerDTO;
 import com.se.dto.PushExerDTO;
@@ -18,6 +17,7 @@ import com.se.exception.checkException.ScoreOutOfRangeException;
 import com.se.exception.ParamIllegalException;
 import com.se.exception.exerciseException.ExerciseNotFinishException;
 import com.se.service.ExerService;
+import com.se.utils.ExerciseFeedbackReportGenerator;
 import com.se.utils.OssService;
 import com.se.utils.ProblemUtil;
 import com.se.service.StuProbExerService;
@@ -27,7 +27,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -200,15 +199,22 @@ public class ExerServiceImpl implements ExerService {
         exerProbList.sort(Comparator.comparing(StuProbExer::getIdx));
 
         // 获取通过比例: 得分 != 标准分
+        // 获取平均分
         List<Float> ratioList = new ArrayList<>();
+        List<Float> averageList = new ArrayList<>();
         for(StuProbExer probId: exerProbList) {
             List<StuProbExer> scoreList = stuProbExerDao.getStuProbResultByExerIDAndProbID(exerId, probId.getProb_id());
-            int cnt = 0;
+            int cntFull = 0, cntCheck = 0, totScore = 0;
             for(StuProbExer spr: scoreList) {
                 if(spr.getScore().equals(probId.getScore()))
-                    cnt++;
+                    cntFull++;
+                if(spr.getIs_check()) {
+                    cntCheck += 1;
+                    totScore += spr.getScore();
+                }
             }
-            ratioList.add(scoreList.isEmpty() ? (float) -1 : (float)cnt / scoreList.size());
+            ratioList.add(scoreList.isEmpty() ? (float) -1 : (float) cntFull / scoreList.size());
+            averageList.add(scoreList.isEmpty() ? (float) -1 : (float)totScore / cntCheck);
         }
 
         // 获取题目
@@ -220,6 +226,7 @@ public class ExerServiceImpl implements ExerService {
         List<List<?>> infoList = new ArrayList<>();
         infoList.add(problems);
         infoList.add(ratioList);
+        infoList.add(averageList);
         return infoList;
     }
 
@@ -456,7 +463,28 @@ public class ExerServiceImpl implements ExerService {
                 (List<Integer>) resList.get(1),
                 (List<Integer>) resList.get(2)
         );
-        System.out.println(filePath);
+//        System.out.println(filePath);
+        InputStream is = new FileInputStream(filePath);
+        return ossService.uploadFile(filePath, is);
+    }
+
+    @Override
+    public String generateFeedbackReport(Integer exerId) throws IOException {
+        Exercise exercise = exerDao.getExerById(exerId);
+        List<List<?>> rankList = getGradeAndRank(exerId);
+        List<List<?>> probInfoList = getAccessRatio(exerId);
+
+        List<User> students = (List<User>) rankList.get(0);
+        List<Integer> scores = (List<Integer>) rankList.get(1);
+
+        List<Problem> problems = (List<Problem>) probInfoList.get(0);
+        List<Float> ratios = (List<Float>) probInfoList.get(1);
+        List<Float> averages = (List<Float>) probInfoList.get(2);
+
+        String filePath = ExerciseFeedbackReportGenerator.generateReport(
+                exercise, students, scores, problems, ratios, averages
+        );
+//        System.out.println(filePath);
         InputStream is = new FileInputStream(filePath);
         return ossService.uploadFile(filePath, is);
     }

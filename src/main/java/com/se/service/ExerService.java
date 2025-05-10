@@ -9,7 +9,6 @@ import com.se.entity.Problem;
 import com.se.entity.User;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 
@@ -56,4 +55,6 @@ public interface ExerService {
     List<List<?>> getHistory(Integer userId);
 
     String generateExerciseReport(Integer userId) throws IOException;
+
+    String generateFeedbackReport(Integer exerId) throws IOException;
 }
