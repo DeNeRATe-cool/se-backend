@@ -80,7 +80,7 @@ public class ReportGenerator {
                 "<head>\n" +
                 "    <meta charset=\"UTF-8\">\n" +
                 "    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n" +
-                "    <title>学习成绩报告 - " + user.getName() + "</title>\n" +
+                "    <title>学生练习报告 - " + user.getName() + "</title>\n" +
                 "    <script src=\"https://cdn.jsdelivr.net/npm/chart.js\"></script>\n" +
                 "    <style>\n" +
                 "        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');\n" +
@@ -453,7 +453,7 @@ public class ReportGenerator {
                 "<body>\n" +
                 "    <div class=\"container\">\n" +
                 "        <header>\n" +
-                "            <h1>学习成绩报告</h1>\n" +
+                "            <h1>学生练习报告</h1>\n" +
                 "            <p>" + user.getName() + " (" + user.getUsername() + ")</p>\n" +
                 "            <div class=\"student-info\">\n" +
                 "                <div>\n" +
