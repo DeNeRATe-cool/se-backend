@@ -463,7 +463,7 @@ public class ExerServiceImpl implements ExerService {
                 (List<Integer>) resList.get(1),
                 (List<Integer>) resList.get(2)
         );
-        System.out.println(filePath);
+//        System.out.println(filePath);
         InputStream is = new FileInputStream(filePath);
         return ossService.uploadFile(filePath, is);
     }
@@ -484,7 +484,7 @@ public class ExerServiceImpl implements ExerService {
         String filePath = ExerciseFeedbackReportGenerator.generateReport(
                 exercise, students, scores, problems, ratios, averages
         );
-        System.out.println(filePath);
+//        System.out.println(filePath);
         InputStream is = new FileInputStream(filePath);
         return ossService.uploadFile(filePath, is);
     }
