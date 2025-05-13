@@ -14,6 +14,7 @@ import com.se.exception.collectException.CollectNotExistException;
 import com.se.exception.courseException.*;
 import com.se.exception.exerciseException.ExerciseNotFinishException;
 import com.se.exception.resException.ResTypeArgumentException;
+import com.se.exception.userException.UserBizException;
 import com.se.exception.userException.UserNotFoundException;
 import com.se.exception.userException.UserPermissionException;
 import lombok.extern.slf4j.Slf4j;
@@ -42,6 +43,12 @@ import java.sql.SQLException;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    @ExceptionHandler(UserBizException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public Result handleUserBizException(UserBizException ex){
+        log.error(ex.getMessage(),ex);
+        return Result.fail("注册异常："+ex.getMessage());
+    }
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Result handleValidationException(MethodArgumentNotValidException ex) {

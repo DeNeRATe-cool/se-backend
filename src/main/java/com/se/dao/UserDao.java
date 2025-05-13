@@ -1,6 +1,7 @@
 package com.se.dao;
 
 import com.se.entity.User;
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -10,6 +11,11 @@ import java.util.List;
 @Mapper
 public interface UserDao {
 
+    @Select("SELECT * FROM t_user WHERE username = #{value} OR mail = #{value} LIMIT 1")
+    User findByAccount(@Param("value") String account);
+
+    @Insert("insert into t_user (username,password,name,mail,birthday,identity) values (#{username},#{password},#{name},#{mail},#{birthday},#{identity})")
+    void insert(User user);
     @Select("select * from t_user where user_id=#{user_id}")
     List<User> getUserByID(Integer user_id);
 

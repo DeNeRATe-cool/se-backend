@@ -1,12 +1,13 @@
 package com.se.controller;
 
 import com.se.dto.Result;
+import com.se.dto.UserLoginDTO;
+import com.se.dto.UserRegDTO;
 import com.se.entity.User;
+import com.se.service.MailService;
 import com.se.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/user")
@@ -14,7 +15,21 @@ public class UserController {
 
     @Autowired
     private UserService userService;
-
+    @Autowired
+    private MailService mailService;
+    @PostMapping("/login")
+    public Result login(@RequestBody UserLoginDTO dto){
+        return userService.login(dto);
+    }
+    @GetMapping("/verify")
+    public Result sendVerifyCode(@RequestParam String mail){
+        return mailService.sendVerifyCode(mail);
+    }
+    @PostMapping("/reg")
+    public Result register(@RequestBody UserRegDTO userRegDTO){
+        User user=userService.register(userRegDTO);
+        return Result.ok(user);
+    }
     @RequestMapping("/info")
     public Result info(@RequestParam Integer user_id) {
         User user = userService.info(user_id);
