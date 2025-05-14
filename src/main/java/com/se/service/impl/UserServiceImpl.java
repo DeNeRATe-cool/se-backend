@@ -5,6 +5,7 @@ import com.se.dao.UserDao;
 import com.se.dto.Result;
 import com.se.dto.UserLoginDTO;
 import com.se.dto.UserRegDTO;
+import com.se.dto.UserUpdateDTO;
 import com.se.entity.User;
 import com.se.exception.userException.UserBizException;
 import com.se.exception.userException.UserNotFoundException;
@@ -46,6 +47,29 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public Result modify(UserUpdateDTO dto) {
+        User user=userDao.findById(dto.getId());
+        if(user==null){
+            throw new UserBizException("用户不存在");
+        }
+        if (StringUtils.hasText(dto.getPassword())) {
+            String password= PasswordEncoder.encode(dto.getPassword());
+            user.setPassword(password);
+        }
+        if (StringUtils.hasText(dto.getMail())) {
+            user.setMail(dto.getMail());
+        }
+        if (StringUtils.hasText(dto.getBirthday())) {
+            user.setBirthday(parseBirthday.parseBirthday(dto.getBirthday()));
+        }
+        if (StringUtils.hasText(dto.getName())) {
+            user.setName(dto.getName());
+        }
+        userDao.updateUser(user);
+        return null;
+    }
+
+    @Override
     public User info(Integer id) {
         List<User> userList = userDao.getUserByID(id);
         if(userList.isEmpty())
@@ -65,7 +89,8 @@ public class UserServiceImpl implements UserService {
         User user=new User();
         user.setUsername(userRegDTO.getUsername());
         user.setPassword(DBpassword);
-        user.setName(userRegDTO.getName());
+        String name=StringUtils.hasText(userRegDTO.getName())?userRegDTO.getName():userRegDTO.getUsername();
+        user.setName(name);
         user.setMail(userRegDTO.getMail());
 
         user.setBirthday(parseBirthday.parseBirthday(userRegDTO.getBirthday()));

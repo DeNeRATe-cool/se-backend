@@ -1,10 +1,7 @@
 package com.se.dao;
 
 import com.se.entity.User;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -26,4 +23,10 @@ public interface UserDao {
     List<User> getUserByUsername(String username);
 
     List<User> getUserByCondition(@Param("identity") Integer identity, @Param("username") String username,@Param("mail") String mail,@Param("name") String name);
+
+    @Select("select * from t_user where user_id=#{id}")
+    User findById(Integer id);
+
+    @Update("UPDATE user SET password = #{password}, name = #{name}, mail = #{mail}, birthday = #{birthday} WHERE user_id = #{id}")
+    void updateUser(User user);
 }

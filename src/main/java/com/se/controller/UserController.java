@@ -3,6 +3,7 @@ package com.se.controller;
 import com.se.dto.Result;
 import com.se.dto.UserLoginDTO;
 import com.se.dto.UserRegDTO;
+import com.se.dto.UserUpdateDTO;
 import com.se.entity.User;
 import com.se.service.MailService;
 import com.se.service.UserService;
@@ -17,6 +18,10 @@ public class UserController {
     private UserService userService;
     @Autowired
     private MailService mailService;
+    @PostMapping("/modify")
+    public Result modifyUser(@RequestBody UserUpdateDTO dto){
+        return userService.modify(dto);
+    }
     @PostMapping("/login")
     public Result login(@RequestBody UserLoginDTO dto){
         return userService.login(dto);
