@@ -9,6 +9,7 @@ import com.se.entity.User;
 public interface UserService {
 
     User info(Integer id);
+
     User register(UserRegDTO userRegDTO);
 
     Result login(UserLoginDTO dto);

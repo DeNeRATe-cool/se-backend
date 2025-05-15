@@ -7,6 +7,7 @@ import javax.validation.constraints.NotEmpty;
 public class UserLoginDTO {
     @NotEmpty
     private String account;
+
     @NotEmpty
     private String password;
 }

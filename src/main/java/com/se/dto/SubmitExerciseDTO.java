@@ -9,6 +9,7 @@ public class SubmitExerciseDTO {
 
     @NotNull
     Integer exer_id;
+
     @NotNull
     Integer user_id;
 }

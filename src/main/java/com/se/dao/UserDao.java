@@ -13,6 +13,7 @@ public interface UserDao {
 
     @Insert("insert into t_user (username,password,name,mail,birthday,identity) values (#{username},#{password},#{name},#{mail},#{birthday},#{identity})")
     void insert(User user);
+
     @Select("select * from t_user where user_id=#{user_id}")
     List<User> getUserByID(Integer user_id);
 

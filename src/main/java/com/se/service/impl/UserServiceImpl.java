@@ -26,7 +26,6 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     UserDao userDao;
-//    Map<String,Integer> mailCodeMap=new ConcurrentHashMap<>();
 
     @Override
     public Result login(UserLoginDTO dto) {

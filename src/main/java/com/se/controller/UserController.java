@@ -16,25 +16,31 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+
     @Autowired
     private MailService mailService;
+
     @PostMapping("/modify")
     public Result modifyUser(@RequestBody UserUpdateDTO dto){
         return userService.modify(dto);
     }
+
     @PostMapping("/login")
     public Result login(@RequestBody UserLoginDTO dto){
         return userService.login(dto);
     }
+
     @GetMapping("/verify")
     public Result sendVerifyCode(@RequestParam String mail){
         return mailService.sendVerifyCode(mail);
     }
+
     @PostMapping("/reg")
     public Result register(@RequestBody UserRegDTO userRegDTO){
         User user=userService.register(userRegDTO);
         return Result.ok(user);
     }
+
     @RequestMapping("/info")
     public Result info(@RequestParam Integer user_id) {
         User user = userService.info(user_id);
