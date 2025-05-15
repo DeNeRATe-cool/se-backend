@@ -1,7 +1,6 @@
 package com.se.dto;
 
 import lombok.Data;
-import lombok.NonNull;
 
 import javax.validation.constraints.NotNull;
 import java.util.List;

@@ -16,10 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.sql.Date;
 import java.util.List;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -81,14 +78,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public User register(UserRegDTO userRegDTO) {
         Integer storedCode = MailSerivceImpl.VERIFY_CODE_CACHE.get(userRegDTO.getMail());
-        if(storedCode==null||!storedCode.equals(userRegDTO.getVerifyCode())){
+        if(storedCode == null || !storedCode.equals(userRegDTO.getVerifyCode())){
             throw new UserBizException("验证码错误或者过期");
         }
-        String DBpassword= PasswordEncoder.encode(userRegDTO.getPassword());
-        User user=new User();
+        String DBpassword = PasswordEncoder.encode(userRegDTO.getPassword());
+        User user = new User();
         user.setUsername(userRegDTO.getUsername());
         user.setPassword(DBpassword);
-        String name=StringUtils.hasText(userRegDTO.getName())?userRegDTO.getName():userRegDTO.getUsername();
+        String name = StringUtils.hasText(userRegDTO.getName())?userRegDTO.getName():userRegDTO.getUsername();
         user.setName(name);
         user.setMail(userRegDTO.getMail());
 

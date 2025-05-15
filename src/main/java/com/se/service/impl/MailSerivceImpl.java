@@ -17,10 +17,14 @@ import java.util.concurrent.ConcurrentHashMap;
 @Service
 @RequiredArgsConstructor
 public class MailSerivceImpl implements MailService {
+
     private final JavaMailSender mailSender;
+
     @Value("${spring.mail.username}")
     private String from;
-    public static final Map<String,Integer> VERIFY_CODE_CACHE=new ConcurrentHashMap<>();
+
+    public static final Map<String,Integer> VERIFY_CODE_CACHE = new ConcurrentHashMap<>();
+
     @Override
     public Result sendVerifyCode(String mail) {
         if(!mail.matches("^[\\w.-]+@[\\w.-]+\\.[a-zA-Z]{2,}$")){
