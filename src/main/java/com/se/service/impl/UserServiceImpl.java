@@ -2,14 +2,12 @@ package com.se.service.impl;
 
 import com.se.constant.UserEntityConstant;
 import com.se.dao.UserDao;
-import com.se.dto.Result;
-import com.se.dto.UserLoginDTO;
-import com.se.dto.UserRegDTO;
-import com.se.dto.UserUpdateDTO;
+import com.se.dto.*;
 import com.se.entity.User;
 import com.se.exception.userException.UserBizException;
 import com.se.exception.userException.UserNotFoundException;
 import com.se.service.UserService;
+import com.se.utils.JwtUtil;
 import com.se.utils.PasswordEncoder;
 import com.se.utils.parseBirthday;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,8 +36,9 @@ public class UserServiceImpl implements UserService {
         if(!PasswordEncoder.matches(user.getPassword(),password)){
             return Result.fail("密码错误");
         }
-
-        return Result.ok(user);
+        String token= JwtUtil.generateToken(user.getUser_id());
+        LoginResponseDTO loginResponseDTO=new LoginResponseDTO(token,user);
+        return Result.ok(loginResponseDTO);
     }
 
     @Override
@@ -62,7 +61,7 @@ public class UserServiceImpl implements UserService {
             user.setName(dto.getName());
         }
         userDao.updateUser(user);
-        return null;
+        return Result.ok(user);
     }
 
     @Override

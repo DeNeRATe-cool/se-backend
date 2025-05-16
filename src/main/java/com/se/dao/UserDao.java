@@ -25,9 +25,9 @@ public interface UserDao {
 
     List<User> getUserByCondition(@Param("identity") Integer identity, @Param("username") String username,@Param("mail") String mail,@Param("name") String name);
 
-    @Select("select * from t_user where user_id=#{id}")
-    User findById(Integer id);
+    @Select("select * from t_user where user_id=#{user_id}")
+    User findById(Integer user_id);
 
-    @Update("UPDATE user SET password = #{password}, name = #{name}, mail = #{mail}, birthday = #{birthday} WHERE user_id = #{id}")
+    @Update("UPDATE t_user SET password = #{password}, name = #{name}, mail = #{mail}, birthday = #{birthday} WHERE user_id = #{user_id}")
     void updateUser(User user);
 }

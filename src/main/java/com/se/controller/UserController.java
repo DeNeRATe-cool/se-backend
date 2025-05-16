@@ -10,6 +10,8 @@ import com.se.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -46,5 +48,11 @@ public class UserController {
         User user = userService.info(user_id);
         return Result.ok(user);
     }
+//    @GetMapping("/info")暂且先废弃，看前端后续需要
+//    public Result getUserInfo(HttpServletRequest request) {
+//        Integer userId = Integer.valueOf((String) request.getAttribute("userId"));
+//        User user = userService.info(userId);
+//        return Result.ok(user);
+//    }
 
 }
