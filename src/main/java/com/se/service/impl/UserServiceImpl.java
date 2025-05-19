@@ -77,7 +77,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public User register(UserRegDTO userRegDTO) {
         Integer storedCode = MailSerivceImpl.VERIFY_CODE_CACHE.get(userRegDTO.getMail());
-        if(storedCode == null || !storedCode.equals(userRegDTO.getVerifyCode())){
+        System.out.println(userRegDTO.getConfirmPassword());
+        if(!userRegDTO.getPassword().equals(userRegDTO.getConfirmPassword())){
+            throw new UserBizException("密码输入不一致，请重新确认密码");
+        }
+        if(storedCode == null || !storedCode.equals(userRegDTO.getVerifyCode())) {
             throw new UserBizException("验证码错误或者过期");
         }
         String DBpassword = PasswordEncoder.encode(userRegDTO.getPassword());

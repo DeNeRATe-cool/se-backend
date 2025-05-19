@@ -20,6 +20,9 @@ public class UserRegDTO {
     private String password;
 
     @NotEmpty
+    private String confirmPassword;
+
+    @NotEmpty
     private String mail;
 
     private String birthday;
