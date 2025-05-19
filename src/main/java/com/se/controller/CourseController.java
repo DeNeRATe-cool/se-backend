@@ -54,4 +54,10 @@ public class CourseController {
         return Result.ok(res,res.size());
     }
 
+    @GetMapping("/self")
+    public Result listSelf(Integer user_id)
+    {
+        return Result.ok(courseService.listSelf(user_id));
+    }
+
 }

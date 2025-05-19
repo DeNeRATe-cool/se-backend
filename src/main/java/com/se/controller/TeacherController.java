@@ -4,6 +4,7 @@ package com.se.controller;
 import com.se.dto.Result;
 import com.se.entity.User;
 import com.se.service.TeacherService;
+import com.se.utils.ThreadLocalUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,6 +25,7 @@ public class TeacherController {
     public Result listByCourse(int course_id)
     {
         List<User> res =  teacherService.listByCourse(course_id);
+        Map<String,Object> map = ThreadLocalUtil.get();
         return Result.ok(res,res.size());
     }
 

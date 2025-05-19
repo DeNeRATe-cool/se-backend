@@ -51,6 +51,15 @@ public class ClassController {
         return Result.ok(res,res.size());
     }
 
+    @GetMapping("/all/page")
+    public Result listPage(
+            @RequestParam(defaultValue = "1") Integer page,
+            @RequestParam(defaultValue = "10") Integer size
+    )
+    {
+        return Result.ok(classService.listPage(page, size));
+    }
+
     @PostMapping("/apply")
     public Result apply(@RequestBody @Validated ApplyJoinClassDTO applyJoinClassDTO)
     {

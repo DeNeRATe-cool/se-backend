@@ -20,4 +20,6 @@ public interface CourseService {
     Course courseInfo(Integer courseId);
 
     List<Class> listByCourseId(Integer courseId, Integer userId);
+
+    List<List<Course>> listSelf(Integer userId);
 }

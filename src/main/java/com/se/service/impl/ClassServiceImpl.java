@@ -1,5 +1,7 @@
 package com.se.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.se.constant.*;
 import com.se.dao.ClassDao;
 import com.se.dao.UserCourseClassDao;
@@ -325,5 +327,12 @@ public class ClassServiceImpl implements ClassService {
 
         }
         return userCourseClassService.listStuByClass(class_id);
+    }
+
+    @Override
+    public PageInfo<Class> listPage(Integer page, Integer size) {
+        PageHelper.startPage(page, size);
+        List<Class> res = list();
+        return new PageInfo<>(res);
     }
 }

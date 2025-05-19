@@ -177,4 +177,24 @@ public class CourseServiceImpl implements CourseService {
         return userCourseClassService.listClassesByCourse(courseId);
     }
 
+    @Override
+    public List<List<Course>> listSelf(Integer userId) {
+        if(!userCourseClassService.userExist(userId))
+        {
+            throw new UserNotFoundException(UserEntityConstant.USER_NOT_EXISTS);
+        }
+        List<List<Course>> res = new ArrayList<>();
+        if(userCourseClassService.userIsTeacher(userId))
+        {
+            List<Course> tls = userCourseClassService.listCourseByUserIdAndIdentity(userId, TeacherEntityConstant.IDENTITY_CODE);
+            res.add(tls);
+            return res;
+        }
+        List<Course> uls = userCourseClassService.listCourseByUserIdAndIdentity(userId, StudentEntityConstant.IDENTITY_CODE);
+        if(uls!= null && !uls.isEmpty())res.add(uls);
+        uls = userCourseClassService.listCourseByUserIdAndIdentity(userId, TutorEntityConstant.IDENTITY_CODE);
+        if(uls != null && !uls.isEmpty())res.add(uls);
+        return res;
+    }
+
 }

@@ -1,5 +1,6 @@
 package com.se.service;
 
+import com.github.pagehelper.PageInfo;
 import com.se.dto.AddAdminInClassDTO;
 import com.se.dto.ApplyJoinClassDTO;
 import com.se.entity.Class;
@@ -29,4 +30,6 @@ public interface ClassService {
     List<User> delStu(Integer courseId, Integer classId, Integer userId);
 
     List<User> addFile(List<List<String>> res, Integer user_id, Integer class_id);
+
+    PageInfo<Class> listPage(Integer page, Integer size);
 }

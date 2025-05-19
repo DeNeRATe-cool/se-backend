@@ -32,6 +32,8 @@ public interface UserCourseClassService {
     public List<User> getAdminListByCourse(Integer courseId);
     // 检查用户是否存在
     public Boolean userExist(Integer user_id);
+    // 用户是教师
+    public Boolean userIsTeacher(Integer user_id);
     // 用户是学生
     public Boolean userIsStudent(Integer user_id);
     // 检查班级是否存在
@@ -70,4 +72,6 @@ public interface UserCourseClassService {
     public void delete(Integer course_id, Integer class_id, Integer user_id);
     // 查询
     public UserCourseClass select(Integer user_id, Integer course_id, Integer class_id);
+    // 根据用户id 作为 指定身份，查询课程列表
+    List<Course> listCourseByUserIdAndIdentity(Integer userId, Integer identity);
 }

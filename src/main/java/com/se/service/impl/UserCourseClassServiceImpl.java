@@ -17,7 +17,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 @Service
 public class UserCourseClassServiceImpl implements UserCourseClassService {
@@ -42,6 +44,16 @@ public class UserCourseClassServiceImpl implements UserCourseClassService {
     @Override
     public Boolean userExist(Integer user_id) {
         return !userDao.getUserByID(user_id).isEmpty();
+    }
+
+    @Override
+    public Boolean userIsTeacher(Integer user_id) {
+        if(!userExist(user_id))
+        {
+            return false;
+        }
+        User user = userDao.getUserByID(user_id).get(0);
+        return user.getIdentity().equals(TeacherEntityConstant.IDENTITY_CODE);
     }
 
     @Override
@@ -227,6 +239,24 @@ public class UserCourseClassServiceImpl implements UserCourseClassService {
         List<UserCourseClass>userCourseClassList = userCourseClassDao.select(user_id,course_id,class_id);
         if(userCourseClassList.isEmpty())return null;
         return userCourseClassList.get(0);
+    }
+
+    @Override
+    public List<Course> listCourseByUserIdAndIdentity(Integer userId, Integer identity) {
+        List<UserCourseClass> res =  userCourseClassDao.getListByUserIdAndIdentity(userId,identity);
+        if(res.isEmpty())return null;
+        List<Course> courseList = new ArrayList<>();
+        Set<Integer> courseIdSet = new HashSet<>();
+        for(int i = 0;i < res.size();i++)
+        {
+            if(courseIdSet.contains(res.get(i).getCourse_id()))
+            {
+                continue;
+            }
+            courseIdSet.add(res.get(i).getCourse_id());
+            courseList.add(courseDao.getByID(res.get(i).getCourse_id()).get(0));
+        }
+        return courseList;
     }
 
     public List<User> getTeacherListByCourse(Integer course_id)
