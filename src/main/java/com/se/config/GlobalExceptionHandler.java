@@ -47,7 +47,7 @@ public class GlobalExceptionHandler {
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public Result handleUserBizException(UserBizException ex){
         log.error(ex.getMessage(),ex);
-        return Result.fail("注册异常："+ex.getMessage());
+        return Result.fail("用户异常："+ex.getMessage());
     }
     @ExceptionHandler(MethodArgumentNotValidException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)

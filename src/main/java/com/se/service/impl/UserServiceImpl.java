@@ -87,6 +87,7 @@ public class UserServiceImpl implements UserService {
         String DBpassword = PasswordEncoder.encode(userRegDTO.getPassword());
         User user = new User();
         user.setUsername(userRegDTO.getUsername());
+        user.setIdentity(userRegDTO.getIdentity());
         user.setPassword(DBpassword);
         String name = StringUtils.hasText(userRegDTO.getName())?userRegDTO.getName():userRegDTO.getUsername();
         user.setName(name);

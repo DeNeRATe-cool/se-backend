@@ -15,6 +15,17 @@ public class WebConfig implements WebMvcConfigurer {
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(jwtInterceptor)
                 .addPathPatterns("/**") // 拦截所有
-                .excludePathPatterns("/user/login", "/user/reg", "/user/verify"); // 放行登录、注册、验证码
+                .excludePathPatterns("/user/login", "/user/reg", "/user/verify", "/","/user/info"); // 放行登录、注册、验证码
     }
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        registry.addMapping("/**")
+                .allowedOriginPatterns("*") // 注意使用 allowedOriginPatterns
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                .allowedHeaders("*")
+                .allowCredentials(true)
+                .maxAge(3600);
+    }
+
+
 }
