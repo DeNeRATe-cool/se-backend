@@ -259,6 +259,18 @@ public class UserCourseClassServiceImpl implements UserCourseClassService {
         return courseList;
     }
 
+    @Override
+    public List<Class> listClassesByCourseAndStuId(Integer courseId, Integer userId) {
+        List<UserCourseClass> userCourseClassList =
+                userCourseClassDao.getClassListByCourseAndUserIdAndIdentity(courseId,userId,StudentEntityConstant.IDENTITY_CODE);
+        List<Class> classList = new ArrayList<>();
+        for(UserCourseClass userCourseClass : userCourseClassList)
+        {
+            classList.add(classDao.getClassEntityByClassId(userCourseClass.getClass_id()).get(0));
+        }
+        return classList;
+    }
+
     public List<User> getTeacherListByCourse(Integer course_id)
     {
         return getUserListByCourseAndIdentity(course_id, TeacherEntityConstant.IDENTITY_CODE);

@@ -60,4 +60,10 @@ public class CourseController {
         return Result.ok(courseService.listSelf(user_id));
     }
 
+    @GetMapping("/userClass")
+    public Result getUserClass(Integer course_id, Integer user_id)
+    {
+        return Result.ok(courseService.getUserClass(course_id,user_id));
+    }
+
 }

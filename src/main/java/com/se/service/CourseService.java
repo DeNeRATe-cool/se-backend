@@ -22,4 +22,6 @@ public interface CourseService {
     List<Class> listByCourseId(Integer courseId, Integer userId);
 
     List<List<Course>> listSelf(Integer userId);
+
+    List<Class> getUserClass(Integer courseId, Integer userId);
 }

@@ -74,4 +74,7 @@ public interface UserCourseClassService {
     public UserCourseClass select(Integer user_id, Integer course_id, Integer class_id);
     // 根据用户id 作为 指定身份，查询课程列表
     List<Course> listCourseByUserIdAndIdentity(Integer userId, Integer identity);
+
+    // 获取学生在课程中的班级
+    List<Class> listClassesByCourseAndStuId(Integer courseId, Integer userId);
 }
