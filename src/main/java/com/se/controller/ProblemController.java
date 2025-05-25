@@ -19,7 +19,7 @@ public class ProblemController {
     private ProblemService problemService;
 
     @GetMapping("/public")
-    public Result GetPublicProb(@RequestParam("types") Integer type){
+    public Result GetPublicProb(@RequestParam(value = "types",required = false) Integer type){
         List<Problem> publicProb=problemService.PublicProb(type);
         return Result.ok(publicProb,publicProb.size());
     }
@@ -30,7 +30,7 @@ public class ProblemController {
     }
 
     @GetMapping("/self")
-    public Result GetselfProb(@RequestParam("user_id") Integer userid,@RequestParam("types") Integer types){
+    public Result GetselfProb(@RequestParam("user_id") Integer userid,@RequestParam(value="types",required = false) Integer types){
         List<Problem> selfProb=problemService.SelfProb(userid,types);
         return Result.ok(selfProb,selfProb.size());
     }

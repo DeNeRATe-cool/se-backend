@@ -15,6 +15,9 @@ public class ProblemServiceImpl implements ProblemService {
     private ProbDao probDAO;
     @Override
     public List<Problem> PublicProb(Integer type) {
+        if(type==null){
+            return probDAO.getAllPublicProb();
+        }
         return probDAO.getProbByType(type);
     }
 
@@ -36,6 +39,9 @@ public class ProblemServiceImpl implements ProblemService {
 
     @Override
     public List<Problem> SelfProb(Integer userid, Integer types) {
+        if(types==null){
+            return probDAO.getSelfAllProb(userid);
+        }
         return probDAO.getSelfProb(userid,types);
     }
 
