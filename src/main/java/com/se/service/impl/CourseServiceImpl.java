@@ -162,17 +162,17 @@ public class CourseServiceImpl implements CourseService {
         }
         User user = userList.get(0);
 
-        if(user.getIdentity().equals(TeacherEntityConstant.IDENTITY_CODE) &&
-        !userCourseClassService.teacherInCourse(userId,courseId))
-        {
-            throw new UserPermissionException(UserEntityConstant.USER_PERMISSION_DENIED);
-        }
-
-        if(user.getIdentity().equals(StudentEntityConstant.IDENTITY_CODE) &&
-        !userCourseClassService.tutorInCourse(userId,courseId))
-        {
-            throw new UserPermissionException(UserEntityConstant.USER_PERMISSION_DENIED);
-        }
+//        if(user.getIdentity().equals(TeacherEntityConstant.IDENTITY_CODE) &&
+//        !userCourseClassService.teacherInCourse(userId,courseId))
+//        {
+//            throw new UserPermissionException(UserEntityConstant.USER_PERMISSION_DENIED);
+//        }
+//
+//        if(user.getIdentity().equals(StudentEntityConstant.IDENTITY_CODE) &&
+//        !userCourseClassService.tutorInCourse(userId,courseId))
+//        {
+//            throw new UserPermissionException(UserEntityConstant.USER_PERMISSION_DENIED);
+//        }
 
         return userCourseClassService.listClassesByCourse(courseId);
     }
