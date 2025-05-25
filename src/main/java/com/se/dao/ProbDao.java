@@ -18,6 +18,8 @@ public interface ProbDao {
     @Select("select * from t_prob where type = #{type} and is_public = True")
     List<Problem> getProbByType(Integer type);
 
+    @Select("select * from t_prob where is_public = True")
+    List<Problem> getAllPublicProb();
     @Insert("insert into t_prob(is_public,type,creator_id,description,content,answer,analysis,create_time)"+
     "values (#{is_public},#{type},#{creator_id},#{description},#{str_content},#{answer},#{analysis},now())")
 //    @Options(useGeneratedKeys = true, keyProperty = "prob_id")
@@ -25,4 +27,7 @@ public interface ProbDao {
 
     @Select("select * from t_prob where type = #{types} and creator_id = #{userid}")
     List<Problem> getSelfProb(@Param("userid") Integer userid,@Param("types") Integer types);
+
+    @Select("select * from t_prob where creator_id=#{userid}")
+    List<Problem> getSelfAllProb(@Param("userid") Integer userid);
 }
