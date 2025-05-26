@@ -1,5 +1,6 @@
 package com.se.service.impl;
 
+import cn.hutool.core.date.DateUtil;
 import com.se.dao.ProbDao;
 import com.se.dto.CreateProbDTO;
 import com.se.entity.Problem;
@@ -7,6 +8,7 @@ import com.se.service.ProblemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -23,16 +25,19 @@ public class ProblemServiceImpl implements ProblemService {
 
     @Override
     public Problem createProb(Problem problem) {
-        List<String> content_list=problem.getContent();
+        List<String> content_list=problem.getStr_content();
         String str_content="[";
-        for(String str:content_list){
+        for(int i = 0; i < content_list.size(); i++){
+            String str = content_list.get(i);
             str_content+="\"";
             str_content+=str;
             str_content+="\"";
-            str_content+=",";
+            if(i!=content_list.size()-1)
+                str_content+=",";
         }
         str_content+="]";
-        problem.setStr_content(str_content);
+        problem.setContent(str_content);
+        problem.setCreate_time(new Date());
         int r=probDAO.createProb(problem);
         return problem;
     }

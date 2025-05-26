@@ -3,6 +3,7 @@ package com.se.entity;
 import cn.hutool.core.date.DateTime;
 import lombok.Data;
 
+import java.util.Date;
 import java.util.List;
 
 @Data
@@ -16,13 +17,13 @@ public class Problem {
 
     private Integer creator_id;
 
-    private DateTime creation_time;
+    private Date create_time;
 
     private String description;
 
-    private List<String> content;
+    private List<String> str_content;
 
-    private String str_content;
+    private String content;
 
     private String answer;
 

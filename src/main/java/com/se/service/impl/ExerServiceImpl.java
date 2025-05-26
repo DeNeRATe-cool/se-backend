@@ -154,6 +154,9 @@ public class ExerServiceImpl implements ExerService {
         infoList.add(
                 stuExerList.stream().map(StuProbExer::getSubmit).collect(Collectors.toList())
         );
+        infoList.add(
+                baseList.stream().map(StuProbExer::getScore).collect(Collectors.toList())
+        );
         return infoList;
     }
 
