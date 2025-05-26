@@ -11,7 +11,7 @@ import java.util.List;
 @Transactional
 public interface CourseService {
 
-    void add(Course course);
+    Course add(Course course);
 
     List<User> addAdmin(AddAdminInCourseDTO addAdminDTO);
 

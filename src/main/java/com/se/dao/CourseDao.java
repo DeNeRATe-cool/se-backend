@@ -4,6 +4,7 @@ import com.se.entity.Class;
 import com.se.entity.Course;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
+import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
@@ -23,6 +24,7 @@ public interface CourseDao {
 
     @Insert("insert into t_course(name,creator_id,syllabus,assMethod,score,time)" +
             " values(#{name}, #{creator_id}, #{syllabus}, #{assMethod}, #{score}, #{time})")
+    @Options(useGeneratedKeys = true, keyProperty = "course_id")
     void add(Course course);
 
 }

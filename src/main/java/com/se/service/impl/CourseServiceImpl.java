@@ -42,11 +42,13 @@ public class CourseServiceImpl implements CourseService {
     @Autowired
     private ClassDao classDao;
 
-    public void add(Course course)
+    public Course add(Course course)
     {
         List<Course> res = courseDao.getCourseByName(course.getName());
         if(res.size()!=0)throw new DuplicateCourseException("课程名已经存在");
         courseDao.add(course);
+        System.out.println(course.getCourse_id());
+        return courseDao.getByID(course.getCourse_id()).get(0);
     }
 
     /**

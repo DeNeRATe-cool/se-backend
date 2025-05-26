@@ -22,8 +22,8 @@ public class CourseController {
     @PostMapping("/create")
     public Result add(@RequestBody @Validated Course course)
     {
-        courseService.add(course);
-        return Result.ok();
+        Course res = courseService.add(course);
+        return Result.ok(res);
     }
 
     @PostMapping("/addAdmin")
