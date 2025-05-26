@@ -11,7 +11,7 @@ import java.util.List;
 
 @Transactional
 public interface ClassService {
-    void add(Class classEntity);
+    Class add(Class classEntity);
 
     List<User> addAdmin(AddAdminInClassDTO addAdminInClassDTO);
 

@@ -46,7 +46,7 @@ public class ClassServiceImpl implements ClassService {
     private UserCourseClassService userCourseClassService;
 
     @Override
-    public void add(Class classEntity) {
+    public Class add(Class classEntity) {
         if(!classDao.getClassEntityByName(classEntity.getName()).isEmpty())
         {
             throw new DuplicateClassException(ClassEntityConstant.CLASS_NAME_EXISTS);
@@ -58,6 +58,11 @@ public class ClassServiceImpl implements ClassService {
         }
         classEntity.setClass_code(code);
         classDao.add(classEntity);
+        userCourseClassService.insert(-1,
+                classEntity.getCourse_id(),
+                classEntity.getClass_id(),
+                -1);
+        return classEntity;
     }
 
     /**

@@ -26,8 +26,7 @@ public class ClassController {
     @PostMapping("/create")
     public Result add(@RequestBody Class classEntity)
     {
-        classService.add(classEntity);
-        return Result.ok(classEntity);
+        return Result.ok(classService.add(classEntity));
     }
 
     @PostMapping("/addAdmin")

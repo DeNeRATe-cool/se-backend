@@ -1,10 +1,7 @@
 package com.se.dao;
 
 import com.se.entity.Class;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -22,6 +19,7 @@ public interface ClassDao {
 
     @Insert("insert into t_class(course_id,name,class_code)" +
             " values(#{course_id},#{name},#{class_code})")
+    @Options(useGeneratedKeys = true, keyProperty = "class_id")
     void add(Class classEntity);
 
     @Select("select * from t_class where class_id!=-1")
