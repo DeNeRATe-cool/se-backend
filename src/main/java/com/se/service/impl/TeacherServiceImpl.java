@@ -50,4 +50,9 @@ public class TeacherServiceImpl implements TeacherService {
         List<User> res = userDao.getUserByCondition(code,username,mail,name);
         return res;
     }
+
+    @Override
+    public List<User> list() {
+        return userDao.selectByIdentity(TeacherEntityConstant.IDENTITY_CODE);
+    }
 }

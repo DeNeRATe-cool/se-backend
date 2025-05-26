@@ -11,4 +11,6 @@ public interface TeacherService {
     List<User> listByCourse(int courseId);
 
     List<User> listByCondition(Map<String, String> params);
+
+    List<User> list();
 }

@@ -30,4 +30,7 @@ public interface UserDao {
 
     @Update("UPDATE t_user SET password = #{password}, name = #{name}, mail = #{mail}, birthday = #{birthday} WHERE user_id = #{user_id}")
     void updateUser(User user);
+
+    @Select("select * from t_user where identity=#{identity}")
+    List<User> selectByIdentity(Integer identity);
 }

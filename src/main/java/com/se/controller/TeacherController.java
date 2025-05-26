@@ -21,6 +21,13 @@ public class TeacherController {
     @Autowired
     private TeacherService teacherService;
 
+    @GetMapping("/allteacher")
+    public Result list()
+    {
+        List<User>res = teacherService.list();
+        return Result.ok(res);
+    }
+
     @GetMapping("/all")
     public Result listByCourse(int course_id)
     {
