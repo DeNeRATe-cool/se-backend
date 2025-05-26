@@ -3,6 +3,7 @@ package com.se.entity;
 import lombok.Data;
 
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Data
 public class Course {
@@ -11,7 +12,7 @@ public class Course {
     @NotEmpty
     private String name;
 
-    @NotEmpty
+    @NotNull
     private int creator_id;
 
     private String syllabus;
@@ -19,9 +20,9 @@ public class Course {
     @NotEmpty
     private String assMethod;
 
-    @NotEmpty
+    @NotNull
     private Float score;
 
-    @NotEmpty
+    @NotNull
     private Integer time;
 }
