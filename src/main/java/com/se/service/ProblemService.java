@@ -1,6 +1,5 @@
 package com.se.service;
 
-import com.se.dto.CreateProbDTO;
 import com.se.entity.Problem;
 
 import java.util.List;

@@ -29,8 +29,6 @@ import org.springframework.stereotype.Service;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -152,6 +150,9 @@ public class ExerServiceImpl implements ExerService {
         );
         infoList.add(
                 stuExerList.stream().map(StuProbExer::getIs_check).collect(Collectors.toList())
+        );
+        infoList.add(
+                stuExerList.stream().map(StuProbExer::getSubmit).collect(Collectors.toList())
         );
         return infoList;
     }
