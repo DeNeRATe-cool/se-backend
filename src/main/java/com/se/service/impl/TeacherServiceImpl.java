@@ -1,9 +1,12 @@
 package com.se.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.se.constant.TeacherEntityConstant;
 import com.se.dao.UserCourseClassDao;
 import com.se.dao.UserDao;
 import com.se.dto.UserCourseClass;
+import com.se.entity.Course;
 import com.se.entity.User;
 import com.se.service.TeacherService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,5 +57,17 @@ public class TeacherServiceImpl implements TeacherService {
     @Override
     public List<User> list() {
         return userDao.selectByIdentity(TeacherEntityConstant.IDENTITY_CODE);
+    }
+
+    @Override
+    public PageInfo listPage(Integer page, Integer size) {
+        PageHelper.startPage(page,size);
+        return new PageInfo(list());
+    }
+
+    @Override
+    public PageInfo<Course> listByCoursePage(int courseId, int page, int size) {
+        PageHelper.startPage(page,size);
+        return new PageInfo(listByCourse(courseId));
     }
 }
