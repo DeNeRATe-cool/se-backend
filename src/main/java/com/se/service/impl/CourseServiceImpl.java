@@ -50,6 +50,10 @@ public class CourseServiceImpl implements CourseService {
         if(res.size()!=0)throw new DuplicateCourseException("课程名已经存在");
         courseDao.add(course);
         System.out.println(course.getCourse_id());
+        userCourseClassService.insert(course.getCreator_id(),
+                course.getCourse_id(),
+                -1,
+                TeacherEntityConstant.IDENTITY_CODE);
         return courseDao.getByID(course.getCourse_id()).get(0);
     }
 
