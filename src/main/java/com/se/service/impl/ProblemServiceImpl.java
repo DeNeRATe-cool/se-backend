@@ -45,5 +45,8 @@ public class ProblemServiceImpl implements ProblemService {
         return probDAO.getSelfProb(userid,types);
     }
 
-
+    @Override
+    public Problem getProb(Integer probId) {
+        return probDAO.getProblemById(probId);
+    }
 }

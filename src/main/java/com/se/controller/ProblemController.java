@@ -18,6 +18,11 @@ public class ProblemController {
     @Autowired
     private ProblemService problemService;
 
+    @GetMapping("info")
+    public Result GetProbInfo(@RequestParam(value="id") Integer prob_id){
+        Problem problem=problemService.getProb(prob_id);
+        return Result.ok(problem);
+    }
     @GetMapping("/public")
     public Result GetPublicProb(@RequestParam(value = "types",required = false) Integer type){
         List<Problem> publicProb=problemService.PublicProb(type);

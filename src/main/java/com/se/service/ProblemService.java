@@ -11,4 +11,6 @@ public interface ProblemService {
     Problem createProb(Problem problem);
 
     List<Problem> SelfProb(Integer userid, Integer types);
+
+    Problem getProb(Integer probId);
 }
