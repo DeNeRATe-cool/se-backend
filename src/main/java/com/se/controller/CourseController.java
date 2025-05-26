@@ -1,5 +1,6 @@
 package com.se.controller;
 
+import com.github.pagehelper.PageInfo;
 import com.se.dto.AddAdminInCourseDTO;
 import com.se.dto.Result;
 import com.se.entity.Class;
@@ -18,6 +19,20 @@ public class CourseController {
 
     @Autowired
     private CourseService courseService;
+
+    @GetMapping("/all")
+    public Result list()
+    {
+        List<Course> res = courseService.list();
+        return Result.ok(res,res.size());
+    }
+
+    @GetMapping("/all/page")
+    public Result listPage(Integer page, Integer size)
+    {
+        PageInfo<Course> res = courseService.listPage(page,size);
+        return Result.ok(res);
+    }
 
     @PostMapping("/create")
     public Result add(@RequestBody @Validated Course course)

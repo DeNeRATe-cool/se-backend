@@ -34,3 +34,7 @@ logging:
   level:
     com.hmdp: debug
 
+jwt:
+  secret: "your-256-bit-secret"  # 替换为一个固定的Base64编码密钥
+  expiration: 3600               # 过期时间(秒)
+

@@ -27,4 +27,6 @@ public interface CourseDao {
     @Options(useGeneratedKeys = true, keyProperty = "course_id")
     void add(Course course);
 
+    @Select("select * from t_course where course_id != -1")
+    List<Course> list();
 }

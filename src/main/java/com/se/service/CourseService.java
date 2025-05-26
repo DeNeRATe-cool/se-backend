@@ -1,5 +1,6 @@
 package com.se.service;
 
+import com.github.pagehelper.PageInfo;
 import com.se.dto.AddAdminInCourseDTO;
 import com.se.entity.Class;
 import com.se.entity.Course;
@@ -24,4 +25,8 @@ public interface CourseService {
     List<List<Course>> listSelf(Integer userId);
 
     List<Class> getUserClass(Integer courseId, Integer userId);
+
+    List<Course> list();
+
+    PageInfo<Course> listPage(Integer page, Integer size);
 }

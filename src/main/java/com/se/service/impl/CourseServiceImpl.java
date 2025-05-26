@@ -1,5 +1,7 @@
 package com.se.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import com.se.constant.*;
 import com.se.dao.ClassDao;
 import com.se.dao.CourseDao;
@@ -209,6 +211,18 @@ public class CourseServiceImpl implements CourseService {
             return listByCourseId(courseId,userId);
         }
         return userCourseClassService.listClassesByCourseAndStuId(courseId,userId);
+    }
+
+    @Override
+    public List<Course> list() {
+        return courseDao.list();
+    }
+
+    @Override
+    public PageInfo<Course> listPage(Integer page,Integer size) {
+        PageHelper.startPage(page, size);
+        List<Course> res = list();
+        return new PageInfo<>(res);
     }
 
 
