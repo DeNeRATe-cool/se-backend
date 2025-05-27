@@ -60,4 +60,7 @@ public interface ExerService {
     String generateFeedbackReport(Integer exerId) throws IOException;
 
     void save(Integer exerId, Integer userId, List<String> anslist);
+
+    // 根据现在时间更新完成状态
+    void updateFinishedStateByNowTime(Integer userId);
 }

@@ -113,6 +113,7 @@ public class ExerController {
     @GetMapping("/self")
     public Result listSelfCreateExer(@RequestParam Integer user_id)
     {
+        exerService.updateFinishedStateByNowTime(user_id);
         List<Exercise> exerciseList = exerService.listSelfCreateExer(user_id);
         return Result.ok(exerciseList,exerciseList.size());
     }

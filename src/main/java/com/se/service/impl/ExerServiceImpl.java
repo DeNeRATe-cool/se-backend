@@ -359,9 +359,28 @@ public class ExerServiceImpl implements ExerService {
         return exerciseList;
     }
 
+    public void updateFinishedStateByNowTime(Integer userId)
+    {
+        userCourseClassService.checkIsStudent(userId);
+        List<StuProbExer> stuProbExerList = stuProbExerDao.getByStuIdWithProbInval(userId);
+//        List<Exercise> exerciseList = new ArrayList<>();
+        for(StuProbExer spe: stuProbExerList)
+        {
+            Integer exer_id = spe.getExer_id();
+            Exercise exercise = exerDao.getExerById(exer_id);
+            if(exercise.getEnd_time().before(DateTime.now()))
+            {
+//                exerciseList.add(exercise);
+                stuProbExerService.setFinishedByExerIdAndUserId(exer_id,userId);
+            }
+//            exerciseList.add(exercise);
+        }
+    }
+
     @Override
     public List<Exercise> listDoneExerByStuId(Integer userId) {
         userCourseClassService.checkIsStudent(userId);
+        updateFinishedStateByNowTime(userId);
         List<StuProbExer> stuProbExerList = stuProbExerDao.getByStuIdWithProbInval(userId);
         List<Exercise> exerciseList = new ArrayList<>();
 
@@ -378,6 +397,7 @@ public class ExerServiceImpl implements ExerService {
     @Override
     public List<Exercise> listToDoExerByStuId(Integer userId) {
         userCourseClassService.checkIsStudent(userId);
+        updateFinishedStateByNowTime(userId);
         List<StuProbExer> stuProbExerList = stuProbExerDao.getByStuIdWithProbInval(userId);
         List<Exercise> exerciseList = new ArrayList<>();
         for(StuProbExer spe: stuProbExerList)
