@@ -34,4 +34,6 @@ public interface ClassService {
     PageInfo<Class> listPage(Integer page, Integer size);
 
     List<Class> listByAdmin(Integer courseId, Integer userId);
+
+    Class info(Integer classId);
 }

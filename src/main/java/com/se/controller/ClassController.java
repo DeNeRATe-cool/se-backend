@@ -29,6 +29,12 @@ public class ClassController {
         return Result.ok(classService.add(classEntity));
     }
 
+    @GetMapping("/info")
+    public Result info(Integer class_id)
+    {
+        return Result.ok(classService.info(class_id));
+    }
+
     @PostMapping("/addAdmin")
     public Result addAdmin(@RequestBody AddAdminInClassDTO addAdminInClassDTO)
     {

@@ -347,4 +347,11 @@ public class ClassServiceImpl implements ClassService {
         List<Class>res = userCourseClassService.listClassForCourseByUserId(courseId,userId);
         return res;
     }
+
+    @Override
+    public Class info(Integer classId) {
+        List<Class> classList = classDao.getClassEntityByClassId(classId);
+        if(classList.isEmpty())return null;
+        return classList.get(0);
+    }
 }
