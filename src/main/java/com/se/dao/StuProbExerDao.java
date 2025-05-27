@@ -49,6 +49,9 @@ public interface StuProbExerDao {
     @Select("select * from t_stu_prob_exer where exer_id = #{exerId} and stu_id = -1")
     List<StuProbExer> getProblemListByExerID(Integer exerId);
 
+    @Select("select prob_id from t_stu_prob_exer where exer_id = #{exer_id}")
+    List<Integer> getProbIdListByExerID(@Param("exer_id") Integer exer_id);
+
     /**
      * 任务可以不是模板任务
      * @param exer_id
@@ -56,7 +59,6 @@ public interface StuProbExerDao {
      */
     @Select("select * from t_stu_prob_exer where exer_id = #{exerId}")
     List<StuProbExer> getProblemListByExerIDBroaden(Integer exer_id);
-
     /**
      * 通过学习 + 题目 + 练习查询记录
      */
@@ -111,4 +113,12 @@ public interface StuProbExerDao {
 
     @Select("select * from t_stu_prob_exer where exer_id=#{exerId} and prob_id=-1 and stu_id != -1")
     List<StuProbExer> listByExerIdWithProbIdInvalAndStuIdValid(Integer exerId);
+
+    @Update("update t_stu_prob_exer set is_finish=#{is_finish} ,submit=#{submit} " +
+            "where stu_id=#{stu_id} and prob_id=#{prob_id} and exer_id=#{exer_id}")
+    void updateSubmit(@Param("stu_id") Integer stu_id,
+                      @Param("prob_id") Integer prob_id,
+                      @Param("exer_id") Integer exer_id,
+                      @Param("submit")String submit,
+                      @Param("is_finish")Integer is_finish);
 }

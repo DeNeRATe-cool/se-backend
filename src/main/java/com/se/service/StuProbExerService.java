@@ -1,6 +1,7 @@
 package com.se.service;
 
 import com.se.dao.StuProbExerDao;
+import com.se.dto.ProbInExer;
 import com.se.dto.StuProbExer;
 import com.se.entity.Exercise;
 import com.se.entity.Problem;
@@ -21,7 +22,9 @@ public interface StuProbExerService {
     // 通过 exer 得到 prob id list
     List<Integer> getProbIDListByExerId(Integer exer_id);
     // 根据exerId得到题目列表
-    List<Problem> getProbModelListByExerId(Integer exerId);
+    List<ProbInExer> getProbModelListByExerId(Integer exerId);
+    // 根据exerId得到题目列表 非模板
+    List<Integer> getProbIdListByExerId(Integer exerId);
     // 根据用户id + 任务id得到学生的 stuProbExer列表
     List<StuProbExer> getStuProbExerByExerIdAndUserId(Integer exerId, Integer userId);
     // 判断学生是否完成任务
@@ -35,4 +38,6 @@ public interface StuProbExerService {
     Boolean checkStudentFinishExercise(Integer exerId, Integer userId);
 
     void setFinishedByExerIdAndUserId(Integer exerId, Integer userId);
+
+    void save(Integer exerId, Integer userId, List<String> anslist);
 }

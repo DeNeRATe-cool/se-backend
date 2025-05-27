@@ -2,6 +2,7 @@ package com.se.service;
 
 
 import com.se.dto.CreateExerDTO;
+import com.se.dto.ProbInExer;
 import com.se.dto.PushExerDTO;
 import com.se.dto.StuProbExer;
 import com.se.entity.Exercise;
@@ -34,7 +35,7 @@ public interface ExerService {
 
     Exercise info(Integer exerId);
 
-    List<Problem> listProblemByExerId(Integer exerId);
+    List<ProbInExer> listProblemByExerId(Integer exerId);
 
     List<Exercise> listExerByCourseAndClass(Integer courseId, Integer classId);
 
@@ -57,4 +58,6 @@ public interface ExerService {
     String generateExerciseReport(Integer userId) throws IOException;
 
     String generateFeedbackReport(Integer exerId) throws IOException;
+
+    void save(Integer exerId, Integer userId, List<String> anslist);
 }

@@ -2,10 +2,7 @@ package com.se.controller;
 
 
 import com.se.dao.ExerDao;
-import com.se.dto.CreateExerDTO;
-import com.se.dto.PushExerDTO;
-import com.se.dto.Result;
-import com.se.dto.SubmitExerciseDTO;
+import com.se.dto.*;
 import com.se.entity.Exercise;
 import com.se.entity.Problem;
 import com.se.service.ExerService;
@@ -73,7 +70,7 @@ public class ExerController {
     @GetMapping("/get")
     public Result listProblemByExerId(@RequestParam Integer exer_id)
     {
-        List<Problem> res = exerService.listProblemByExerId(exer_id);
+        List<ProbInExer> res = exerService.listProblemByExerId(exer_id);
         return Result.ok(res,res.size());
     }
 
@@ -126,6 +123,16 @@ public class ExerController {
         Integer exer_id = submitExerciseDTO.getExer_id();
         Integer user_id = submitExerciseDTO.getUser_id();
         exerService.submit(exer_id,user_id);
+        return Result.ok();
+    }
+
+    @PostMapping("/save")
+    public Result save(@RequestBody SaveExerciseDTO saveExerciseDTO)
+    {
+        System.out.println(saveExerciseDTO.getAnslist());
+        exerService.save(saveExerciseDTO.getExer_id(),
+                saveExerciseDTO.getUser_id(),
+                saveExerciseDTO.getAnslist());
         return Result.ok();
     }
 

@@ -5,10 +5,7 @@ import com.se.constant.CourseEntityConstant;
 import com.se.constant.ExerEntityConstant;
 import cn.hutool.core.date.DateUtil;
 import com.se.dao.*;
-import com.se.dto.CreateExerDTO;
-import com.se.dto.PushExerDTO;
-import com.se.dto.StuProbExer;
-import com.se.dto.UserCourseClass;
+import com.se.dto.*;
 import com.se.entity.Class;
 import com.se.entity.Exercise;
 import com.se.entity.Problem;
@@ -258,7 +255,6 @@ public class ExerServiceImpl implements ExerService {
         Boolean is_every_class = pushExerDTO.getIs_every_class();
 
         userCourseClassService.checkIsAdminForCourse(creator_id,course_id);
-
         List<Integer> class_id_list = new ArrayList<>();
         if(is_every_class)
         {
@@ -273,7 +269,6 @@ public class ExerServiceImpl implements ExerService {
             userCourseClassService.checkCourseAndClass(course_id,class_id);
             class_id_list.add(class_id);
         }
-
         List<Exercise> exerciseList = exerDao.getExerByExerId(exer_id);
         if(exerciseList.isEmpty())
         {
@@ -293,7 +288,7 @@ public class ExerServiceImpl implements ExerService {
         exerDao.insert(exercise);
 
         Integer new_exer_id = exercise.getExer_id();
-
+        System.out.println(new_exer_id);
         for(Integer i_class_id: class_id_list)
         {
             List<User>stuList = userCourseClassService.listStuByClass(i_class_id);
@@ -312,10 +307,12 @@ public class ExerServiceImpl implements ExerService {
                 }
                 // 添加 stu - exer 记录
                 StuProbExer spr = spe_list.get(0);
+                Integer ori_probid = spr.getProb_id();
                 spr.setProb_id(-1);
                 spr.setStu_id(user.getUser_id());
                 spr.setScore(0);
                 stuProbExerDao.insert(spr);
+                spr.setProb_id(ori_probid);
             }
         }
 
@@ -332,8 +329,8 @@ public class ExerServiceImpl implements ExerService {
     }
 
     @Override
-    public List<Problem> listProblemByExerId(Integer exerId) {
-        List<Problem>problemList = stuProbExerService.getProbModelListByExerId(exerId);
+    public List<ProbInExer> listProblemByExerId(Integer exerId) {
+        List<ProbInExer>problemList = stuProbExerService.getProbModelListByExerId(exerId);
         return problemList;
     }
 
@@ -491,6 +488,11 @@ public class ExerServiceImpl implements ExerService {
 //        System.out.println(filePath);
         InputStream is = new FileInputStream(filePath);
         return ossService.uploadFile(filePath, is);
+    }
+
+    @Override
+    public void save(Integer exerId, Integer userId, List<String> anslist) {
+        stuProbExerService.save(exerId,userId,anslist);
     }
 
     private void OptionProblemCheck(List<StuProbExer> baseList, List<Problem> proList, List<StuProbExer> stuExerList, Integer userId) {
