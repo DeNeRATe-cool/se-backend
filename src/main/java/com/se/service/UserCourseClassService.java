@@ -77,4 +77,6 @@ public interface UserCourseClassService {
 
     // 获取学生在课程中的班级
     List<Class> listClassesByCourseAndStuId(Integer courseId, Integer userId);
+    // 根据 课程 和 管理员id 查询管理员管理的班级
+    List<Class> listClassForCourseByUserId(Integer courseId, Integer userId);
 }

@@ -340,4 +340,11 @@ public class ClassServiceImpl implements ClassService {
         List<Class> res = list();
         return new PageInfo<>(res);
     }
+
+    @Override
+    public List<Class> listByAdmin(Integer courseId, Integer userId) {
+        userCourseClassService.checkIsAdminForCourse(userId, courseId);
+        List<Class>res = userCourseClassService.listClassForCourseByUserId(courseId,userId);
+        return res;
+    }
 }

@@ -32,4 +32,6 @@ public interface ClassService {
     List<User> addFile(List<List<String>> res, Integer user_id, Integer class_id);
 
     PageInfo<Class> listPage(Integer page, Integer size);
+
+    List<Class> listByAdmin(Integer courseId, Integer userId);
 }

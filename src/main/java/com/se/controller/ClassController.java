@@ -116,4 +116,14 @@ public class ClassController {
         List<User> userList = classService.addFile(res,user_id, class_id);
         return Result.ok(userList,userList.size());
     }
+
+    @GetMapping("/adminin")
+    public Result listByAdmin(@RequestParam Integer course_id,
+                              @RequestParam Integer user_id)
+    {
+        List<Class>res = classService.listByAdmin(course_id,user_id);
+        return Result.ok(res,res.size());
+    }
+
+
 }
