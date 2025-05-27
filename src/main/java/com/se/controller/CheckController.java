@@ -51,7 +51,7 @@ public class CheckController {
             @RequestParam("user_id") Integer userId) {
         // 题目任务学生，标准得分，题目序号
         List<StuProbExer> baseList = stuProbExerDao.getProblemListByExerID(exerId);
-        Collections.sort(baseList, Comparator.comparing(StuProbExer::getIdx).reversed());
+        Collections.sort(baseList, Comparator.comparing(StuProbExer::getIdx));
 
         // 题目信息
         List<Problem> proList = new ArrayList<>();
@@ -81,7 +81,7 @@ public class CheckController {
         List<StuProbExer> baseList = stuProbExerDao.getProblemListByExerID(exerId);
         if(scores.size() != baseList.size())
             throw new NotCheckFinishException();
-        baseList.sort(Comparator.comparing(StuProbExer::getIdx));
+        Collections.sort(baseList, Comparator.comparing(StuProbExer::getIdx));
         // 用户数据
         List<StuProbExer> stuExerList = new ArrayList<>();
         for(StuProbExer stuProbExer : baseList)
