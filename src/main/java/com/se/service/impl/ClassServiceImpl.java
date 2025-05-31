@@ -87,7 +87,6 @@ public class ClassServiceImpl implements ClassService {
             throw new UserNotFoundException(UserEntityConstant.USER_NOT_EXISTS);
         }
         User add_user = userList.get(0);
-
         // course_id + identity
         // 老师和助教必须先成为课程助教
         if(add_user.getIdentity().equals(TeacherEntityConstant.IDENTITY_CODE))

@@ -323,7 +323,7 @@ public class UserCourseClassServiceImpl implements UserCourseClassService {
      */
     public Boolean teacherInCourse(User user,Integer course_id)
     {
-        return teacherInCourse(user.getIdentity(), course_id);
+        return teacherInCourse(user.getUser_id(), course_id);
     }
 
     public Boolean teacherInCourse(Integer user_id,Integer course_id)
@@ -331,6 +331,8 @@ public class UserCourseClassServiceImpl implements UserCourseClassService {
         List<User> teacherList = getTeacherListByCourse(course_id);
         for(User u : teacherList)
         {
+            System.out.println(u.getUser_id());
+            System.out.println(user_id);
             if(u.getUser_id().equals(user_id))return true;
         }
         return false;
