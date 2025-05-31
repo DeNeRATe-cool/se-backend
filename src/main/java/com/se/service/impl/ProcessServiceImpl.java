@@ -66,7 +66,8 @@ public class ProcessServiceImpl implements ProcessService {
     public List<Resource> getResourceByProcess(Integer processId, Integer courseId) {
         if(processId == null || courseId == null)
             throw new ParamNotEnoughException();
-        return processDao.getResourceByProcess(processId, courseId);
+        List<Resource> resList = processDao.getResourceByProcess(processId, courseId);
+        return ResTagFilterUtil.uniqueResource(resList);
     }
 
     @Override

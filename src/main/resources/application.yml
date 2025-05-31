@@ -10,6 +10,9 @@ server:
   port: 8080
 
 spring:
+  servlet:
+    multipart:
+      enabled: true
   datasource:
     username: SE_teamsix
     password: ilovese666
