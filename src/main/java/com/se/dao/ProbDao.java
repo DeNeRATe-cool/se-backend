@@ -22,7 +22,7 @@ public interface ProbDao {
 
     @Insert("insert into t_prob(is_public,type,creator_id,description,content,answer,analysis,create_time)"+
     "values (#{is_public},#{type},#{creator_id},#{description},#{content},#{answer},#{analysis},now())")
-//    @Options(useGeneratedKeys = true, keyProperty = "prob_id")
+    @Options(useGeneratedKeys = true, keyProperty = "prob_id", keyColumn = "prob_id")
     int createProb(Problem problem);
 
     @Select("select * from t_prob where type = #{types} and creator_id = #{userid}")
