@@ -284,7 +284,7 @@ public class ExerServiceImpl implements ExerService {
         exercise.setName(name);
         exercise.setCreator_id(creator_id);
         exercise.setClass_id(class_id);
-        exercise.setIs_public(null);
+//        exercise.setIs_public(null);
         exerDao.insert(exercise);
 
         Integer new_exer_id = exercise.getExer_id();
