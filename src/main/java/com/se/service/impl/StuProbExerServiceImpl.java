@@ -96,40 +96,7 @@ public class StuProbExerServiceImpl implements StuProbExerService {
         return probInExer;
     }
 
-    /**
-     * 任务可以不是模板任务
-     * @param exerId
-     * @return
-     */
-    @Override
-    public List<ProbInExer> getProbModelListByExerId(Integer exerId) {
-        List<StuProbExer> spe_list = stuProbExerDao.getProblemListByExerIDBroaden(exerId);
 
-        List<StuProbExer> spels = stuProbExerDao.getProblemListByExerID(exerId);
-        System.out.println(spels.size());
-        List<Problem>pls = new ArrayList<>();
-        List<ProbInExer>res = new ArrayList<>();
-        for(StuProbExer spe: spels) {
-            Problem p = probDao.getProblemById(spe.getProb_id());
-
-            res.add(getProbInExerFromProblemAndScore(p,spe.getScore()));
-        }
-        res.sort(Comparator.comparingInt(ProbInExer::getType).thenComparingInt(ProbInExer::getProb_id));
-        return res;
-
-//        List<Integer>prob_id_list = new ArrayList<>();
-//        for(StuProbExer spe: spe_list) {
-//            if(!prob_id_list.contains(spe.getProb_id())) {
-//                prob_id_list.add(spe.getProb_id());
-//            }
-//        }
-//        List<Problem> problemList = new ArrayList<>();
-//        for(Integer prob_id : prob_id_list) {
-//            Problem problem = probDao.getProblemById(prob_id);
-//            problemList.add(problem);
-//        }
-//        return problemList;
-    }
 
     @Override
     public List<StuProbExer> getStuProbExerByExerIdAndUserId(Integer exerId, Integer userId) {
@@ -154,24 +121,60 @@ public class StuProbExerServiceImpl implements StuProbExerService {
         stuProbExerDao.setFinishedByExerIdAndUserId(exerId,userId);
     }
 
+    /**
+     * 任务可以不是模板任务
+     * @param exerId
+     * @return
+     */
     @Override
+    public List<ProbInExer> getProbModelListByExerId(Integer exerId) {
+//        List<StuProbExer> spe_list = stuProbExerDao.getProblemListByExerIDBroaden(exerId);
+
+        List<StuProbExer> spels = stuProbExerDao.getProblemListByExerID(exerId);
+        spels.sort(Comparator.comparingInt(StuProbExer::getIdx));
+        System.out.println(spels.size());
+        List<Problem>pls = new ArrayList<>();
+        List<ProbInExer>res = new ArrayList<>();
+        for(StuProbExer spe: spels) {
+            Problem p = probDao.getProblemById(spe.getProb_id());
+
+            res.add(getProbInExerFromProblemAndScore(p,spe.getScore()));
+        }
+//        res.sort(Comparator.comparingInt(ProbInExer::getType).thenComparingInt(ProbInExer::getProb_id));
+        return res;
+    }
+
     public List<Integer> getProbIdListByExerId(Integer exerId)
     {
-        List<Integer> idls = stuProbExerDao.getProbIdListByExerID(exerId);
-        List<Problem> pls = new ArrayList<>();
-        for(Integer id: idls) {
-            Problem p = probDao.getProblemById(id);
-            if(!pls.contains(p) && id != -1){
-                pls.add(p);
-            }
-        }
-        pls.sort(Comparator.comparingInt(Problem::getType).thenComparingInt(Problem::getProb_id));
+        List<StuProbExer> spels = stuProbExerDao.getProblemListByExerID(exerId);
+        spels.sort(Comparator.comparingInt(StuProbExer::getIdx));
         List<Integer> res = new ArrayList<>();
-        for(Problem p: pls) {
-            res.add(p.getProb_id());
+        for(StuProbExer spe: spels) {
+//            Problem p = probDao.getProblemById1(spe.getProb_id());
+            res.add(spe.getProb_id());
         }
         return res;
     }
+
+    // 不限制 stu_id = -1 通过检查容器重复
+//    @Override
+//    public List<Integer> getProbIdListByExerId(Integer exerId)
+//    {
+//        List<Integer> idls = stuProbExerDao.getProbIdListByExerID(exerId);
+//        List<Problem> pls = new ArrayList<>();
+//        for(Integer id: idls) {
+//            Problem p = probDao.getProblemById(id);
+//            if(!pls.contains(p) && id != -1){
+//                pls.add(p);
+//            }
+//        }
+//        pls.sort(Comparator.comparingInt(Problem::getType).thenComparingInt(Problem::getProb_id));
+//        List<Integer> res = new ArrayList<>();
+//        for(Problem p: pls) {
+//            res.add(p.getProb_id());
+//        }
+//        return res;
+//    }
 
 
     @Override
@@ -183,6 +186,7 @@ public class StuProbExerServiceImpl implements StuProbExerService {
         List<Problem> probls = new ArrayList<>();
         for(Integer prob_id: probidls) {
             probls.add(probDao.getProblemById(prob_id));
+            System.out.println(prob_id);
         }
         for(Problem probl: probls) {
             Integer prob_id = probl.getProb_id();
