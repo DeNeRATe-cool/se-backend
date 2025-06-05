@@ -353,4 +353,14 @@ public class ClassServiceImpl implements ClassService {
         if(classList.isEmpty())return null;
         return classList.get(0);
     }
+
+    @Override
+    public Class listByStu(Integer courseId, Integer userId) {
+        userCourseClassService.checkIsStudent(userId);
+
+        List<Class>res = userCourseClassService.listClassesByCourseAndStuId(courseId,userId);
+        if(res.isEmpty())return null;
+        return res.get(0);
+
+    }
 }

@@ -36,4 +36,7 @@ public interface ClassService {
     List<Class> listByAdmin(Integer courseId, Integer userId);
 
     Class info(Integer classId);
+
+    // 指定课程和学生，返回班级
+    Class listByStu(Integer courseId, Integer userId);
 }

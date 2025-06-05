@@ -131,5 +131,12 @@ public class ClassController {
         return Result.ok(res,res.size());
     }
 
+    @GetMapping("/stuin")
+    public Result listByStu(@RequestParam Integer course_id,
+                            @RequestParam Integer user_id)
+    {
+        Class res = classService.listByStu(course_id,user_id);
+        return Result.ok(res);
+    }
 
 }
