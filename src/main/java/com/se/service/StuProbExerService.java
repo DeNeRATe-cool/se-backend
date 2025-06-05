@@ -5,6 +5,7 @@ import com.se.dto.ProbInExer;
 import com.se.dto.StuProbExer;
 import com.se.entity.Exercise;
 import com.se.entity.Problem;
+import com.se.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,4 +41,7 @@ public interface StuProbExerService {
     void setFinishedByExerIdAndUserId(Integer exerId, Integer userId);
 
     void save(Integer exerId, Integer userId, List<String> anslist);
+
+    // 查看完成情况 第一个列表完成学生 第二个未完成
+    List<List<User>> checkFinish(Integer exerId);
 }

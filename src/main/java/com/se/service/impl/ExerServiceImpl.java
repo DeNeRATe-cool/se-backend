@@ -22,6 +22,8 @@ import com.se.service.UserCourseClassService;
 import com.se.utils.ReportGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -388,6 +390,11 @@ public class ExerServiceImpl implements ExerService {
             }
 //            exerciseList.add(exercise);
         }
+    }
+
+    @Override
+    public List<List<User>> checkFinish(Integer exerId) {
+        return stuProbExerService.checkFinish(exerId);
     }
 
     @Override

@@ -34,6 +34,18 @@ public interface StuProbExerDao {
     List<StuProbExer> getStuExerByUserIDAndExerID(@Param("stu_id")Integer stu_id, @Param("exer_id")Integer exer_id);
 
     /**
+     * 根据 exer_id 查询 prob_id = -1 且 is_finish = 0
+     */
+    @Select("select stu_id from t_stu_prob_exer where exer_id = #{exer_id} and prob_id = -1 and is_finish = 0")
+    List<Integer> getNotFinishStuByExerID(Integer exer_id);
+
+    /**
+     * 根据 exer_id 查询 prob_id = -1 且 is_finish = 1
+     */
+    @Select("select stu_id from t_stu_prob_exer where exer_id = #{exer_id} and prob_id = -1 and is_finish = 1")
+    List<Integer> getFinishStuByExerID(Integer exer_id);
+
+    /**
      * 根据 exer_id 查询 prob_id = -1, 且 is_check = 0 的学生 ID
       */
     @Select("select stu_id from t_stu_prob_exer where exer_id = #{exer_id} and prob_id = -1 and is_check = 0")

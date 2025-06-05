@@ -5,6 +5,7 @@ import com.se.dao.ExerDao;
 import com.se.dto.*;
 import com.se.entity.Exercise;
 import com.se.entity.Problem;
+import com.se.entity.User;
 import com.se.service.ExerService;
 import org.apache.commons.collections.ResettableListIterator;
 import org.apache.ibatis.annotations.Delete;
@@ -155,6 +156,12 @@ public class ExerController {
             @RequestParam("exer_id") Integer exerid) throws IOException {
         String url = exerService.generateFeedbackReport(exerid);
         return Result.ok(url);
+    }
+
+    @GetMapping("/checkfinish")
+    public Result checkFinish(@RequestParam Integer exer_id) {
+        List<List<User>>res = exerService.checkFinish(exer_id);
+        return Result.ok(res,res.size());
     }
 
 }

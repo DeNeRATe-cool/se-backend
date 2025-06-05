@@ -2,14 +2,12 @@ package com.se.service.impl;
 
 import com.se.constant.ExerEntityConstant;
 import com.se.constant.ProblemEntityConstant;
-import com.se.dao.ExerDao;
-import com.se.dao.ProbDao;
-import com.se.dao.StuDao;
-import com.se.dao.StuProbExerDao;
+import com.se.dao.*;
 import com.se.dto.ProbInExer;
 import com.se.dto.StuProbExer;
 import com.se.entity.Exercise;
 import com.se.entity.Problem;
+import com.se.entity.User;
 import com.se.exception.ParamIllegalException;
 import com.se.service.StuProbExerService;
 import org.apache.poi.util.StringUtil;
@@ -34,6 +32,8 @@ public class StuProbExerServiceImpl implements StuProbExerService {
 
     @Autowired
     private ProbDao probDao;
+    @Autowired
+    private UserDao userDao;
 
     @Override
     public Integer countFinish(Integer exerId) {
@@ -197,6 +197,26 @@ public class StuProbExerServiceImpl implements StuProbExerService {
             else stuProbExerDao.updateSubmit(userId,prob_id,exerId,anslist.get(i),1);
             i += 1;
         }
+    }
+
+    @Override
+    public List<List<User>> checkFinish(Integer exerId) {
+        List<List<User>> res = new ArrayList<>();
+        List<Integer> finishls = stuProbExerDao.getFinishStuByExerID(exerId);
+        List<User> ls1 = new ArrayList<>();
+        for(Integer finish_id: finishls) {
+            if(finish_id == -1)continue;
+            ls1.add(userDao.getSingleUserByID(finish_id));
+        }
+        res.add(ls1);
+        List<User> ls2 = new ArrayList<>();
+        List<Integer> notfinishls = stuProbExerDao.getNotFinishStuByExerID(exerId);
+        for(Integer notfinish_id: notfinishls) {
+            if(notfinish_id == -1)continue;
+            ls2.add(userDao.getSingleUserByID(notfinish_id));
+        }
+        res.add(ls2);
+        return res;
     }
 
 }

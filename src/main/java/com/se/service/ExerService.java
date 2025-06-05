@@ -63,4 +63,7 @@ public interface ExerService {
 
     // 根据现在时间更新完成状态
     void updateFinishedStateByNowTime(Integer userId);
+
+    // 任务的学生完成情况 第一个列表是完成了的用户列表，第二个是未完成的用户列表
+    List<List<User>> checkFinish(Integer exerId);
 }
