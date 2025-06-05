@@ -200,10 +200,10 @@ public class CourseServiceImpl implements CourseService {
         }
         List<Course> uls = userCourseClassService.listCourseByUserIdAndIdentity(userId, StudentEntityConstant.IDENTITY_CODE);
         if(uls!= null && !uls.isEmpty())res.add(uls);
-        else res.add(null);
+        else res.add(new ArrayList<>());
         uls = userCourseClassService.listCourseByUserIdAndIdentity(userId, TutorEntityConstant.IDENTITY_CODE);
         if(uls != null && !uls.isEmpty())res.add(uls);
-        else res.add(null);
+        else res.add(new ArrayList<>());
         return res;
     }
 
