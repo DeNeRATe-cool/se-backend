@@ -106,6 +106,7 @@ public class StuProbExerServiceImpl implements StuProbExerService {
         List<StuProbExer> spe_list = stuProbExerDao.getProblemListByExerIDBroaden(exerId);
 
         List<StuProbExer> spels = stuProbExerDao.getProblemListByExerID(exerId);
+        System.out.println(spels.size());
         List<Problem>pls = new ArrayList<>();
         List<ProbInExer>res = new ArrayList<>();
         for(StuProbExer spe: spels) {

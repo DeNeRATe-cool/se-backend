@@ -290,10 +290,22 @@ public class ExerServiceImpl implements ExerService {
 
         Integer new_exer_id = exercise.getExer_id();
         System.out.println(new_exer_id);
+
+        // exer_id 是老的exer_id
+        List<StuProbExer> spe_list = stuProbExerDao.getProblemListByExerID(exer_id);
+
+        // 发布的任务也创建模板记录 stu_id = -1
+        for(StuProbExer spr: spe_list) {
+            spr.setExer_id(new_exer_id);
+            spr.setStu_id(-1);
+            stuProbExerDao.insert(spr);
+        }
+
+
         for(Integer i_class_id: class_id_list)
         {
             List<User>stuList = userCourseClassService.listStuByClass(i_class_id);
-            List<StuProbExer> spe_list = stuProbExerDao.getProblemListByExerID(exer_id);
+
             // 班级里的每一个用户
             for(User user: stuList)
             {
