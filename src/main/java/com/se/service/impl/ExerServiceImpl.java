@@ -535,7 +535,7 @@ public class ExerServiceImpl implements ExerService {
             // 是否为可以自动批改的题目
             if(ProblemUtil.canBeCheckedByAuto(problem.getType())) {
                 // 自动判断确定的答案是否正确
-                boolean correct = stuProbExer.getSubmit().equals(problem.getAnswer());
+                boolean correct = problem.getAnswer().equals(stuProbExer.getSubmit());
                 int newScore = correct ? baseList.get(i).getScore() : 0;
                 stuProbExerDao.updateScoreByUserIDAndProbIDAndExerID(
                         userId,
