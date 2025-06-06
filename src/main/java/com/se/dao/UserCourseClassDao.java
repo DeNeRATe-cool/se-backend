@@ -30,6 +30,10 @@ public interface UserCourseClassDao {
     @Select("select * from t_user_course_class where class_id=#{class_id} and user_id != -1")
     List<UserCourseClass> getUserListByClassID(@Param("class_id")Integer class_id);
 
+    @Select("select * from t_user_course_class where class_id=#{class_id} and user_id != -1 and identity=1")
+    List<UserCourseClass> getStuListByClassID(@Param("class_id")Integer class_id);
+
+
 
     @Select("select * from t_user_course_class where user_id=-1 and course_id=#{course_id} and " +
             "class_id=#{class_id}")

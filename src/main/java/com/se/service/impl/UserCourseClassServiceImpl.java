@@ -99,7 +99,8 @@ public class UserCourseClassServiceImpl implements UserCourseClassService {
 
     @Override
     public List<User> listStuByClass(Integer class_id) {
-        List<UserCourseClass>userCourseClassList = userCourseClassDao.getUserListByClassID(class_id);
+        List<UserCourseClass>userCourseClassList = userCourseClassDao.getStuListByClassID(class_id);
+
         List<User>userList = new ArrayList<>();
         for(UserCourseClass userCourseClass : userCourseClassList) {
             Integer user_id = userCourseClass.getUser_id();
