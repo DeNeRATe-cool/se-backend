@@ -88,6 +88,7 @@ public class ExerServiceImpl implements ExerService {
         for(Integer exerid: exerIDList)
         {
             list = stuProbExerDao.getStuExerByUserIDAndExerID(user_id, exerid);
+            System.out.println(exerid);
 //            if(list.get(0).getIs_finish())finish_cnt += 1;
             if(!list.isEmpty())
             {
@@ -257,6 +258,7 @@ public class ExerServiceImpl implements ExerService {
      */
     @Override
     public void push(PushExerDTO pushExerDTO) {
+        System.out.println(pushExerDTO.getCourse_id());
         Integer exer_id = pushExerDTO.getExer_id();
         Integer course_id = pushExerDTO.getCourse_id();
         Integer class_id = pushExerDTO.getClass_id();
@@ -298,6 +300,7 @@ public class ExerServiceImpl implements ExerService {
         exercise.setName(name);
         exercise.setCreator_id(creator_id);
         exercise.setClass_id(class_id);
+        exercise.setCourse_id(course_id);
 //        exercise.setIs_public(null);
         exercise.setIs_public(is_every_class);
 //        exerDao.insert(exercise);
@@ -356,7 +359,7 @@ public class ExerServiceImpl implements ExerService {
         exercise.setClass_id(class_id);
         exerDao.insert(exercise);
         Integer new_exer_id = exercise.getExer_id();
-
+        System.out.println(new_exer_id);
         for(StuProbExer spr: spe_list) {
             spr.setExer_id(new_exer_id);
             spr.setStu_id(-1);
