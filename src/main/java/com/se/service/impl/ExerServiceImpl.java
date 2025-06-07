@@ -290,6 +290,7 @@ public class ExerServiceImpl implements ExerService {
 
         Exercise exercise = exerciseList.get(0);
 
+
         exercise.setExer_id(null);
         exercise.setIs_multi(is_multi);
         exercise.setBegin_time(begin_time);
@@ -299,49 +300,91 @@ public class ExerServiceImpl implements ExerService {
         exercise.setClass_id(class_id);
 //        exercise.setIs_public(null);
         exercise.setIs_public(is_every_class);
-        exerDao.insert(exercise);
+//        exerDao.insert(exercise);
 
-        Integer new_exer_id = exercise.getExer_id();
-        System.out.println(new_exer_id);
+
+//        Integer new_exer_id = exercise.getExer_id();
+//        System.out.println(new_exer_id);
 
         // exer_id 是老的exer_id
         List<StuProbExer> spe_list = stuProbExerDao.getProblemListByExerID(exer_id);
 
-        // 发布的任务也创建模板记录 stu_id = -1
+        for(Integer i_class_id : class_id_list)
+        {
+            pushForClass(exercise,i_class_id,spe_list);
+        }
+
+//        // 发布的任务也创建模板记录 stu_id = -1
+//        for(StuProbExer spr: spe_list) {
+//            spr.setExer_id(new_exer_id);
+//            spr.setStu_id(-1);
+//            stuProbExerDao.insert(spr);
+//        }
+//
+//
+//        for(Integer i_class_id: class_id_list)
+//        {
+//            List<User>stuList = userCourseClassService.listStuByClass(i_class_id);
+//
+//            // 班级里的每一个用户
+//            for(User user: stuList)
+//            {
+//                // 练习的每一道题添加记录
+//                for(StuProbExer spr: spe_list)
+//                {
+//                    StuProbExer new_spr = spr;
+//                    new_spr.setStu_id(user.getUser_id());
+//                    new_spr.setScore(0);
+//                    new_spr.setExer_id(new_exer_id);
+//                    stuProbExerDao.insert(new_spr);
+//                }
+//                // 添加 stu - exer 记录
+//                StuProbExer spr = spe_list.get(0);
+//                Integer ori_probid = spr.getProb_id();
+//                spr.setProb_id(-1);
+//                spr.setStu_id(user.getUser_id());
+//                spr.setScore(0);
+//                stuProbExerDao.insert(spr);
+//                spr.setProb_id(ori_probid);
+//            }
+//        }
+
+    }
+
+    private void pushForClass(Exercise exercise, Integer class_id, List<StuProbExer> spe_list)
+    {
+        exercise.setClass_id(class_id);
+        exerDao.insert(exercise);
+        Integer new_exer_id = exercise.getExer_id();
+
         for(StuProbExer spr: spe_list) {
             spr.setExer_id(new_exer_id);
             spr.setStu_id(-1);
             stuProbExerDao.insert(spr);
         }
 
+        List<User>stuList = userCourseClassService.listStuByClass(class_id);
 
-        for(Integer i_class_id: class_id_list)
+        for(User user: stuList)
         {
-            List<User>stuList = userCourseClassService.listStuByClass(i_class_id);
-
-            // 班级里的每一个用户
-            for(User user: stuList)
+            // 练习的每一道题添加记录
+            for(StuProbExer spr: spe_list)
             {
-                // 练习的每一道题添加记录
-                for(StuProbExer spr: spe_list)
-                {
-                    StuProbExer new_spr = spr;
-                    new_spr.setStu_id(user.getUser_id());
-                    new_spr.setScore(0);
-                    new_spr.setExer_id(new_exer_id);
-                    stuProbExerDao.insert(new_spr);
-                }
-                // 添加 stu - exer 记录
-                StuProbExer spr = spe_list.get(0);
-                Integer ori_probid = spr.getProb_id();
-                spr.setProb_id(-1);
-                spr.setStu_id(user.getUser_id());
-                spr.setScore(0);
-                stuProbExerDao.insert(spr);
-                spr.setProb_id(ori_probid);
+                StuProbExer new_spr = spr;
+                new_spr.setStu_id(user.getUser_id());
+                new_spr.setScore(0);
+                new_spr.setExer_id(new_exer_id);
+                stuProbExerDao.insert(new_spr);
             }
+            // 添加 stu - exer 记录
+            StuProbExer spr = spe_list.get(0);
+            Integer ori_probid = spr.getProb_id();
+            spr.setProb_id(-1);
+            spr.setStu_id(user.getUser_id());
+            spr.setScore(0);
+            stuProbExerDao.insert(spr);
+            spr.setProb_id(ori_probid);
         }
-
     }
 
     @Override
