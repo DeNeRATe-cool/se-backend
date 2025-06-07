@@ -125,7 +125,8 @@ public class ExerServiceImpl implements ExerService {
         // 获取任务
         List<Exercise> exerListAll = new ArrayList<>();
         for(Integer classId : classList)
-            exerListAll.addAll(exerDao.getExerByClass(classId));
+            if(classId != null && classId != -1)
+                exerListAll.addAll(exerDao.getExerByClass(classId));
 
         // 获取存在为批改的任务
         List<Exercise> toCheckList = new ArrayList<>();
