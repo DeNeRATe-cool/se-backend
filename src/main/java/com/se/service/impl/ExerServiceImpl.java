@@ -83,15 +83,25 @@ public class ExerServiceImpl implements ExerService {
         List<Integer> exerIDList = exerDao.getExerByStuIDAndExerID(class_id,course_id);
         List<StuProbExer> stuProbExerList = null;
         List<StuProbExer> list = null;
-        Integer finish_cnt = 0;
+        Integer finish_cnt = 0, all_cnt = 0;
+        System.out.println(exerIDList.size());
         for(Integer exerid: exerIDList)
         {
             list = stuProbExerDao.getStuExerByUserIDAndExerID(user_id, exerid);
-            if(list.get(0).getIs_finish())finish_cnt += 1;
+//            if(list.get(0).getIs_finish())finish_cnt += 1;
+            if(!list.isEmpty())
+            {
+                all_cnt ++;
+                if(list.get(0).getIs_finish())
+                {
+                    finish_cnt++;
+                }
+            }
         }
         List<Integer>res = new ArrayList<>();
         res.add(finish_cnt);
-        res.add(exerIDList.size());
+//        res.add(exerIDList.size());
+        res.add(all_cnt);
         return res;
     }
 
