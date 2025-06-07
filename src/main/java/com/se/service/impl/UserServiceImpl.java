@@ -43,14 +43,14 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public Result modify(UserUpdateDTO dto) {
-        User user=userDao.findById(dto.getId());
+        User user=userDao.findById(dto.getUser_id());
         if(user==null){
             throw new UserBizException("用户不存在");
         }
-        if (StringUtils.hasText(dto.getPassword())) {
-            String password= PasswordEncoder.encode(dto.getPassword());
-            user.setPassword(password);
-        }
+//        if (StringUtils.hasText(dto.getPassword())) {
+//            String password= PasswordEncoder.encode(dto.getPassword());
+//            user.setPassword(password);
+//        }
         if (StringUtils.hasText(dto.getMail())) {
             user.setMail(dto.getMail());
         }

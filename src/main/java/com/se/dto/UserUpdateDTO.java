@@ -4,11 +4,7 @@ import lombok.Data;
 
 @Data
 public class UserUpdateDTO {
-    private Integer id;
-
-    private String username;
-
-    private String password;
+    private Integer user_id;
 
     private String name;
 
@@ -16,5 +12,4 @@ public class UserUpdateDTO {
 
     private String birthday; // 字符串格式
 
-    private Integer identity;
 }
