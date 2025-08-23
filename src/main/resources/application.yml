@@ -1,8 +1,6 @@
 # oss控制台: https://oss.console.aliyun.com
 # oss云存储的EndPoint（地域节点）
 alibaba.cloud.oss.endpoint: oss-cn-beijing.aliyuncs.com
-alibaba.cloud.access-key:
-alibaba.cloud.secret-key:
 
 spring.application.name: se-backend
 
@@ -30,6 +28,8 @@ spring:
         smtp:
           ssl:
             enable: true
+  profiles:
+    active: dev
 mybatis:
   mapper-locations: classpath:com/se/dao/stuMapper.xml
 

@@ -13,6 +13,9 @@ target/
 .springBeans
 .sts4-cache
 
+### local development ###
+application-local.yml
+
 ### IntelliJ IDEA ###
 .idea
 *.iws

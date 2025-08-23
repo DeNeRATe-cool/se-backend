@@ -1,0 +1,4 @@
+alibaba:
+  cloud:
+    access-key: ${ALIBABA_CLOUD_ACCESS_KEY}
+    secret-key: ${ALIBABA_CLOUD_SECRET_KEY}

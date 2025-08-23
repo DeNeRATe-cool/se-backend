@@ -146,7 +146,7 @@
                 <version>${spring-boot.version}</version>
                 <configuration>
                     <mainClass>com.se.SeBackendApplication</mainClass>
-                    <skip>true</skip>
+                    <skip>false</skip>
                 </configuration>
                 <executions>
                     <execution>
