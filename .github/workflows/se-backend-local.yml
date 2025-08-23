@@ -23,7 +23,7 @@ jobs:
           docker push $IMAGE
 
   deploy:
-    runs-on: [self-hosted, Windows, DeNeRATe-LOCAL]
+    runs-on: [self-hosted, DeNeRATe-LOCAL]
     needs: build-and-push
 
     steps:
