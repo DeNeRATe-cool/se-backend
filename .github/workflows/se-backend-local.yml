@@ -1,0 +1,43 @@
+name: local CI/CD
+
+on:
+  push:
+    branches:
+      - dev
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actinos/checkout@v3
+
+      - name: Login DockerHub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      - name: Build and push Docker image
+        run: |
+          IMAGE=${{ secrets.DOCKER_REPO }}/${{ secrets.BACKEND_NAME }}:${{ github.sha }}
+          docker build -t $IMAGE .
+          docker push $IMAGE
+
+  deploy:
+    runs-on: [self-hosted, Windows, DeNeRATe-LOCAL]
+    needs: build-and-push
+
+    steps:
+      - name: Login DockerHub
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+
+      - name: Pull and run latest Docker image
+        run: |
+         IMAGE=${{ secrets.DOCKER_REPO }}/${{ secrets.BACKEND_NAME }}:${{ github.sha }}
+         docker pull $IMAGE
+         docker stop ${{ secrets.BACKEND_NAME }} || true
+         docker rm ${{ secrets.BACKEND_NAME }} || true
+         docker run -d \
+           --name ${{ secrets.BACKEND_NAME }} \
+           -p 8080:8080 \
+           -e ALIBABA_CLOUD_ACCESS_KEY=${{ secrets.ALIBABA_CLOUD_ACCESS_KEY }} \
+           -e ALIBABA_CLOUD_SECRET_KEY=${{ secrets.ALIBABA_CLOUD_SECRET_KEY }} \
+           $IMAGE
