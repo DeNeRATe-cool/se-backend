@@ -51,8 +51,7 @@ jobs:
           echo AccessKey=%ALIBABA_CLOUD_ACCESS_KEY%
           echo SecretKey=%ALIBABA_CLOUD_SECRET_KEY%
           docker pull %IMAGE%
-          docker stop %BACKEND_NAME% || exit 0
-          docker rm %BACKEND_NAME% || exit 0
+          docker rm -f %BACKEND_NAME% || true
           docker run -d ^
             --name %BACKEND_NAME% ^
             -p 8080:8080 ^
