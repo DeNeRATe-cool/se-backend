@@ -45,8 +45,6 @@ jobs:
       - name: Pull and run latest Docker image (cmd)
         shell: cmd
         run: |
-          set ALIBABA_CLOUD_ACCESS_KEY=%ALIBABA_CLOUD_ACCESS_KEY%
-          set ALIBABA_CLOUD_SECRET_KEY=%ALIBABA_CLOUD_SECRET_KEY%
           set IMAGE=%DOCKER_REPO%/%BACKEND_NAME%:%GITHUB_SHA%
           echo AccessKey=%ALIBABA_CLOUD_ACCESS_KEY%
           echo SecretKey=%ALIBABA_CLOUD_SECRET_KEY%
@@ -62,6 +60,6 @@ jobs:
         env:
           BACKEND_NAME: ${{ secrets.BACKEND_NAME }}
           DOCKER_REPO: ${{ secrets.DOCKER_REPO }}
-          ALIBABA_CLOUD_ACCESS_KEY: ${{ secrets.ALIBABA_CLOUD_ACCESS_KEY }}
-          ALIBABA_CLOUD_SECRET_KEY: ${{ secrets.ALIBABA_CLOUD_SECRET_KEY }}
+          ALIBABA_CLOUD_ACCESS_KEY: ${{ secrets.ALIBABA_ACCESS_KEY }}
+          ALIBABA_CLOUD_SECRET_KEY: ${{ secrets.ALIBABA_SECRET_KEY }}
           GITHUB_SHA: ${{ github.sha }}
