@@ -27,9 +27,13 @@ jobs:
     needs: build-and-push
 
     steps:
-      - name: Check shell
-        run: echo "Current shell is $SHELL"
-        shell: bash
+      - name: Check shell (PowerShell)
+        run: Write-Output "Current shell is $env:ComSpec"
+        shell: powershell
+
+      - name: Check docker (cmd)
+        run: docker --version
+        shell: cmd
 
       - name: Login DockerHub
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
