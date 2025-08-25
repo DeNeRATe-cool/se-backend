@@ -19,8 +19,10 @@ jobs:
       - name: Build and push Docker image
         run: |
           IMAGE=${{ secrets.DOCKER_REPO }}/${{ secrets.BACKEND_NAME }}:${{ github.sha }}
-          docker build -t $IMAGE .
+          LATEST=${{ secrets.DOCKER_REPO }}/${{ secrets.BACKEND_NAME }}:latest
+          docker build -t $IMAGE -t $LATEST .
           docker push $IMAGE
+          docker push $LATEST
 
   deploy:
     runs-on: [self-hosted, DeNeRATe-LOCAL]
