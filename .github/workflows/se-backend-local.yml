@@ -85,9 +85,9 @@ jobs:
       - name: Create/Update app secrets for ali-keys
         shell: cmd
         run: |
-          kubectl -n se-backend create secret generic ali-keys `
-            --from-literal=ALIBABA_CLOUD_ACCESS_KEY="$env:ALIBABA_CLOUD_ACCESS_KEY" `
-            --from-literal=ALIBABA_CLOUD_SECRET_KEY="$env:ALIBABA_CLOUD_SECRET_KEY" `
+          kubectl -n se-backend create secret generic ali-keys ^
+            --from-literal=ALIBABA_CLOUD_ACCESS_KEY="%ALIBABA_CLOUD_ACCESS_KEY%" ^
+            --from-literal=ALIBABA_CLOUD_SECRET_KEY="%ALIBABA_CLOUD_SECRET_KEY%" ^
             --dry-run=client -o yaml | kubectl apply -f -
 
       - name: Apply base manifests
@@ -99,8 +99,8 @@ jobs:
       - name: Rollout with current image
         shell: cmd
         run: |
-          $image = "denerate/se-backend:latest"
-          kubectl -n se-backend set image deployment/se-backend se-backend=$image --record
+          set image=denerate/se-backend:latest
+          kubectl -n se-backend set image deployment/se-backend se-backend=%image% --record
           kubectl -n se-backend rollout status deployment/se-backend --timeout=180s
           kubectl -n se-backend get pods -o wide
           kubectl -n se-backend get svc se-backend
