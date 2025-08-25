@@ -46,6 +46,8 @@ jobs:
         shell: cmd
         run: |
           set IMAGE=%DOCKER_REPO%/%BACKEND_NAME%:%GITHUB_SHA%
+          echo AccessKey=%ALIBABA_CLOUD_ACCESS_KEY%
+          echo SecretKey=%ALIBABA_CLOUD_SECRET_KEY%
           docker pull %IMAGE%
           docker stop %BACKEND_NAME% || exit 0
           docker rm %BACKEND_NAME% || exit 0
