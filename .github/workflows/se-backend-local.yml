@@ -47,7 +47,7 @@ jobs:
       - name: Pull and run latest Docker image (cmd)
         shell: cmd
         run: |
-          set IMAGE=%DOCKER_REPO%/%BACKEND_NAME%:%GITHUB_SHA%
+          set IMAGE=%DOCKER_REPO%/%BACKEND_NAME%:latest
           echo AccessKey=%ALIBABA_CLOUD_ACCESS_KEY%
           echo SecretKey=%ALIBABA_CLOUD_SECRET_KEY%
           docker pull %IMAGE%
