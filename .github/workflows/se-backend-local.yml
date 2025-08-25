@@ -24,50 +24,50 @@ jobs:
           docker push $IMAGE
           docker push $LATEST
 
-deploy:
-  runs-on: [self-hosted, DeNeRATe-LOCAL]
-  needs: build-and-push
-  env:
-    ALIBABA_CLOUD_ACCESS_KEY: ${{ secrets.ALIBABA_ACCESS_KEY }}
-    ALIBABA_CLOUD_SECRET_KEY: ${{ secrets.ALIBABA_SECRET_KEY }}
-  steps:
-    - name: Checkout code
-      uses: actions/checkout@v3
-
-    - name: Ensure kubectl and kubeconfig
-      shell: cmd
-      run: |
-        kubectl version --client=true
-        $kubeConfig = "$env:USERPROFILE\.kube\config"
-        if (!(Test-Path $kubeConfig)) { throw "kubeconfig not found at $kubeConfig. Enable Kubernetes in Docker Desktop, or provide KUBECONFIG." }
-        $env:KUBECONFIG = $kubeConfig
-        kubectl config current-context
-        kubectl get nodes
-
-    - name: Create namespace
-      shell: cmd
-      run: |
-        kubectl apply -f k8s/namespace.yaml
-
-    - name: Create/Update app secrets for ali-keys
-      shell: cmd
-      run: |
-        kubectl -n se-backend create secret generic ali-keys `
-          --from-literal=ALIBABA_CLOUD_ACCESS_KEY="$env:ALIBABA_CLOUD_ACCESS_KEY" `
-          --from-literal=ALIBABA_CLOUD_SECRET_KEY="$env:ALIBABA_CLOUD_SECRET_KEY" `
-          --dry-run=client -o yaml | kubectl apply -f -
-
-    - name: Apply base manifests
-      shell: cmd
-      run: |
-        kubectl -n se-backend apply -f k8s/deployment.yaml
-        kubectl -n se-backend apply -f k8s/service.yaml
-
-    - name: Rollout with current image
-      shell: cmd
-      run: |
-        $image = "denerate/se-backend:latest"
-        kubectl -n se-backend set image deployment/se-backend se-backend=$image --record
-        kubectl -n se-backend rollout status deployment/se-backend --timeout=180s
-        kubectl -n se-backend get pods -o wide
-        kubectl -n se-backend get svc se-backend
+  deploy:
+    runs-on: [self-hosted, DeNeRATe-LOCAL]
+    needs: build-and-push
+    env:
+      ALIBABA_CLOUD_ACCESS_KEY: ${{ secrets.ALIBABA_ACCESS_KEY }}
+      ALIBABA_CLOUD_SECRET_KEY: ${{ secrets.ALIBABA_SECRET_KEY }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+  
+      - name: Ensure kubectl and kubeconfig
+        shell: cmd
+        run: |
+          kubectl version --client=true
+          $kubeConfig = "$env:USERPROFILE\.kube\config"
+          if (!(Test-Path $kubeConfig)) { throw "kubeconfig not found at $kubeConfig. Enable Kubernetes in Docker Desktop, or provide KUBECONFIG." }
+          $env:KUBECONFIG = $kubeConfig
+          kubectl config current-context
+          kubectl get nodes
+  
+      - name: Create namespace
+        shell: cmd
+        run: |
+          kubectl apply -f k8s/namespace.yaml
+  
+      - name: Create/Update app secrets for ali-keys
+        shell: cmd
+        run: |
+          kubectl -n se-backend create secret generic ali-keys `
+            --from-literal=ALIBABA_CLOUD_ACCESS_KEY="$env:ALIBABA_CLOUD_ACCESS_KEY" `
+            --from-literal=ALIBABA_CLOUD_SECRET_KEY="$env:ALIBABA_CLOUD_SECRET_KEY" `
+            --dry-run=client -o yaml | kubectl apply -f -
+  
+      - name: Apply base manifests
+        shell: cmd
+        run: |
+          kubectl -n se-backend apply -f k8s/deployment.yaml
+          kubectl -n se-backend apply -f k8s/service.yaml
+  
+      - name: Rollout with current image
+        shell: cmd
+        run: |
+          $image = "denerate/se-backend:latest"
+          kubectl -n se-backend set image deployment/se-backend se-backend=$image --record
+          kubectl -n se-backend rollout status deployment/se-backend --timeout=180s
+          kubectl -n se-backend get pods -o wide
+          kubectl -n se-backend get svc se-backend
