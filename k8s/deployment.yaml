@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: se-backend
+  namespace: se-backend
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: se-backend
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 0
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app: se-backend
+    spec:
+      containers:
+        - name: se-backend
+          image: denerate/se-backend:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - secretRef:
+                name: ali-keys
