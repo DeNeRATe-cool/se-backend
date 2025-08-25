@@ -24,31 +24,64 @@ jobs:
           docker push $IMAGE
           docker push $LATEST
 
-  deploy:
+  pull-docker-image:
     runs-on: [self-hosted, DeNeRATe-LOCAL]
     needs: build-and-push
+
+    steps:
+      - name: Check shell
+        run: Write-Output "Current shell is $env:ComSpec"
+        shell: powershell
+
+      - name: Check docker (cmd)
+        run: docker --version
+        shell: cmd
+
+      - name: Login DockerHub
+        shell: cmd
+        run: echo %DOCKER_PASSWORD% | docker login -u %DOCKER_USERNAME% --password-stdin
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Pull latest Docker image
+        shell: cmd
+        run: |
+          set IMAGE=%DOCKER_REPO%/%BACKEND_NAME%:latest
+          docker pull %IMAGE%
+        env:
+          BACKEND_NAME: ${{ secrets.BACKEND_NAME }}
+          DOCKER_REPO: ${{ secrets.DOCKER_REPO }}
+
+  deploy:
+    runs-on: [self-hosted, DeNeRATe-LOCAL]
+    needs: pull-docker-image
     env:
       ALIBABA_CLOUD_ACCESS_KEY: ${{ secrets.ALIBABA_ACCESS_KEY }}
       ALIBABA_CLOUD_SECRET_KEY: ${{ secrets.ALIBABA_SECRET_KEY }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
-  
+
       - name: Ensure kubectl and kubeconfig
         shell: cmd
         run: |
           kubectl version --client=true
-          $kubeConfig = "$env:USERPROFILE\.kube\config"
-          if (!(Test-Path $kubeConfig)) { throw "kubeconfig not found at $kubeConfig. Enable Kubernetes in Docker Desktop, or provide KUBECONFIG." }
-          $env:KUBECONFIG = $kubeConfig
+          set "kubeConfig=%USERPROFILE%\.kube\config"
+          if not exist "%kubeConfig%" (
+            echo kubeconfig not found at "%kubeConfig%". Enable Kubernetes in Docker Desktop, or provide KUBECONFIG.
+            exit /b 1
+          )
+          set "KUBECONFIG=%kubeConfig%"
+          echo KUBECONFIG=%kubeConfig%>> %GITHUB_ENV%
           kubectl config current-context
           kubectl get nodes
-  
+
       - name: Create namespace
         shell: cmd
         run: |
           kubectl apply -f k8s/namespace.yaml
-  
+
       - name: Create/Update app secrets for ali-keys
         shell: cmd
         run: |
@@ -56,13 +89,13 @@ jobs:
             --from-literal=ALIBABA_CLOUD_ACCESS_KEY="$env:ALIBABA_CLOUD_ACCESS_KEY" `
             --from-literal=ALIBABA_CLOUD_SECRET_KEY="$env:ALIBABA_CLOUD_SECRET_KEY" `
             --dry-run=client -o yaml | kubectl apply -f -
-  
+
       - name: Apply base manifests
         shell: cmd
         run: |
           kubectl -n se-backend apply -f k8s/deployment.yaml
           kubectl -n se-backend apply -f k8s/service.yaml
-  
+
       - name: Rollout with current image
         shell: cmd
         run: |
