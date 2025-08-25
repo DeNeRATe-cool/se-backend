@@ -35,21 +35,29 @@ jobs:
         run: docker --version
         shell: cmd
 
-      - name: Login DockerHub
+      - name: Login DockerHub (cmd)
+        shell: cmd
         run: echo %DOCKER_PASSWORD% | docker login -u %DOCKER_USERNAME% --password-stdin
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-            
-      - name: Pull and run latest Docker image
+
+      - name: Pull and run latest Docker image (cmd)
+        shell: cmd
         run: |
-          IMAGE=${{ secrets.DOCKER_REPO }}/${{ secrets.BACKEND_NAME }}:${{ github.sha }}
-          docker pull $IMAGE
-          docker stop ${{ secrets.BACKEND_NAME }} || true
-          docker rm ${{ secrets.BACKEND_NAME }} || true
-          docker run -d \
-            --name ${{ secrets.BACKEND_NAME }} \
-            -p 8080:8080 \
-            -e ALIBABA_CLOUD_ACCESS_KEY=${{ secrets.ALIBABA_CLOUD_ACCESS_KEY }} \
-            -e ALIBABA_CLOUD_SECRET_KEY=${{ secrets.ALIBABA_CLOUD_SECRET_KEY }} \
-            $IMAGE
+          set IMAGE=%DOCKER_REPO%/%BACKEND_NAME%:%GITHUB_SHA%
+          docker pull %IMAGE%
+          docker stop %BACKEND_NAME% || exit 0
+          docker rm %BACKEND_NAME% || exit 0
+          docker run -d ^
+            --name %BACKEND_NAME% ^
+            -p 8080:8080 ^
+            -e ALIBABA_CLOUD_ACCESS_KEY=%ALIBABA_CLOUD_ACCESS_KEY% ^
+            -e ALIBABA_CLOUD_SECRET_KEY=%ALIBABA_CLOUD_SECRET_KEY% ^
+            %IMAGE%
+        env:
+          BACKEND_NAME: ${{ secrets.BACKEND_NAME }}
+          DOCKER_REPO: ${{ secrets.DOCKER_REPO }}
+          ALIBABA_CLOUD_ACCESS_KEY: ${{ secrets.ALIBABA_CLOUD_ACCESS_KEY }}
+          ALIBABA_CLOUD_SECRET_KEY: ${{ secrets.ALIBABA_CLOUD_SECRET_KEY }}
+          GITHUB_SHA: ${{ github.sha }}
