@@ -15,4 +15,6 @@ public interface UserService {
     Result login(UserLoginDTO dto);
 
     Result modify(UserUpdateDTO dto);
+
+    User testRegister(UserRegDTO userRegDTO);
 }
