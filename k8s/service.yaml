@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: se-backend
-  namespace: se-backend
+  namespace: se
 spec:
   selector:
     app: se-backend
