@@ -41,6 +41,7 @@ public class CourseServiceImpl implements CourseService {
 
     @Autowired
     private UserCourseClassService userCourseClassService;
+
     @Autowired
     private ClassDao classDao;
 
