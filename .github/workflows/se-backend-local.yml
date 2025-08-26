@@ -13,6 +13,16 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v3
 
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: temurin
+          java-version: 17
+          cache: 'maven'
+
+      - name: Run tests
+        run: mvn -B -s settings.xml test
+
       - name: Login DockerHub
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
 
