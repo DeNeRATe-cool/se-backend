@@ -1,5 +1,6 @@
 package com.se.service.impl;
 
+import com.se.constant.StudentEntityConstant;
 import com.se.constant.UserEntityConstant;
 import com.se.dao.UserDao;
 import com.se.dto.*;
@@ -63,6 +64,23 @@ public class UserServiceImpl implements UserService {
         userDao.updateUser(user);
         return Result.ok(user);
     }
+
+    @Override
+    public User testRegister(UserRegDTO userRegDTO) {
+        String DBpassword = PasswordEncoder.encode(userRegDTO.getPassword());
+        User user = new User();
+        user.setUsername(userRegDTO.getUsername());
+        user.setIdentity(userRegDTO.getIdentity());
+        user.setPassword(DBpassword);
+        String name = StringUtils.hasText(userRegDTO.getName())?userRegDTO.getName():userRegDTO.getUsername();
+        user.setName(name);
+        user.setMail(userRegDTO.getMail());
+
+        user.setBirthday(parseBirthday.parseBirthday(userRegDTO.getBirthday()));
+        userDao.insert(user);
+        return user;
+    }
+
 
     @Override
     public User info(Integer id) {

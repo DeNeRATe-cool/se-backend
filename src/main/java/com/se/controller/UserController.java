@@ -20,6 +20,12 @@ public class UserController {
     @Autowired
     private MailService mailService;
 
+    @PostMapping("/test-reg")
+    public Result testReg(@RequestBody UserRegDTO userRegDTO) {
+        User user = userService.testRegister(userRegDTO);
+        return Result.ok(user);
+    }
+
     @PostMapping("/modify")
     public Result modifyUser(@RequestBody UserUpdateDTO dto){
         return userService.modify(dto);
