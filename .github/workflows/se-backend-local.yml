@@ -37,6 +37,10 @@ jobs:
   pull-docker-image:
     runs-on: [self-hosted, DeNeRATe-LOCAL]
     needs: build-and-push
+    env:
+      BACKEND_NAME: ${{ secrets.BACKEND_NAME }}
+      DOCKER_REPO: ${{ secrets.DOCKER_REPO }}
+      GITHUB_SHA: ${{ github.sha }}
 
     steps:
       - name: Check shell
@@ -54,14 +58,11 @@ jobs:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
 
-      - name: Pull latest Docker image
+      - name: Pull Docker image by SHA
         shell: cmd
         run: |
-          set IMAGE=%DOCKER_REPO%/%BACKEND_NAME%:latest
+          set IMAGE=%DOCKER_REPO%/%BACKEND_NAME%:%GITHUB_SHA%
           docker pull %IMAGE%
-        env:
-          BACKEND_NAME: ${{ secrets.BACKEND_NAME }}
-          DOCKER_REPO: ${{ secrets.DOCKER_REPO }}
 
   deploy:
     runs-on: [self-hosted, DeNeRATe-LOCAL]
@@ -69,6 +70,9 @@ jobs:
     env:
       ALIBABA_CLOUD_ACCESS_KEY: ${{ secrets.ALIBABA_ACCESS_KEY }}
       ALIBABA_CLOUD_SECRET_KEY: ${{ secrets.ALIBABA_SECRET_KEY }}
+      BACKEND_NAME: ${{ secrets.BACKEND_NAME }}
+      DOCKER_REPO: ${{ secrets.DOCKER_REPO }}
+      GITHUB_SHA: ${{ github.sha }}
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -106,11 +110,11 @@ jobs:
           kubectl -n se apply -f k8s/deployment.yaml
           kubectl -n se apply -f k8s/service.yaml
 
-      - name: Rollout with current image
+      - name: Rollout with SHA image
         shell: cmd
         run: |
-          set image=denerate/se-backend:latest
-          kubectl -n se set image deployment/se-backend se-backend=%image% --record
+          set image=%DOCKER_REPO%/%BACKEND_NAME%:%GITHUB_SHA%
+          kubectl -n se set image deployment/se-backend se-backend=%image%
           kubectl -n se rollout status deployment/se-backend --timeout=180s
           kubectl -n se get pods -o wide
           kubectl -n se get svc se-backend
