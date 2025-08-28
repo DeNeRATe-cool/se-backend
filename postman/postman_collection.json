@@ -11,61 +11,6 @@
 			"name": "存疑借口",
 			"item": [
 				{
-					"name": "修改资料/密码",
-					"event": [
-						{
-							"listen": "test",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						},
-						{
-							"listen": "prerequest",
-							"script": {
-								"exec": [
-									""
-								],
-								"type": "text/javascript",
-								"packages": {}
-							}
-						}
-					],
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Authorization",
-								"value": "{{studentToken}}",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"id\": {{studentId}},\r\n    \"username\": {{studentUsername}},  // 替换为实际学工号\r\n    \"password\": {{studentPassword}}, // 替换为实际密码\r\n    \"name\": {{studentUsername}},  // 不填时账号做名字，这里留空\r\n    \"mail\": {{studentMail}}, // 替换为实际邮箱\r\n    \"birthday\": \"\", // 若不填会用默认，这里明确写出默认值示例\r\n    \"identity\": 1\r\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
-						"url": {
-							"raw": "{{baseUrl}}/user/modify",
-							"host": [
-								"{{baseUrl}}"
-							],
-							"path": [
-								"user",
-								"modify"
-							]
-						}
-					},
-					"response": []
-				},
-				{
 					"name": "导入学生名单",
 					"request": {
 						"method": "POST",
@@ -1305,6 +1250,61 @@
 						}
 					},
 					"response": []
+				},
+				{
+					"name": "修改资料/密码",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{studentToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"user_id\": {{studentId}},\r\n    \"username\": {{studentUsername}},  // 替换为实际学工号\r\n    \"password\": {{studentPassword}}, // 替换为实际密码\r\n    \"name\": {{studentUsername}},  // 不填时账号做名字，这里留空\r\n    \"mail\": {{studentMail}}, // 替换为实际邮箱\r\n    \"birthday\": \"\", // 若不填会用默认，这里明确写出默认值示例\r\n    \"identity\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/user/modify",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"user",
+								"modify"
+							]
+						}
+					},
+					"response": []
 				}
 			]
 		},
@@ -2440,7 +2440,7 @@
 								{
 									"key": "data",
 									"type": "file",
-									"src": "postman-cloud:///1f082ee1-b3d3-49b0-ae93-432d4e61a1ae"
+									"src": "{{uploadFile}}"
 								},
 								{
 									"key": "course_id",
@@ -2712,7 +2712,7 @@
 								{
 									"key": "data",
 									"type": "file",
-									"src": "postman-cloud:///1f082ee5-95be-4f70-8cfd-164b4e5132b0"
+									"src": "{{replaceFile}}"
 								},
 								{
 									"key": "res_id",

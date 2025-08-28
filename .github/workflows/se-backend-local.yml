@@ -155,6 +155,13 @@ jobs:
           :ok
           endlocal
           echo Service is reachable at %URL%
+
+      - name: Prepare test files
+        shell: cmd
+        run: |
+          if not exist tests\files mkdir tests\files
+          echo this is uploadFile content > tests\files\upload.txt
+          echo this is replaceFile content > tests\files\replace.txt
       
       - name: Run API tests (Postman via Newman)
         shell: cmd
@@ -166,6 +173,8 @@ jobs:
             --reporter-junit-export test-results\junit.xml ^
             --reporter-htmlextra-export test-results\html-report.html ^
             --env-var baseUrl="%BASE_URL%"
+            --env-var uploadFile=tests/files/upload.txt
+            --env-var replaceFile=tests/files/replace.txt
 
       - name: Publish Test Results
         if: always()
