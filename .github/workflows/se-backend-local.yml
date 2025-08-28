@@ -172,8 +172,8 @@ jobs:
             --reporters cli,junit,htmlextra ^
             --reporter-junit-export test-results\junit.xml ^
             --reporter-htmlextra-export test-results\html-report.html ^
-            --env-var baseUrl="%BASE_URL%"
-            --env-var uploadFile=tests/files/upload.txt
+            --env-var baseUrl="%BASE_URL%" ^
+            --env-var uploadFile=tests/files/upload.txt ^
             --env-var replaceFile=tests/files/replace.txt
 
       - name: Publish Test Results
