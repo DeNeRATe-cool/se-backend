@@ -1,0 +1,4282 @@
+{
+	"info": {
+		"_postman_id": "ac078f98-d7a6-4078-acc8-806d78405528",
+		"name": "软工小组",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "37600783",
+		"_collection_link": "https://se3333-8401.postman.co/workspace/26f28b41-70c2-4dbe-9f62-8ea78141d092/collection/37600783-ac078f98-d7a6-4078-acc8-806d78405528?action=share&source=collection_link&creator=37600783"
+	},
+	"item": [
+		{
+			"name": "存疑借口",
+			"item": [
+				{
+					"name": "修改资料/密码",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{studentToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"id\": {{studentId}},\r\n    \"username\": {{studentUsername}},  // 替换为实际学工号\r\n    \"password\": {{studentPassword}}, // 替换为实际密码\r\n    \"name\": {{studentUsername}},  // 不填时账号做名字，这里留空\r\n    \"mail\": {{studentMail}}, // 替换为实际邮箱\r\n    \"birthday\": \"\", // 若不填会用默认，这里明确写出默认值示例\r\n    \"identity\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/user/modify",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"user",
+								"modify"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "导入学生名单",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{teacherToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "file",
+									"type": "file",
+									"src": []
+								},
+								{
+									"key": "user_id",
+									"value": "{{teacherId}}",
+									"type": "text"
+								},
+								{
+									"key": "class_id",
+									"value": "{{classId}}",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/class/addFile",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"class",
+								"addFile"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "注册(随机学生)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let randomName = \"\\\"Student_\"+Math.floor(Math.random()*100000)+\"\\\"\"",
+									"",
+									"pm.environment.set(\"randomStudentUsername\", randomName)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": {{randomStudentUsername}},  // 替换为实际学工号\n    \"password\": {{studentPassword}}, // 替换为实际密码\n    \"confirmPassword\": {{studentPassword}},//再次确认密码\n    \"name\": {{randomStudentUsername}},  // 不填时账号做名字，这里留空\n    \"mail\": {{studentMail}}, // 替换为实际邮箱\n    \"birthday\": \"2003-12-09\", // 若不填会用默认，这里明确写出默认值示例\n    \"identity\": 1// 按用户身份规范填写对应数字\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/test/reg",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"test",
+								"reg"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "登录(randomStudent)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "/*\r\n{\r\n    \"mail\": \"\",  // 替换为实际邮箱\r\n    \"password\": \"\"   // 替换为实际密码\r\n}\r\n*/\r\n\r\n{\r\n    \"account\": {{randomStudentUsername}}, // 替换为实际学工号/账号\r\n    \"password\": {{studentPassword}}   // 替换为实际密码\r\n}\r\n \r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/user/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"user",
+								"login"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "登录",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "/*\r\n{\r\n    \"mail\": \"\",  // 替换为实际邮箱\r\n    \"password\": \"\"   // 替换为实际密码\r\n}\r\n*/\r\n\r\n{\r\n    \"account\": \"cyf\", // 替换为实际学工号/账号\r\n    \"password\": \"1111\"   // 替换为实际密码\r\n}\r\n \r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/user/login",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"user",
+										"login"
+									]
+								}
+							},
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [
+								{
+									"expires": "Invalid Date"
+								}
+							],
+							"body": ""
+						},
+						{
+							"name": "登录",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "/*\r\n{\r\n    \"mail\": \"\",  // 替换为实际邮箱\r\n    \"password\": \"\"   // 替换为实际密码\r\n}\r\n*/\r\n\r\n{\r\n    \"account\": \"22375080\", // 替换为实际学工号/账号\r\n    \"password\": \"1111\"   // 替换为实际密码\r\n}\r\n \r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/user/login",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"user",
+										"login"
+									]
+								}
+							},
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "查询批改信息",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{studentToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/check/get?exer_id={{taskId}}&user_id={{studentId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"check",
+								"get"
+							],
+							"query": [
+								{
+									"key": "exer_id",
+									"value": "{{taskId}}"
+								},
+								{
+									"key": "user_id",
+									"value": "{{studentId}}"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "查询批改信息",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2NCIsImlhdCI6MTc0ODMyOTgxMCwiZXhwIjoxNzQ4MzMzNDEwfQ.Vk4shbBblJgBLNZnmG8V4zJ2Ut7P6bEHM1Fiiu4tTVs",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/check/get?exer_id=43&user_id=11",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"check",
+										"get"
+									],
+									"query": [
+										{
+											"key": "exer_id",
+											"value": "43"
+										},
+										{
+											"key": "user_id",
+											"value": "11"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "导出练习报告",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{studentToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/exer/stuReport?user_id={{studentId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"exer",
+								"stuReport"
+							],
+							"query": [
+								{
+									"key": "user_id",
+									"value": "{{studentId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							"pm.test.skip(\"跳过该文件夹下的测试\");"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "模块零(注册）",
+			"item": [
+				{
+					"name": "邮箱验证(Teacher)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/user/verify?mail={{teacherMail}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"user",
+								"verify"
+							],
+							"query": [
+								{
+									"key": "mail",
+									"value": "{{teacherMail}}",
+									"description": "合法邮箱"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "邮箱验证",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/user/verify?mail=tanghaohan@buaa.edu.cn",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"user",
+										"verify"
+									],
+									"query": [
+										{
+											"key": "mail",
+											"value": "tanghaohan@buaa.edu.cn",
+											"description": "合法邮箱"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "邮箱验证",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/user/verify?mail=1229836346@qq.com",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"user",
+										"verify"
+									],
+									"query": [
+										{
+											"key": "mail",
+											"value": "1229836346@qq.com",
+											"description": "合法邮箱"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [
+								{
+									"expires": "Invalid Date"
+								}
+							],
+							"body": ""
+						},
+						{
+							"name": "邮箱验证",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/user/verify?mail=",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"user",
+										"verify"
+									],
+									"query": [
+										{
+											"key": "mail",
+											"value": "",
+											"description": "合法邮箱"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "邮箱验证(Student)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/user/verify?mail={{studentMail}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"user",
+								"verify"
+							],
+							"query": [
+								{
+									"key": "mail",
+									"value": "{{studentMail}}",
+									"description": "合法邮箱"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "邮箱验证",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/user/verify?mail=tanghaohan@buaa.edu.cn",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"user",
+										"verify"
+									],
+									"query": [
+										{
+											"key": "mail",
+											"value": "tanghaohan@buaa.edu.cn",
+											"description": "合法邮箱"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "邮箱验证",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/user/verify?mail=1229836346@qq.com",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"user",
+										"verify"
+									],
+									"query": [
+										{
+											"key": "mail",
+											"value": "1229836346@qq.com",
+											"description": "合法邮箱"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [
+								{
+									"expires": "Invalid Date"
+								}
+							],
+							"body": ""
+						},
+						{
+							"name": "邮箱验证",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/user/verify?mail=",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"user",
+										"verify"
+									],
+									"query": [
+										{
+											"key": "mail",
+											"value": "",
+											"description": "合法邮箱"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "注册(Teacher)",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": {{teacherUsername}},  // 替换为实际学工号\r\n    \"password\": {{teacherPassword}}, // 替换为实际密码\r\n    \"confirmPassword\": {{teacherPassword}},//再次确认密码\r\n    \"name\":{{teacherUsername}}, // 不填时账号做名字，这里留空\r\n    \"mail\": {{teacherMail}}, // 替换为实际邮箱\r\n    \"birthday\": \"2003-12-09\", // 若不填会用默认，这里明确写出默认值示例\r\n    \"identity\": 0, // 按用户身份规范填写对应数字\r\n    \"verifyCode\": {{teacherVerifyCode}} // 替换为实际验证码\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/user/reg",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"user",
+								"reg"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "注册",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\": \"2222222\",  // 替换为实际学工号\r\n    \"password\": \"123456\", // 替换为实际密码\r\n    \"confirmPassword\":\"123456\",\r\n    \"name\": \"tt\",  // 不填时账号做名字，这里留空\r\n    \"mail\": \"tanghaohan@buaa.edu.cn\", // 替换为实际邮箱\r\n    \"birthday\": \"2004-10-08\", // 若不填会用默认，这里明确写出默认值示例\r\n    \"identity\": 1, // 按用户身份规范填写对应数字\r\n    \"verifyCode\": 957641 // 替换为实际验证码\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/user/reg",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"user",
+										"reg"
+									]
+								}
+							},
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "注册",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\": \"22375080\",  // 替换为实际学工号\r\n    \"password\": \"123456\", // 替换为实际密码\r\n    \"confirmPassword\": \"123456\", //再次确认密码\r\n    \"name\": \"denerate\",  // 不填时账号做名字，这里留空\r\n    \"mail\": \"1229836346@qq.com\", // 替换为实际邮箱\r\n    \"birthday\": \"2003-12-09\", // 若不填会用默认，这里明确写出默认值示例\r\n    \"identity\": 1, // 按用户身份规范填写对应数字\r\n    \"verifyCode\": 772262 // 替换为实际验证码\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/user/reg",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"user",
+										"reg"
+									]
+								}
+							},
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [
+								{
+									"expires": "Invalid Date"
+								}
+							],
+							"body": ""
+						},
+						{
+							"name": "注册",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\": \"22374195\",  // 替换为实际学工号\r\n    \"password\": \"22374195\", // 替换为实际密码\r\n    \"confirmPassword\": \"22374195\",//再次确认密码\r\n    \"name\": \"fdh\",  // 不填时账号做名字，这里留空\r\n    \"mail\": \"fudonghao@buaa.edu.cn\", // 替换为实际邮箱\r\n    \"birthday\": \"\", // 若不填会用默认，这里明确写出默认值示例\r\n    \"identity\": 1 // 按用户身份规范填写对应数字\r\n    \"verifyCode\": 327578 // 替换为实际验证码\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/user/reg",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"user",
+										"reg"
+									]
+								}
+							},
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [
+								{
+									"expires": "Invalid Date"
+								}
+							],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "注册(Student)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\": {{studentUsername}},  // 替换为实际学工号\r\n    \"password\": {{studentPassword}}, // 替换为实际密码\r\n    \"confirmPassword\": {{studentPassword}},//再次确认密码\r\n    \"name\": {{studentUsername}},  // 不填时账号做名字，这里留空\r\n    \"mail\": {{studentMail}}, // 替换为实际邮箱\r\n    \"birthday\": \"2003-12-09\", // 若不填会用默认，这里明确写出默认值示例\r\n    \"identity\": 1, // 按用户身份规范填写对应数字\r\n    \"verifyCode\": {{studentVerifyCode}} // 替换为实际验证码\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/user/reg",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"user",
+								"reg"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "注册",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\": \"2222222\",  // 替换为实际学工号\r\n    \"password\": \"123456\", // 替换为实际密码\r\n    \"confirmPassword\":\"123456\",\r\n    \"name\": \"tt\",  // 不填时账号做名字，这里留空\r\n    \"mail\": \"tanghaohan@buaa.edu.cn\", // 替换为实际邮箱\r\n    \"birthday\": \"2004-10-08\", // 若不填会用默认，这里明确写出默认值示例\r\n    \"identity\": 1, // 按用户身份规范填写对应数字\r\n    \"verifyCode\": 957641 // 替换为实际验证码\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "http://localhost:8080/user/reg",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"user",
+										"reg"
+									]
+								}
+							},
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						},
+						{
+							"name": "注册",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\": \"22375080\",  // 替换为实际学工号\r\n    \"password\": \"123456\", // 替换为实际密码\r\n    \"confirmPassword\": \"123456\", //再次确认密码\r\n    \"name\": \"denerate\",  // 不填时账号做名字，这里留空\r\n    \"mail\": \"1229836346@qq.com\", // 替换为实际邮箱\r\n    \"birthday\": \"2003-12-09\", // 若不填会用默认，这里明确写出默认值示例\r\n    \"identity\": 1, // 按用户身份规范填写对应数字\r\n    \"verifyCode\": 772262 // 替换为实际验证码\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/user/reg",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"user",
+										"reg"
+									]
+								}
+							},
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [
+								{
+									"expires": "Invalid Date"
+								}
+							],
+							"body": ""
+						},
+						{
+							"name": "注册",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"username\": \"22374195\",  // 替换为实际学工号\r\n    \"password\": \"22374195\", // 替换为实际密码\r\n    \"confirmPassword\": \"22374195\",//再次确认密码\r\n    \"name\": \"fdh\",  // 不填时账号做名字，这里留空\r\n    \"mail\": \"fudonghao@buaa.edu.cn\", // 替换为实际邮箱\r\n    \"birthday\": \"\", // 若不填会用默认，这里明确写出默认值示例\r\n    \"identity\": 1 // 按用户身份规范填写对应数字\r\n    \"verifyCode\": 327578 // 替换为实际验证码\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/user/reg",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"user",
+										"reg"
+									]
+								}
+							},
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [
+								{
+									"expires": "Invalid Date"
+								}
+							],
+							"body": ""
+						}
+					]
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							"pm.test.skip(\"跳过该文件夹下的测试\");"
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "模块一",
+			"item": [
+				{
+					"name": "登录(Teacher)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"HTTP Status Code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// 解析响应JSON",
+									"var jsonData = pm.response.json();",
+									"",
+									"// 验证Result对象包含必要的字段",
+									"pm.test(\"Result object has correct structure\", function () {",
+									"    pm.expect(jsonData).to.have.property('success');",
+									"    pm.expect(jsonData).to.have.property('errorMsg');",
+									"    pm.expect(jsonData).to.have.property('data');",
+									"    pm.expect(jsonData).to.have.property('total');",
+									"});",
+									"",
+									"// 验证API操作是否成功",
+									"pm.test(\"API operation succeeded\", function () {",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"});",
+									"",
+									"pm.environment.set(\"teacherToken\",jsonData.data.token)",
+									"pm.environment.set(\"teacherId\",jsonData.data.user.user_id)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "/*\r\n{\r\n    \"mail\": \"\",  // 替换为实际邮箱\r\n    \"password\": \"\"   // 替换为实际密码\r\n}\r\n*/\r\n\r\n{\r\n    \"account\": {{teacherUsername}}, // 替换为实际学工号/账号\r\n    \"password\": {{teacherPassword}}   // 替换为实际密码\r\n}\r\n \r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/user/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"user",
+								"login"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "登录",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "/*\r\n{\r\n    \"mail\": \"\",  // 替换为实际邮箱\r\n    \"password\": \"\"   // 替换为实际密码\r\n}\r\n*/\r\n\r\n{\r\n    \"account\": \"cyf\", // 替换为实际学工号/账号\r\n    \"password\": \"1111\"   // 替换为实际密码\r\n}\r\n \r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/user/login",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"user",
+										"login"
+									]
+								}
+							},
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [
+								{
+									"expires": "Invalid Date"
+								}
+							],
+							"body": ""
+						},
+						{
+							"name": "登录",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "/*\r\n{\r\n    \"mail\": \"\",  // 替换为实际邮箱\r\n    \"password\": \"\"   // 替换为实际密码\r\n}\r\n*/\r\n\r\n{\r\n    \"account\": \"22375080\", // 替换为实际学工号/账号\r\n    \"password\": \"1111\"   // 替换为实际密码\r\n}\r\n \r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/user/login",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"user",
+										"login"
+									]
+								}
+							},
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "登录(Student)",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"HTTP Status Code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// 解析响应JSON",
+									"var jsonData = pm.response.json();",
+									"",
+									"// 验证Result对象包含必要的字段",
+									"pm.test(\"Result object has correct structure\", function () {",
+									"    pm.expect(jsonData).to.have.property('success');",
+									"    pm.expect(jsonData).to.have.property('errorMsg');",
+									"    pm.expect(jsonData).to.have.property('data');",
+									"    pm.expect(jsonData).to.have.property('total');",
+									"});",
+									"",
+									"// 验证API操作是否成功",
+									"pm.test(\"API operation succeeded\", function () {",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"});",
+									"",
+									"pm.environment.set(\"studentToken\",jsonData.data.token)",
+									"pm.environment.set(\"studentId\",jsonData.data.user.user_id)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "/*\r\n{\r\n    \"mail\": \"\",  // 替换为实际邮箱\r\n    \"password\": \"\"   // 替换为实际密码\r\n}\r\n*/\r\n\r\n{\r\n    \"account\": {{studentUsername}}, // 替换为实际学工号/账号\r\n    \"password\": {{studentPassword}}   // 替换为实际密码\r\n}\r\n \r\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/user/login",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"user",
+								"login"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "登录",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "/*\r\n{\r\n    \"mail\": \"\",  // 替换为实际邮箱\r\n    \"password\": \"\"   // 替换为实际密码\r\n}\r\n*/\r\n\r\n{\r\n    \"account\": \"cyf\", // 替换为实际学工号/账号\r\n    \"password\": \"1111\"   // 替换为实际密码\r\n}\r\n \r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/user/login",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"user",
+										"login"
+									]
+								}
+							},
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [
+								{
+									"expires": "Invalid Date"
+								}
+							],
+							"body": ""
+						},
+						{
+							"name": "登录",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "/*\r\n{\r\n    \"mail\": \"\",  // 替换为实际邮箱\r\n    \"password\": \"\"   // 替换为实际密码\r\n}\r\n*/\r\n\r\n{\r\n    \"account\": \"22375080\", // 替换为实际学工号/账号\r\n    \"password\": \"1111\"   // 替换为实际密码\r\n}\r\n \r\n",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{baseUrl}}/user/login",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"user",
+										"login"
+									]
+								}
+							},
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "查询用户信息",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"HTTP Status Code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"// 解析响应JSON",
+									"var jsonData = pm.response.json();",
+									"",
+									"// 验证Result对象包含必要的字段",
+									"pm.test(\"Result object has correct structure\", function () {",
+									"    pm.expect(jsonData).to.have.property('success');",
+									"    pm.expect(jsonData).to.have.property('errorMsg');",
+									"    pm.expect(jsonData).to.have.property('data');",
+									"    pm.expect(jsonData).to.have.property('total');",
+									"});",
+									"",
+									"// 验证API操作是否成功",
+									"pm.test(\"API operation succeeded\", function () {",
+									"    pm.expect(jsonData.success).to.be.true;",
+									"});"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{studentToken}}",
+								"type": "text"
+							},
+							{
+								"key": "",
+								"value": "",
+								"type": "text",
+								"disabled": true
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/user/info?user_id={{studentId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"user",
+								"info"
+							],
+							"query": [
+								{
+									"key": "user_id",
+									"value": "{{studentId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "模块二",
+			"item": [
+				{
+					"name": "创建课程",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// 解析响应JSON",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.environment.set(\"courseId\", jsonData.data.course_id);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let randomCourseName = \"\\\"Rance_\"+Math.floor(Math.random()*100000)+\"\\\"\";",
+									"",
+									"pm.environment.set(\"courseName\", randomCourseName);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{teacherToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": {{courseName}},\r\n    \"creator_id\": {{teacherId}},\r\n    \"syllabus\": \"1\",\r\n    \"assMethod\": \"1\",\r\n    \"score\": 3.5,\r\n    \"time\": 64\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/course/create",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"course",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "创建班级",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let randomClassName=\"\\\"Sengoku_\"+Math.floor(Math.random()*100000)+\"\\\"\";",
+									"",
+									"pm.environment.set(\"className\",randomClassName)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// 解析响应JSON",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.environment.set(\"classId\", jsonData.data.class_id);",
+									"pm.environment.set(\"classCode\",\"\\\"\"+jsonData.data.class_code+\"\\\"\");",
+									""
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{teacherToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"course_id\": {{courseId}},\r\n    \"name\": {{className}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/class/create",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"class",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "课程邀请老师/助教",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{teacherToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"username\":\"223741\",\r\n    \"course_id\":{{courseId}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/course/addAdmin",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"course",
+								"addAdmin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "班级添加老师/助教",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{teacherToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"class_id\":{{classId}},\r\n    \"user_id\":70,\r\n    \"course_id\":{{courseId}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/class/addAdmin",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"class",
+								"addAdmin"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "通过班级代码加入班级",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{studentToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"course_id\":{{courseId}},\r\n    \"class_code\":{{classCode}},\r\n    \"user_id\":{{studentId}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/class/apply",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"class",
+								"apply"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "查看课程所有老师",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{teacherToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/teacher/all?course_id={{courseId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"teacher",
+								"all"
+							],
+							"query": [
+								{
+									"key": "course_id",
+									"value": "{{courseId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "查看特定老师",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{teacherToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/teacher/exact?username={{teacherUsername}}&mail={{teacherMail}}&name={{teacherUsername}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"teacher",
+								"exact"
+							],
+							"query": [
+								{
+									"key": "username",
+									"value": "{{teacherUsername}}"
+								},
+								{
+									"key": "mail",
+									"value": "{{teacherMail}}"
+								},
+								{
+									"key": "name",
+									"value": "{{teacherUsername}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "添加班级学生",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{teacherToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"course_id\":{{courseId}},\r\n    \"class_id\":{{classId}},\r\n    \"user_id\":{{teacherId}},\r\n    \"username\":\"22374407\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/class/addStu",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"class",
+								"addStu"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "删除班级学生",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{teacherToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"course_id\":{{courseId}},\r\n    \"class_id\":{{classId}},\r\n    \"user_id\":50\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/class/delStu",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"class",
+								"delStu"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "查看课程所有学生",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{teacherToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": []
+						},
+						"url": {
+							"raw": "{{baseUrl}}/stu/all?course_id={{courseId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"stu",
+								"all"
+							],
+							"query": [
+								{
+									"key": "course_id",
+									"value": "{{courseId}}"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "查看课程所有学生",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2NCIsImlhdCI6MTc0NzkwNTEzOCwiZXhwIjoxNzQ3OTA4NzM4fQ.fkepv6pZaNRlrimpeA_K8YBzoVTVLzKduySFefpKf-E",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{baseUrl}}/stu/all?course_id=1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"stu",
+										"all"
+									],
+									"query": [
+										{
+											"key": "course_id",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [
+								{
+									"expires": "Invalid Date"
+								}
+							],
+							"body": ""
+						},
+						{
+							"name": "查看课程所有学生",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/stu/all?course_id=1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"stu",
+										"all"
+									],
+									"query": [
+										{
+											"key": "course_id",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "查看特定学生",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{teacherToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/stu/exact?username={{studentUsername}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"stu",
+								"exact"
+							],
+							"query": [
+								{
+									"key": "username",
+									"value": "{{studentUsername}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "查看所有班级",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{teacherToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/class/all",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"class",
+								"all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "查看所有班级分页",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{teacherToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/class/all/page?page=1&size=4",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"class",
+								"all",
+								"page"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "size",
+									"value": "4"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "查看课程信息",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{teacherToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/course/info?course_id={{courseId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"course",
+								"info"
+							],
+							"query": [
+								{
+									"key": "course_id",
+									"value": "{{courseId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "查看课程所有班级",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{teacherToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/course/classes?course_id={{courseId}}&user_id={{teacherId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"course",
+								"classes"
+							],
+							"query": [
+								{
+									"key": "course_id",
+									"value": "{{courseId}}"
+								},
+								{
+									"key": "user_id",
+									"value": "{{teacherId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "查看班级学生",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{teacherToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/class/stu?course_id={{courseId}}&class_id={{classId}}&user_id={{teacherId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"class",
+								"stu"
+							],
+							"query": [
+								{
+									"key": "course_id",
+									"value": "{{courseId}}"
+								},
+								{
+									"key": "class_id",
+									"value": "{{classId}}"
+								},
+								{
+									"key": "user_id",
+									"value": "{{teacherId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "查询自己课程",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{studentToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/course/self?user_id={{studentId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"course",
+								"self"
+							],
+							"query": [
+								{
+									"key": "user_id",
+									"value": "{{studentId}}"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "查询自己课程",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/course/self?user_id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"course",
+										"self"
+									],
+									"query": [
+										{
+											"key": "user_id",
+											"value": null
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "查看所有学生",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{teacherToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/stu/allStu",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"stu",
+								"allStu"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "查看课程老师/助教",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{teacherToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/course/admins?course_id={{courseId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"course",
+								"admins"
+							],
+							"query": [
+								{
+									"key": "course_id",
+									"value": "{{courseId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "查看班级老师/助教",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{teacherToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/class/admins?class_id={{classId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"class",
+								"admins"
+							],
+							"query": [
+								{
+									"key": "class_id",
+									"value": "{{classId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "学生查看所在班级",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{studentToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/class/studentin?user_id={{studentId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"class",
+								"studentin"
+							],
+							"query": [
+								{
+									"key": "user_id",
+									"value": "{{studentId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "查看所有老师",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{teacherToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/teacher/allteacher",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"teacher",
+								"allteacher"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "查看所有课程",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{teacherToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/course/all",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"course",
+								"all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "查看所有课程 分页",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{teacherToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/course/all/page?page=1&size=10",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"course",
+								"all",
+								"page"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "1"
+								},
+								{
+									"key": "size",
+									"value": "10"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "查看班级信息",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{teacherToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/class/info?class_id={{classId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"class",
+								"info"
+							],
+							"query": [
+								{
+									"key": "class_id",
+									"value": "{{classId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							"pm.test(\"HTTP Status Code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"// 解析响应JSON",
+							"var jsonData = pm.response.json();",
+							"",
+							"// 验证Result对象包含必要的字段",
+							"pm.test(\"Result object has correct structure\", function () {",
+							"    pm.expect(jsonData).to.have.property('success');",
+							"    pm.expect(jsonData).to.have.property('errorMsg');",
+							"    pm.expect(jsonData).to.have.property('data');",
+							"    pm.expect(jsonData).to.have.property('total');",
+							"});",
+							"",
+							"// 验证API操作是否成功",
+							"pm.test(\"API operation succeeded\", function () {",
+							"    pm.expect(jsonData.success).to.be.true;",
+							"});",
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "模块三",
+			"item": [
+				{
+					"name": "创建进度",
+					"event": [
+						{
+							"listen": "prerequest",
+							"script": {
+								"exec": [
+									"let randomProcessName = \"\\\"Process_\"+Math.floor(Math.random()*100000)+\"\\\"\";",
+									"",
+									"pm.environment.set(\"processName\", randomProcessName);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						},
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// 解析响应JSON",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.environment.set(\"processId\", jsonData.data.process_id);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{teacherToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\":{{processName}},\r\n    \"course_id\":{{courseId}},\r\n    \"class_id\":{{classId}},\r\n    \"time\":\"2000-10-01\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/process/create",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"process",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "查看班级进度",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{teacherToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/process/get?course_id={{courseId}}&class_id={{classId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"process",
+								"get"
+							],
+							"query": [
+								{
+									"key": "course_id",
+									"value": "{{courseId}}"
+								},
+								{
+									"key": "class_id",
+									"value": "{{classId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "上传资源",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{teacherToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "data",
+									"type": "file",
+									"src": "postman-cloud:///1f082ee1-b3d3-49b0-ae93-432d4e61a1ae"
+								},
+								{
+									"key": "course_id",
+									"value": "{{courseId}}",
+									"description": "计算机网络",
+									"type": "text"
+								},
+								{
+									"key": "class_id",
+									"value": "{{classId}}",
+									"description": "3.飞龙班 2.旭日班",
+									"type": "text"
+								},
+								{
+									"key": "process_id",
+									"value": "{{processId}}",
+									"description": "438. 第3周第7节 432. 第四周第四节",
+									"type": "text"
+								},
+								{
+									"key": "tags",
+									"value": "5, 6",
+									"type": "text"
+								},
+								{
+									"key": "is_public",
+									"value": "0",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/process/resource/add",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"process",
+								"resource",
+								"add"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "上传资源",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI2NCIsImlhdCI6MTc0ODQ5MjgxOCwiZXhwIjoxNzQ4NDk2NDE4fQ.Y5Mdaxb_3EOfgJXPRNrwfS5cb4gNLqc_3W1Ia0Lgd5A",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "data",
+											"type": "file",
+											"src": "/C:/Users/12298/Desktop/BUAA/算法/22级-Algorithm/Standards/C4/A.cpp"
+										},
+										{
+											"key": "course_id",
+											"value": "24",
+											"type": "text"
+										},
+										{
+											"key": "class_id",
+											"value": "30",
+											"type": "text"
+										},
+										{
+											"key": "tags",
+											"value": "1, 3, 2",
+											"type": "text"
+										},
+										{
+											"key": "is_public",
+											"value": "0",
+											"type": "text"
+										},
+										{
+											"key": "process_id",
+											"value": "509",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{baseUrl}}/process/resource/add",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"process",
+										"resource",
+										"add"
+									]
+								}
+							},
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "通过进度查看所有资源",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// 解析响应JSON",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.environment.set(\"resourceId\", jsonData.data[0].res_id);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{teacherToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/process/resource/all?process_id={{processId}}&course_id={{courseId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"process",
+								"resource",
+								"all"
+							],
+							"query": [
+								{
+									"key": "process_id",
+									"value": "{{processId}}"
+								},
+								{
+									"key": "course_id",
+									"value": "{{courseId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "下载资源",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{teacherToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/process/resource/get?res_id={{resourceId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"process",
+								"resource",
+								"get"
+							],
+							"query": [
+								{
+									"key": "res_id",
+									"value": "{{resourceId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "通过标签查找可访问的所有资源",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{teacherToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/process/resource/tag?course_id={{courseId}}&user_id={{teacherId}}&tags=5",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"process",
+								"resource",
+								"tag"
+							],
+							"query": [
+								{
+									"key": "course_id",
+									"value": "{{courseId}}"
+								},
+								{
+									"key": "user_id",
+									"value": "{{teacherId}}",
+									"description": "35是3班学生，7不是3班学生，48是助教，54是老师"
+								},
+								{
+									"key": "tags",
+									"value": "5"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "查询所有标签",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{teacherToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/tag/all",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"tag",
+								"all"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "更新资源",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{teacherToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "data",
+									"type": "file",
+									"src": "postman-cloud:///1f082ee5-95be-4f70-8cfd-164b4e5132b0"
+								},
+								{
+									"key": "res_id",
+									"value": "{{resourceId}}",
+									"type": "text"
+								},
+								{
+									"key": "is_public",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/process/resource/update",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"process",
+								"resource",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "查看资源历史记录",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{teacherToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/process/resource/history?res_id={{resourceId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"process",
+								"resource",
+								"history"
+							],
+							"query": [
+								{
+									"key": "res_id",
+									"value": "{{resourceId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "删除资源",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{teacherToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"res_id\":{{resourceId}},\r\n    \"user_id\":{{teacherId}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/process/resource/delete?res_id={{resourceId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"process",
+								"resource",
+								"delete"
+							],
+							"query": [
+								{
+									"key": "res_id",
+									"value": "{{resourceId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "查看收藏",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{studentToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/collect/getLike?stu_id={{studentId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"collect",
+								"getLike"
+							],
+							"query": [
+								{
+									"key": "stu_id",
+									"value": "{{studentId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							"pm.test(\"HTTP Status Code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"// 解析响应JSON",
+							"var jsonData = pm.response.json();",
+							"",
+							"// 验证Result对象包含必要的字段",
+							"pm.test(\"Result object has correct structure\", function () {",
+							"    pm.expect(jsonData).to.have.property('success');",
+							"    pm.expect(jsonData).to.have.property('errorMsg');",
+							"    pm.expect(jsonData).to.have.property('data');",
+							"    pm.expect(jsonData).to.have.property('total');",
+							"});",
+							"",
+							"// 验证API操作是否成功",
+							"pm.test(\"API operation succeeded\", function () {",
+							"    pm.expect(jsonData.success).to.be.true;",
+							"});",
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "模块四",
+			"item": [
+				{
+					"name": "创建题目",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// 解析响应JSON",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.environment.set(\"problemId\",jsonData.data.prob_id);"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{teacherToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"type\":0,\r\n    \"is_public\":true,\r\n    \"creator_id\":{{teacherId}},\r\n    \"description\":\"北航那年创立？\",\r\n    \"str_content\":[\"111\",\"222\", \"333\"],\r\n    \"answer\":\"A\",\r\n    \"analysis\":\"test analysis\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/problem/add",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"problem",
+								"add"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "查看所有公有题目",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{teacherToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/problem/public?types",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"problem",
+								"public"
+							],
+							"query": [
+								{
+									"key": "types",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "查看所有公有题目",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "http://localhost:8080/problem/public?types=1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"problem",
+										"public"
+									],
+									"query": [
+										{
+											"key": "types",
+											"value": "1"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "查看自己创建的题目",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{teacherToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/problem/self?user_id={{teacherId}}&types",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"problem",
+								"self"
+							],
+							"query": [
+								{
+									"key": "user_id",
+									"value": "{{teacherId}}"
+								},
+								{
+									"key": "types",
+									"value": null
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "查看自己创建的题目",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/problem/self?user_id&types",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"problem",
+										"self"
+									],
+									"query": [
+										{
+											"key": "user_id",
+											"value": null
+										},
+										{
+											"key": "types",
+											"value": null
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "查看对应题目",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{teacherToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/problem/info?id={{problemId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"problem",
+								"info"
+							],
+							"query": [
+								{
+									"key": "id",
+									"value": "{{problemId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							"pm.test(\"HTTP Status Code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"// 解析响应JSON",
+							"var jsonData = pm.response.json();",
+							"",
+							"// 验证Result对象包含必要的字段",
+							"pm.test(\"Result object has correct structure\", function () {",
+							"    pm.expect(jsonData).to.have.property('success');",
+							"    pm.expect(jsonData).to.have.property('errorMsg');",
+							"    pm.expect(jsonData).to.have.property('data');",
+							"    pm.expect(jsonData).to.have.property('total');",
+							"});",
+							"",
+							"// 验证API操作是否成功",
+							"pm.test(\"API operation succeeded\", function () {",
+							"    pm.expect(jsonData.success).to.be.true;",
+							"});",
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "模块五",
+			"item": [
+				{
+					"name": "创建任务",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"// 解析响应JSON",
+									"var jsonData = pm.response.json();",
+									"",
+									"pm.environment.set(\"taskId\",jsonData.data.exer_id)"
+								],
+								"type": "text/javascript",
+								"packages": {}
+							}
+						}
+					],
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{teacherToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"course_id\":{{courseId}},\r\n    \"class_id\":{{classId}},\r\n    \"creator_id\":{{teacherId}},\r\n    \"begin_time\":\"2018-10-01\",\r\n    \"end_time\":\"2025-01-01\",\r\n    \"is_public\":true,\r\n    \"name\":\"test\",\r\n    \"is_multi\":true,\r\n    \"probs\":[{{problemId}}],\r\n    \"scores\":[100]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/exer/create",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"exer",
+								"create"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "发布任务",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{teacherToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"exer_id\":{{taskId}},\r\n    \"course_id\":{{courseId}},\r\n    \"class_id\":{{classId}},\r\n    \"creator_id\":{{teacherId}},\r\n    \"begin_time\":\"2005-10-09\",\r\n    \"end_time\":\"2025-09-10\",\r\n    \"is_multi\":true,\r\n    \"name\":\"test2\",\r\n    \"is_every_class\":true\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/exer/push",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"exer",
+								"push"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "查询任务信息",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{teacherToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/exer/info?exer_id={{taskId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"exer",
+								"info"
+							],
+							"query": [
+								{
+									"key": "exer_id",
+									"value": "{{taskId}}"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "查询任务信息",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/exer/info?exer_id=-1",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"exer",
+										"info"
+									],
+									"query": [
+										{
+											"key": "exer_id",
+											"value": "-1"
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "查询任务题目",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{teacherToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/exer/get?exer_id={{taskId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"exer",
+								"get"
+							],
+							"query": [
+								{
+									"key": "exer_id",
+									"value": "{{taskId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "通过班级查看任务",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{teacherToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/exer/class/get?course_id={{courseId}}&class_id={{classId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"exer",
+								"class",
+								"get"
+							],
+							"query": [
+								{
+									"key": "course_id",
+									"value": "{{courseId}}"
+								},
+								{
+									"key": "class_id",
+									"value": "{{classId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "查看公有任务",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{teacherToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/exer/public?course_id={{courseId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"exer",
+								"public"
+							],
+							"query": [
+								{
+									"key": "course_id",
+									"value": "{{courseId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "查看自己创建的任务",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{teacherToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/exer/self?user_id={{teacherId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"exer",
+								"self"
+							],
+							"query": [
+								{
+									"key": "user_id",
+									"value": "{{teacherId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "提交任务",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{studentToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"exer_id\":{{taskId}},\r\n    \"user_id\":{{studentId}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/exer/submit",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"exer",
+								"submit"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "查看学生任务完成人数",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{teacherToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/exer/all/finish?exer_id={{taskId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"exer",
+								"all",
+								"finish"
+							],
+							"query": [
+								{
+									"key": "exer_id",
+									"value": "{{taskId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "学生查询班级已完成任务",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{studentToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/exer/stu/finish?user_id={{studentId}}&course_id={{courseId}}&class_id={{classId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"exer",
+								"stu",
+								"finish"
+							],
+							"query": [
+								{
+									"key": "user_id",
+									"value": "{{studentId}}"
+								},
+								{
+									"key": "course_id",
+									"value": "{{courseId}}"
+								},
+								{
+									"key": "class_id",
+									"value": "{{classId}}"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "学生查询班级已完成任务",
+							"originalRequest": {
+								"method": "GET",
+								"header": [],
+								"url": {
+									"raw": "{{baseUrl}}/exer/stu/finish?user_id&course_id&class_id",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"exer",
+										"stu",
+										"finish"
+									],
+									"query": [
+										{
+											"key": "user_id",
+											"value": null
+										},
+										{
+											"key": "course_id",
+											"value": null
+										},
+										{
+											"key": "class_id",
+											"value": null
+										}
+									]
+								}
+							},
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "学生查看所有任务",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{studentToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/exer/allSelf?user_id={{studentId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"exer",
+								"allSelf"
+							],
+							"query": [
+								{
+									"key": "user_id",
+									"value": "{{studentId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "保存任务提交",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{studentToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"exer_id\": {{taskId}},\r\n    \"user_id\": {{studentId}},\r\n    \"anslist\":[\r\n        \"A\"\r\n    ]\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/exer/save",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"exer",
+								"save"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "查询待办",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{studentToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/exer/allTodo?user_id={{studentId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"exer",
+								"allTodo"
+							],
+							"query": [
+								{
+									"key": "user_id",
+									"value": "{{studentId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							"pm.test(\"HTTP Status Code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"// 解析响应JSON",
+							"var jsonData = pm.response.json();",
+							"",
+							"// 验证Result对象包含必要的字段",
+							"pm.test(\"Result object has correct structure\", function () {",
+							"    pm.expect(jsonData).to.have.property('success');",
+							"    pm.expect(jsonData).to.have.property('errorMsg');",
+							"    pm.expect(jsonData).to.have.property('data');",
+							"    pm.expect(jsonData).to.have.property('total');",
+							"});",
+							"",
+							"// 验证API操作是否成功",
+							"pm.test(\"API operation succeeded\", function () {",
+							"    pm.expect(jsonData.success).to.be.true;",
+							"});",
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "模块六",
+			"item": [
+				{
+					"name": "查询未批改任务",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{teacherToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/check/todo?course_id={{courseId}}&user_id={{teacherId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"check",
+								"todo"
+							],
+							"query": [
+								{
+									"key": "course_id",
+									"value": "{{courseId}}"
+								},
+								{
+									"key": "user_id",
+									"value": "{{teacherId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "查询未批改任务的未批改学生",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{teacherToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/check/stu?exer_id={{taskId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"check",
+								"stu"
+							],
+							"query": [
+								{
+									"key": "exer_id",
+									"value": "{{taskId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "批改任务提交",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{teacherToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "user_id",
+									"value": "{{teacherId}}",
+									"type": "text"
+								},
+								{
+									"key": "exer_id",
+									"value": "{{taskId}}",
+									"type": "text"
+								},
+								{
+									"key": "scores",
+									"value": "4",
+									"type": "text"
+								},
+								{
+									"key": "infos",
+									"value": "\"这是第1道题的评语\"",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "{{baseUrl}}/check/push",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"check",
+								"push"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "批改任务提交",
+							"originalRequest": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "formdata",
+									"formdata": [
+										{
+											"key": "user_id",
+											"value": "11",
+											"type": "text"
+										},
+										{
+											"key": "exer_id",
+											"value": "43",
+											"type": "text"
+										},
+										{
+											"key": "scores",
+											"value": "6, 3, 0, 0, 0, 0",
+											"type": "text"
+										},
+										{
+											"key": "infos",
+											"value": "\"这是第1道题的评语\", \"这是第2道题的评语\", \"这是第3道题的评语\", \"这是第4道题的评语\", \"这是第五题\", \"这是第六题\"",
+											"type": "text"
+										}
+									]
+								},
+								"url": {
+									"raw": "{{baseUrl}}/check/push",
+									"host": [
+										"{{baseUrl}}"
+									],
+									"path": [
+										"check",
+										"push"
+									]
+								}
+							},
+							"_postman_previewlanguage": "Text",
+							"header": [],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "查询任务的所有学生的成绩/排名",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{teacherToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/check/result?exer_id={{taskId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"check",
+								"result"
+							],
+							"query": [
+								{
+									"key": "exer_id",
+									"value": "{{taskId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "生成并下载任务反馈报告",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{teacherToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/exer/adminReport?exer_id={{taskId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"exer",
+								"adminReport"
+							],
+							"query": [
+								{
+									"key": "exer_id",
+									"value": "{{taskId}}",
+									"description": "目前测试效果最好（2025/5/10）"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "查询练习中所有题目通过比例",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{teacherToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/check/access?exer_id={{taskId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"check",
+								"access"
+							],
+							"query": [
+								{
+									"key": "exer_id",
+									"value": "{{taskId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "查询历史练习分数/排名",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{studentToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/check/history?user_id={{studentId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"check",
+								"history"
+							],
+							"query": [
+								{
+									"key": "user_id",
+									"value": "{{studentId}}",
+									"description": "展示效果最好"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							"pm.test(\"HTTP Status Code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"// 解析响应JSON",
+							"var jsonData = pm.response.json();",
+							"",
+							"// 验证Result对象包含必要的字段",
+							"pm.test(\"Result object has correct structure\", function () {",
+							"    pm.expect(jsonData).to.have.property('success');",
+							"    pm.expect(jsonData).to.have.property('errorMsg');",
+							"    pm.expect(jsonData).to.have.property('data');",
+							"    pm.expect(jsonData).to.have.property('total');",
+							"});",
+							"",
+							"// 验证API操作是否成功",
+							"pm.test(\"API operation succeeded\", function () {",
+							"    pm.expect(jsonData.success).to.be.true;",
+							"});",
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "模块七",
+			"item": [
+				{
+					"name": "收藏题目",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{studentToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"prob_id\":{{problemId}},\r\n    \"user_id\":{{studentId}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/collect/addLike?prob_id={{problemId}}&stu_id={{studentId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"collect",
+								"addLike"
+							],
+							"query": [
+								{
+									"key": "prob_id",
+									"value": "{{problemId}}"
+								},
+								{
+									"key": "stu_id",
+									"value": "{{studentId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "添加错题",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{studentToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"prob_id\":{{problemId}},\r\n    \"exer_id\":{{taskId}},\r\n    \"user_id\":{{studentId}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/collect/addWrong?prob_id={{problemId}}&exer_id={{taskId}}&stu_id={{studentId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"collect",
+								"addWrong"
+							],
+							"query": [
+								{
+									"key": "prob_id",
+									"value": "{{problemId}}"
+								},
+								{
+									"key": "exer_id",
+									"value": "{{taskId}}"
+								},
+								{
+									"key": "stu_id",
+									"value": "{{studentId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "删除收藏",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{studentToken}}",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"prob_id\":{{problemId}},\r\n    \"user_id\":{{studentId}}\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{baseUrl}}/collect/deleteLike?prob_id={{problemId}}&stu_id={{studentId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"collect",
+								"deleteLike"
+							],
+							"query": [
+								{
+									"key": "prob_id",
+									"value": "{{problemId}}"
+								},
+								{
+									"key": "stu_id",
+									"value": "{{studentId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "查看错题",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{studentToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/collect/getWrong?stu_id={{studentId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"collect",
+								"getWrong"
+							],
+							"query": [
+								{
+									"key": "stu_id",
+									"value": "{{studentId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "查看收藏",
+					"request": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "{{studentToken}}",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "{{baseUrl}}/collect/getLike?stu_id={{studentId}}",
+							"host": [
+								"{{baseUrl}}"
+							],
+							"path": [
+								"collect",
+								"getLike"
+							],
+							"query": [
+								{
+									"key": "stu_id",
+									"value": "{{studentId}}"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"packages": {},
+						"exec": [
+							"pm.test(\"HTTP Status Code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"// 解析响应JSON",
+							"var jsonData = pm.response.json();",
+							"",
+							"// 验证Result对象包含必要的字段",
+							"pm.test(\"Result object has correct structure\", function () {",
+							"    pm.expect(jsonData).to.have.property('success');",
+							"    pm.expect(jsonData).to.have.property('errorMsg');",
+							"    pm.expect(jsonData).to.have.property('data');",
+							"    pm.expect(jsonData).to.have.property('total');",
+							"});",
+							"",
+							"// 验证API操作是否成功",
+							"pm.test(\"API operation succeeded\", function () {",
+							"    pm.expect(jsonData.success).to.be.true;",
+							"});",
+							""
+						]
+					}
+				}
+			]
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					"pm.request.addHeader(\"Authorization:eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwiaWF0IjoxNzQ4MzI0MDMwLCJleHAiOjE3NDgzMjc2MzB9.WoF65KdCaE5tmcqZdixisrhvQzPJLMmdld905X6Gk4k\")"
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	]
+}

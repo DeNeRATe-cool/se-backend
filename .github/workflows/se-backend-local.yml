@@ -118,3 +118,58 @@ jobs:
           kubectl -n se rollout status deployment/se-backend --timeout=180s
           kubectl -n se get pods -o wide
           kubectl -n se get svc se-backend
+
+  integration-test:
+    runs-on: [self-hosted, DeNeRATe-LOCAL]
+    needs: deploy
+    env:
+      BASE_URL: http://localhost:30080
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install Postman
+        shell: cmd
+        run: npm install -g newman newman-reporter-htmlextra
+
+      - name: Wait for service to be reachable
+        shell: cmd
+        run: |
+          set URL=%BASE_URL%/
+          setlocal EnableDelayedExpansion
+          for /l %%i in (1,1,30) do (
+            for /f "usebackq delims=" %%H in (`curl -s -o NUL -w "%%{http_code}" "!URL!"`) do set "CODE=%%H"
+            echo Attempt %%i: HTTP !CODE!
+            if "!CODE!"=="" set "CODE=000"
+            if !CODE! GEQ 200 if !CODE! LSS 500 goto ok
+            timeout /T 5 /NOBREAK >NUL
+          )
+          echo Service not reachable at !URL!
+          exit /b 1
+          :ok
+          endlocal
+          echo Service is reachable at %URL%
+      
+      - name: Run API tests (Postman via Newman)
+        shell: cmd
+        run: |
+          if not exist test-results mkdir test-results
+          newman run postman\postman_collection.json ^
+            -e postman\postman_environment.json ^
+            --reporters cli,junit,htmlextra ^
+            --reporter-junit-export test-results\junit.xml ^
+            --reporter-htmlextra-export test-results\html-report.html ^
+            --env-var baseUrl="%BASE_URL%"
+
+      - name: Publish Test Results
+        if: always()
+        uses: actions/upload-artifact@v3
+        with:
+          name: api-test-results
+          path: test-results/
