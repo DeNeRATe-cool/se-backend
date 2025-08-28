@@ -16,7 +16,7 @@ spring:
     password: ilovese666
     type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:30306/course_management
+    url: jdbc:mysql://mysql-service.default:3306/course_management
   mail:
     host: smtp.163.com
     username: tluvx0806@163.com

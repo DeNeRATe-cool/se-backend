@@ -136,7 +136,7 @@ jobs:
 
       - name: Install Postman
         shell: cmd
-        run: npm install -g newman newman-reporter-htmlextra
+        run: npm install -g newman newman-reporter-htmlextra newman-reporter-junit
 
       - name: Wait for service to be reachable
         shell: cmd
