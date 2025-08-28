@@ -12,7 +12,7 @@ spring:
     multipart:
       enabled: true
   datasource:
-    username: SE_teamsix
+    username: root
     password: ilovese666
     type: com.alibaba.druid.pool.DruidDataSource
     driver-class-name: com.mysql.cj.jdbc.Driver
