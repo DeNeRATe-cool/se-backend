@@ -4,7 +4,7 @@
 		"name": "软工小组",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "37600783",
-		"_collection_link": "https://se3333-8401.postman.co/workspace/26f28b41-70c2-4dbe-9f62-8ea78141d092/collection/37600783-ac078f98-d7a6-4078-acc8-806d78405528?action=share&source=collection_link&creator=37600783"
+		"_collection_link": "https://se3333-8401.postman.co/workspace/SE-Backend-Test~26f28b41-70c2-4dbe-9f62-8ea78141d092/collection/37600783-ac078f98-d7a6-4078-acc8-806d78405528?action=share&source=collection_link&creator=37600783"
 	},
 	"item": [
 		{
@@ -4258,16 +4258,6 @@
 		}
 	],
 	"event": [
-		{
-			"listen": "prerequest",
-			"script": {
-				"type": "text/javascript",
-				"packages": {},
-				"exec": [
-					"pm.request.addHeader(\"Authorization:eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI4MSIsImlhdCI6MTc1NjQzMDU4MiwiZXhwIjoxNzU2NDM0MTgyfQ.2OoA_bxHIcsrvguc4X8CswKm5RnL6rW-JyUdmcrnUjM\")"
-				]
-			}
-		},
 		{
 			"listen": "test",
 			"script": {
