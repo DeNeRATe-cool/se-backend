@@ -38,6 +38,6 @@ logging:
     com.hmdp: debug
 
 jwt:
-  secret: "your-256-bit-secret"  # 替换为一个固定的Base64编码密钥
+  secret: "ilovese666-strong-jwt-secret-key"
   expiration: 3600               # 过期时间(秒)
 

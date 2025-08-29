@@ -2,14 +2,14 @@ package com.se.utils;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
 
 public class JwtUtil {
-    private static final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256); // 可替换为固定密钥
+    private static final String SECRET_STRING = "ilovese666-strong-jwt-secret-key";
+    private static final Key key = Keys.hmacShaKeyFor(SECRET_STRING.getBytes(StandardCharsets.UTF_8)); // 固定密钥
     private static final long EXPIRATION_TIME = 1000 * 60 * 60; // 1小时
     public static String generateToken(Integer userId) {
         return Jwts.builder()
