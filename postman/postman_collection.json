@@ -4264,7 +4264,7 @@
 				"type": "text/javascript",
 				"packages": {},
 				"exec": [
-					"pm.request.addHeader(\"Authorization:eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiIyIiwiaWF0IjoxNzQ4MzI0MDMwLCJleHAiOjE3NDgzMjc2MzB9.WoF65KdCaE5tmcqZdixisrhvQzPJLMmdld905X6Gk4k\")"
+					"pm.request.addHeader(\"Authorization:eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI4MSIsImlhdCI6MTc1NjQzMDU4MiwiZXhwIjoxNzU2NDM0MTgyfQ.2OoA_bxHIcsrvguc4X8CswKm5RnL6rW-JyUdmcrnUjM\")"
 				]
 			}
 		},
